@@ -16,7 +16,7 @@ router.get(
 router.get(
     '/paciente/:pacienteId/recorrente',
     requireAuth,
-    restrictTo(Papeis.MEDICO),
+    restrictTo(Papeis.MEDICO, Papeis.ADMINISTRADOR_PRINCIPAL),
     iaController.analisarPacienteRecorrente.bind(iaController)
 );
 
