@@ -1,6 +1,6 @@
 # Sistema Hospitalar - Backend
 
-Bem-vindo ao repositório do backend do **Sistema Hospitalar**, uma API RESTful completa projetada para gerenciar operações em clínicas, hospitais e unidades de saúde. O sistema suporta autenticação segura, gerenciamento de pacientes, profissionais, consultas, prescrições, prontuários, triagens, unidades de saúde e uma camada avançada de **Inteligência Artificial** para suporte à decisão clínica e epidemiológica.
+Bem-vindo ao repositório do backend do **Sistema Hospitalar**, uma API RESTful completa projetada para gerenciar operações em clínicas, hospitais e unidades de saúde. O sistema suporta autenticação segura, gerenciamento de pacientes, profissionais, consultas, prescrições, prontuários, triagens, unidades de saúde e uma **camada avançada de Inteligência Artificial** para suporte à decisão clínica e epidemiológica.
 
 ## Funcionalidades Principais
 
@@ -10,12 +10,12 @@ Bem-vindo ao repositório do backend do **Sistema Hospitalar**, uma API RESTful 
 * **Prescrições e Prontuários**: Registro, edição, geração de PDFs e anonimização automática de dados sensíveis.
 * **Triagens**: Avaliação inicial por enfermeiros com sinais vitais, classificação de gravidade e priorização.
 * **Unidades de Saúde**: Cadastro e gerenciamento de hospitais/UPAs com CNES, serviços essenciais e ampliados.
-* **Inteligência Artificial**:
+* **Inteligência Artificial** (novo em 3.2.0):
 
-    * Relatórios epidemiológicos de risco de surtos (ex.: doenças respiratórias sazonais).
-    * Análise de pacientes recorrentes com sugestões de manejo.
-    * Análise operacional de triagens por unidade (sobrecarga e recomendações).
-    * Histórico de relatórios gerados com armazenamento seguro.
+    * **Relatório de Surto Respiratório**: Análise de risco epidemiológico global ou por unidade, com resumo executivo, indicadores, recomendações e análise completa em Markdown.
+    * **Análise de Paciente Recorrente**: Identificação de padrões de atendimentos frequentes com sugestões clínicas personalizadas.
+    * **Análise Operacional de Triagens**: Avaliação de risco de sobrecarga por unidade, distribuição por gravidade e recomendações operacionais.
+    * **Histórico de Relatórios**: Armazenamento e consulta de todos os relatórios gerados, com acesso por tipo e data.
 * **Segurança**: Criptografia de dados sensíveis, rate limiting, validação rigorosa, conformidade total com LGPD e logs de auditoria.
 * **Desempenho**: Cache (Redis), índices otimizados, processamento assíncrono (BullMQ), paginação e respostas compactas.
 
@@ -46,7 +46,7 @@ Bem-vindo ao repositório do backend do **Sistema Hospitalar**, uma API RESTful 
 
    ```bash
    git clone https://github.com/seu-usuario/sistema-hospitalar.git
-   cd sistema-hospitalar
+   cd sistema-hospitalar/backend
    ```
 
 2. **Instalar dependências**:
@@ -65,7 +65,6 @@ Bem-vindo ao repositório do backend do **Sistema Hospitalar**, uma API RESTful 
    JWT_SECRET=sua-chave-secreta-jwt
    ADMIN_SECRET=seu-secret-para-criar-admin
    GROQ_API_KEY=sua-chave-groq
-   REDIS_URL=sua-url-redis
    ```
 
 4. **Build e execução**:
@@ -85,7 +84,7 @@ Bem-vindo ao repositório do backend do **Sistema Hospitalar**, uma API RESTful 
 5. **Acessar a API**:
 
     * Local: `http://localhost:3000`
-    * Produção: `https://sistema-hospitalar.onrender.com`
+    * Produção: `https://SUA-URL.com`
 
 ## Documentação da API
 
@@ -146,33 +145,18 @@ Todos os endpoints estão organizados por recurso. Base URL: `/api`
 * `GET /ia/paciente/:pacienteId/recorrente` – Análise de recorrência (apenas médicos)
 * `GET /ia/triagens/:unidadeSaudeId` – Análise operacional de triagens (admin/médico)
 * `GET /ia/relatorios` – Lista últimos relatórios gerados (todos os profissionais, opcional `?limit=`)
+* `GET /ia/relatorios/:id` – Detalhes de relatório específico (todos os profissionais)
 
 Todos os relatórios de IA utilizam dados agregados e anonimizados, são salvos na tabela `relatorios_ia` e gerados com o modelo **Groq Compound**.
 
 ## Conformidade com LGPD
 
-* Consentimento explícito obrigatório no cadastro de pacientes
-* Anonimização automática em prontuários e PDFs
-* Logs de auditoria completos
+* Consentimento explícito obrigatório no cadastro de pacientes 
+* Anonimização automática em prontuários, PDFs e dados enviados à IA 
+* Logs de auditoria completos 
 * Criptografia de dados sensíveis (CPF, CNS)
-* Soft delete com retenção para auditoria
-* Dados enviados à IA nunca contêm identificadores
-
-## Deploy
-
-O sistema está hospedado no Render.com com autoescalamento automático. Para deploy próprio:
-
-1. Crie um Web Service no Render
-2. Conecte ao repositório GitHub
-3. Configure todas as variáveis de ambiente
-4. Ative o auto-deploy
-
-## Limitações e Observações
-
-* Geração de PDFs pode ser intensiva (mitigada com cache)
-* Funcionalidades de IA dependem de chave válida do Groq
-* Escalabilidade testada para milhares de usuários simultâneos
-* Integrações externas (ex.: validação de CRM/CNES) podem ser adicionadas futuramente
+* Soft delete com retenção para auditoria 
+* IA: Nenhum dado pessoal é enviado ao modelo — apenas agregados
 
 ## Contribuição
 
@@ -194,5 +178,5 @@ Apache License 2.0
 
 ---
 
-**Versão**: 3.1.0  
-**Data**: 19 de Dezembro de 2025  
+**Versão**: 3.2.0  
+**Data**: 05 de Janeiro de 2026
