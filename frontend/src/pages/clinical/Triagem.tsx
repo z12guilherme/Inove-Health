@@ -43,6 +43,32 @@ export function Triagem() {
   };
 
   const selectPaciente = (id: string) => { setForm(p => ({...p, paciente_id: id})); loadTriagens(id); };
+  
+  const chamarNoPainel = (sala: string) => {
+    const pac = pacientes.find(p => p.id === form.paciente_id);
+    if (!pac) return;
+
+    // Prioriza o risco selecionado no formulário atual ou o risco cadastrado do paciente
+    const risco = form.classificacao_risco || pac.risco || 'verde';
+
+    const chamado = {
+      id: Date.now().toString(),
+      pacienteNome: pac.nome,
+      destino: sala,
+      risco: risco,
+      hora: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    };
+
+    localStorage.setItem('inove_chamado_atual', JSON.stringify(chamado));
+
+    // Atualizar histórico do painel
+    const histRaw = localStorage.getItem('inove_chamados_historico') || '[]';
+    const hist = JSON.parse(histRaw);
+    localStorage.setItem('inove_chamados_historico', JSON.stringify([chamado, ...hist].slice(0, 10)));
+
+    toast.success(`📢 Chamado de ${pac.nome} enviado ao painel!`);
+  };
+
   const filteredPac = pacientes.filter(p => p.nome?.toLowerCase().includes(search.toLowerCase()));
 
   return (
@@ -50,16 +76,46 @@ export function Triagem() {
       <div><h1 className="text-3xl font-bold tracking-tight">Triagem de Pacientes</h1><p className="text-muted-foreground mt-2">Registro rápido de sinais vitais e classificação de risco Manchester.</p></div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Patient selector */}
-        <div className="glass rounded-2xl p-4 sm:p-6 lg:col-span-1">
-          <h3 className="font-semibold mb-4 flex items-center gap-2"><Search className="w-5 h-5" /> Selecionar Paciente</h3>
-          <input type="text" placeholder="Buscar..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 px-4 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm mb-3" />
-          {loading ? <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div> : (
-            <div className="space-y-1 max-h-[400px] overflow-y-auto">
-              {filteredPac.map(p => (
-                <button key={p.id} onClick={() => selectPaciente(p.id)} className={cn("w-full text-left px-3 py-2.5 rounded-lg transition-colors text-sm", form.paciente_id === p.id ? 'bg-primary/10 text-primary font-medium' : 'hover:bg-secondary text-foreground')}>
-                  {p.nome}
+        <div className="glass rounded-2xl p-4 sm:p-6 lg:col-span-1 flex flex-col justify-between min-h-[480px]">
+          <div>
+            <h3 className="font-semibold mb-4 flex items-center gap-2"><Search className="w-5 h-5" /> Selecionar Paciente</h3>
+            <input type="text" placeholder="Buscar..." value={search} onChange={e => setSearch(e.target.value)} className="w-full h-10 px-4 rounded-lg bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm mb-3" />
+            {loading ? <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div> : (
+              <div className="space-y-1 max-h-[300px] overflow-y-auto">
+                {filteredPac.map(p => (
+                  <button key={p.id} onClick={() => selectPaciente(p.id)} className={cn("w-full text-left px-3 py-2.5 rounded-lg transition-colors text-sm", form.paciente_id === p.id ? 'bg-primary/10 text-primary font-medium' : 'hover:bg-secondary text-foreground')}>
+                    {p.nome}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Chamador de Painel */}
+          {form.paciente_id && (
+            <div className="mt-6 pt-4 border-t border-border/50 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-primary uppercase tracking-wider">📢 Chamada por Voz</span>
+                <span className="inline-flex w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" title="Sincronizado" />
+              </div>
+              <p className="text-[11px] text-muted-foreground">Chame o paciente para a sala de triagem no telão com narração por voz.</p>
+              
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => chamarNoPainel('Sala de Triagem A')}
+                  className="flex-1 h-9 rounded-lg bg-primary hover:bg-primary/95 text-white text-xs font-semibold flex items-center justify-center gap-1 transition-all shadow-md shadow-primary/15 hover:-translate-y-0.5"
+                >
+                  Triagem A
                 </button>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => chamarNoPainel('Sala de Triagem B')}
+                  className="flex-1 h-9 rounded-lg bg-secondary hover:bg-secondary-foreground/10 text-foreground text-xs font-semibold flex items-center justify-center gap-1 transition-all border border-border hover:-translate-y-0.5"
+                >
+                  Triagem B
+                </button>
+              </div>
             </div>
           )}
         </div>

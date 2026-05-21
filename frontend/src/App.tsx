@@ -28,12 +28,14 @@ import { AtendimentosLista } from './pages/clinical/AtendimentosLista';
 import { NovoInternamento } from './pages/clinical/NovoInternamento';
 import { NovaUrgencia } from './pages/clinical/NovaUrgencia';
 import { NovaConsultaEletiva } from './pages/clinical/NovaConsultaEletiva';
+import { PainelTV } from './pages/clinical/PainelTV';
 
 export function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/painel" element={<PainelTV />} />
 
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
