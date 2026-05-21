@@ -63,10 +63,102 @@ const SEED_CUSTOS_ATEND = [
 ];
 
 const SEED_TABELAS = [
-  { id: 't1', nome: 'TISS 3.05 - Unimed', convenio: 'Unimed Nacional', tipo: 'TISS', vigencia_inicio: '2026-01-01', vigencia_fim: '2026-12-31', ativo: true, itens: 2400 },
-  { id: 't2', nome: 'TUSS 2026 - Amil', convenio: 'Amil Saúde', tipo: 'TUSS', vigencia_inicio: '2026-01-01', vigencia_fim: '2026-12-31', ativo: true, itens: 1800 },
-  { id: 't3', nome: 'Tabela SUS 2026', convenio: 'SUS', tipo: 'SUS', vigencia_inicio: '2026-01-01', vigencia_fim: '2026-12-31', ativo: true, itens: 3200 },
-  { id: 't4', nome: 'Particular - Clínica Premium', convenio: 'Particular', tipo: 'PROPRIO', vigencia_inicio: '2026-01-01', vigencia_fim: '2026-12-31', ativo: true, itens: 500 },
+  {
+    id: 't-urg-moura',
+    nome: 'CONSULTA URGÊNCIA MOURA',
+    tipo: '22 - TUSS',
+    tipo_despesa: 'Procedimentos',
+    ativo: true,
+    horarios_especiais: [
+      { dia: 'Segunda a Sexta', inicio: '19:00', fim: '07:00', acrescimo: 42 },
+      { dia: 'Sábado e Domingo', inicio: '00:00', fim: '23:59', acrescimo: 42 }
+    ],
+    itens: [
+      { id: 'i1', codigo: '10101038', tuss: '10101039', descricao: 'CONSULTA DE URGÊNCIA COM VASCULAR', valor: 100.00 },
+      { id: 'i2', codigo: '10101039', tuss: '10101039', descricao: 'Consulta em pronto socorro', valor: 81.00 }
+    ]
+  },
+  { id: 't-proc-unimed', nome: 'PROCEDIMENTOS UNIMED', tipo: '22 - TUSS', ativo: true, itens: [{ id: 'up1', codigo: '10101012', descricao: 'CONSULTA EM CONSULTÓRIO', valor: 95.00 }] },
+  { id: 't-dia-unimed', nome: 'DIÁRIAS UNIMED', tipo: 'PROPRIO', ativo: true, itens: [{ id: 'up2', codigo: '50000011', descricao: 'DIÁRIA APARTAMENTO', valor: 450.00 }] },
+  { id: 't-tax-unimed', nome: 'TAXAS UNIMED', tipo: 'PROPRIO', ativo: true, itens: [] },
+  { id: 't-gas-unimed', nome: 'GASES UNIMED', tipo: 'PROPRIO', ativo: true, itens: [] },
+  { id: 't-med-unimed', nome: 'MEDICAMENTOS UNIMED TNUMM', tipo: 'TNUMM', ativo: true, itens: [] },
+  { id: 't-mat-unimed-00', nome: 'MATERIAIS UNIMED (TABELA 00)', tipo: 'PROPRIO', ativo: true, itens: [] },
+  { id: 't-mat-unimed-19', nome: 'MATERIAIS UNIMED (TABELA 19)', tipo: 'PROPRIO', ativo: true, itens: [] },
+  { id: 't-pacote-unimed', nome: 'PACOTE UNIMED', tipo: 'PROPRIO', ativo: true, itens: [] },
+  { id: 't-proc-amb-unimed', nome: 'PROCEDIMENTOS AMBULATORIAIS UNIMED', tipo: '22 - TUSS', ativo: true, itens: [] },
+  { id: 't-brasindice', nome: 'MEDICAMENTOS BRASINDICE', tipo: 'PRECO_FABRICA', ativo: true, itens: [] },
+  { id: 't-simpro', nome: 'MATERIAIS DESCARTÁVEIS SIMPRO', tipo: 'SIMPRO', ativo: true, itens: [] },
+  { id: 't-diarias-moura', nome: 'DIÁRIAS MOURA', tipo: 'PROPRIO', ativo: true, itens: [] },
+  { id: 't-taxas-moura', nome: 'TAXAS MOURA', tipo: 'PROPRIO', ativo: true, itens: [] },
+  { id: 't-gases-moura', nome: 'GASES MOURA', tipo: 'PROPRIO', ativo: true, itens: [] },
+  { id: 't-cbhpm-2010', nome: 'CBHPM 2010', tipo: 'CBHPM', ativo: true, itens: [] },
+  { id: 't-opme-nf-moura', nome: 'OPME MOURA - NOTA FISCAL', tipo: 'PROPRIO', ativo: true, itens: [] },
+  { id: 't-opme-simpro-moura', nome: 'OPME MOURA - SIMPRO VIGENTE', tipo: 'SIMPRO', ativo: true, itens: [] },
+  { id: 't-proc-moura', nome: 'TABELA PROCEDIMENTOS MOURA', tipo: '22 - TUSS', ativo: true, itens: [] },
+];
+
+const SEED_CONVENIOS = [
+  {
+    id: 'c-unimed',
+    nome: 'UNIMED',
+    registro_ans: '340952',
+    cnpj: '24.449.225/0001-98',
+    tiss_versao: '4.01.00',
+    financeiro: {
+      valor_filme: 19.40,
+      valor_uco: 0.00,
+      valor_ch: 0.28,
+      deflator_porte: 20.00,
+      acrescimo_apartamento: 100.00, // 100%
+      dias_retorno: 30,
+      digitos_matricula: 16
+    },
+    vias_acesso: [
+      { descricao: 'Única', percentual: 100 },
+      { descricao: 'Mesma via', percentual: 50 },
+      { descricao: 'Diferentes vias', percentual: 30 }
+    ],
+    tabelas_vinculadas: [
+      { tabela_id: 't-proc-unimed', nome: 'PROCEDIMENTOS UNIMED' },
+      { tabela_id: 't-dia-unimed', nome: 'DIÁRIAS UNIMED' },
+      { tabela_id: 't-tax-unimed', nome: 'TAXAS UNIMED' },
+      { tabela_id: 't-gas-unimed', nome: 'GASES UNIMED' },
+      { tabela_id: 't-med-unimed', nome: 'MEDICAMENTOS UNIMED TNUMM' },
+      { tabela_id: 't-mat-unimed-00', nome: 'MATERIAIS UNIMED (TABELA 00)' },
+      { tabela_id: 't-mat-unimed-19', nome: 'MATERIAIS UNIMED (TABELA 19)' },
+      { tabela_id: 't-pacote-unimed', nome: 'PACOTE UNIMED' },
+      { tabela_id: 't-proc-amb-unimed', nome: 'PROCEDIMENTOS AMBULATORIAIS UNIMED' },
+    ],
+    categorias: [
+      { descricao: 'Consulta 174', valor_ch: 0, valor_uco: 0 },
+      { descricao: 'Consulta Intercâmbio', valor_ch: 0, valor_uco: 0 },
+      { descricao: '174 Internação', valor_ch: 0, valor_uco: 0 }
+    ],
+    obrigatorios_atendimento: {
+      guia_principal: true,
+      autorizacao: true,
+      senha: true,
+      setor: true,
+      cid10: true
+    }
+  },
+  {
+    id: 'c-moura',
+    nome: 'MOURA',
+    cnpj: '09.811.654/0001-70',
+    tiss_versao: '3.05.00',
+    financeiro: {
+      valor_filme: 21.70,
+      valor_uco: 12.67,
+      valor_ch: 0.00,
+      acrescimo_apartamento: 0
+    },
+    tabelas_vinculadas: [
+      { tabela_id: 't-urg-moura', nome: 'CONSULTA URGÊNCIA MOURA' },
+      { tabela_id: 't-proc-moura', nome: 'TABELA PROCEDIMENTOS MOURA' }
+    ]
+  }
 ];
 
 const SEED_GUIAS = [
@@ -113,6 +205,114 @@ const SEED_GLOSAS = [
   { id: 'gl1', guia: 'GUI-2026-0001', convenio: 'Unimed Nacional', motivo: 'Código do procedimento não compatível com CID', valor_glosado: 150.00, status: 'RECURSO_ENVIADO', data: '2026-05-15' },
   { id: 'gl2', guia: 'GUI-2026-0002', convenio: 'Amil Saúde', motivo: 'Documentação incompleta — laudo médico ausente', valor_glosado: 380.00, status: 'PENDENTE', data: '2026-05-18' },
 ];
+
+const SEED_ATENDIMENTOS = [
+  {
+    id: 'ATD-1001',
+    tipo: 'INTERNAMENTO',
+    data: '2026-05-21',
+    hora: '10:30',
+    paciente_id: '1',
+    paciente_nome: 'Maria Silva Costa',
+    paciente_cpf: '111.222.333-44',
+    paciente_prontuario: '1',
+    categoria: 'Particular',
+    convenio_id: 'c-unimed', // Adicionado para vincular ao convênio UNIMED
+    status: 'ATIVO',
+    dados_atendimento: {
+      carater: 'Eletiva',
+      tipo_internacao: 'Clínica',
+      regime: 'Hospitalar',
+      clinica: 'Clínica Médica',
+      acomodacao: 'Apartamento',
+      leito: 'Apto 204',
+      cid10: 'I10 - Hipertensão essencial',
+      profissional_executante: 'Dr. Carlos Eduardo Mendes'
+    },
+    procedimentos: [
+      { data: '2026-05-21', codigo: '50000022', nome: 'Diária de enfermaria', qtd: 1, valor: 250.00 }
+    ],
+    dados_solicitacao: {
+      data: '2026-05-21',
+      hora: '10:00',
+      contratado: 'Hospital',
+      profissional: 'Dr. Carlos Eduardo Mendes',
+      especialidade: 'Clínica Geral',
+      indicacao: 'Paciente necessita de monitoramento pressórico constante',
+      observacoes: 'Internação planejada'
+    }
+  },
+  {
+    id: 'ATD-1002',
+    tipo: 'URGENCIA',
+    data: '2026-05-21',
+    hora: '11:15',
+    paciente_id: '2',
+    paciente_nome: 'João Pedro Alves',
+    paciente_cpf: '555.666.777-88',
+    paciente_prontuario: '2',
+    categoria: 'SUS',
+    convenio_id: 'c-moura', // Adicionado para vincular ao convênio MOURA
+    status: 'ATIVO',
+    senha_chamada: 'U-005 às 11:00',
+    dados_autorizacao: {
+      guia_principal: '1234567',
+      autorizacao: '987654',
+      guia_operadora: '333444',
+      data_emissao: '2026-05-21',
+      data_vencimento: '2026-06-21',
+      autorizador: 'Maria de Souza',
+      senha: 'XYZ-998'
+    },
+    dados_atendimento: {
+      tipo_atendimento: 'Urgência',
+      setor: 'Pronto-socorro',
+      acomodacao: 'Leito de Observação',
+      leito: 'OBS-03',
+      cid10: 'J06 - Infecções agudas das vias aéreas superiores',
+      profissional_executante: 'Dra. Ana Paula Rodrigues',
+      tipo_consulta: 'Primeira Consulta',
+      indicador_acidente: 'Não Acidente',
+      regime: 'Pronto-socorro',
+      etiquetas: 'Sintomas gripais'
+    },
+    procedimentos: [
+      { data: '2026-05-21', codigo: '10101012', nome: 'Consulta de Pronto-Socorro', qtd: 1, valor: 80.00, especialidade: 'Pediatria', profissional: 'Dra. Ana Paula Rodrigues' }
+    ],
+    dados_solicitacao: {
+      data: '2026-05-21',
+      hora: '11:15',
+      contratado: 'Hospital',
+      profissional: 'Dra. Ana Paula Rodrigues',
+      especialidade: 'Pediatria',
+      indicacao: 'Febre alta persistente',
+      observacoes: 'Observação temporária'
+    }
+  },
+  {
+    id: 'ATD-1003',
+    tipo: 'CONSULTA',
+    data: '2026-05-21',
+    hora: '13:00',
+    paciente_id: '3',
+    paciente_nome: 'Roberto Carlos Freitas',
+    paciente_cpf: '999.888.777-66',
+    paciente_prontuario: '3',
+    categoria: 'Convênio',
+    convenio_id: 'c-unimed', // Adicionado para vincular ao convênio UNIMED
+    status: 'ATIVO',
+    dados_atendimento: {
+      consultorio: 'Consultório B',
+      cid10: 'E11 - Diabetes mellitus não-insulino-dependente',
+      profissional_executante: 'Dr. Marcos Vinícius Lima'
+    },
+    procedimentos: [
+      { data: '2026-05-21', codigo: '40302240', nome: 'Glicemia de jejum', qtd: 1, valor: 15.00, especialidade: 'Cardiologia', profissional: 'Dr. Marcos Vinícius Lima' }
+    ],
+    observacoes: 'Consulta eletiva de retorno para controle glicêmico'
+  }
+];
+
 
 // ============================================================
 if (USE_MOCK) {
@@ -269,9 +469,71 @@ if (USE_MOCK) {
       }
       if (method === 'get') return ok({ pacientes });
       if (method === 'post') {
-        const novo = { id: Date.now().toString(), status: 'Aguardando Triagem', criado_em: new Date().toISOString(), ...parsedData };
+        const novo = { id: `PRO-2026-${Math.floor(100000 + Math.random() * 900000)}`, status: 'Aguardando Triagem', criado_em: new Date().toISOString(), ...parsedData };
         pacientes.push(novo);
         lsSet(KEY, pacientes);
+        return ok(novo);
+      }
+    }
+
+    // ── 6.1 Atendimentos ────────────────────────────────────
+    if (url.includes('/atendimentos')) {
+      const KEY = 'inove_atendimentos_mock';
+      let atendimentos: any[] = lsGet(KEY, SEED_ATENDIMENTOS);
+
+      if (url.includes('/chamar-senha') && method === 'post') {
+        const type = parsedData.tipo || 'N'; // N for Normal, P for Prioridade
+        const seqKey = `inove_senha_seq_${type}`;
+        let seq = lsGet<number>(seqKey, 0) + 1;
+        lsSet(seqKey, seq);
+        const formatSeq = String(seq).padStart(3, '0');
+        const senha = `${type}-${formatSeq}`;
+        const hora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        return ok({ senha, hora });
+      }
+
+      const idMatch = url.match(/\/atendimentos\/([a-zA-Z0-9_-]+)$/);
+      if (idMatch && method === 'put') {
+        const idx = atendimentos.findIndex(a => a.id === idMatch[1]);
+        if (idx !== -1) {
+          atendimentos[idx] = { ...atendimentos[idx], ...parsedData };
+          lsSet(KEY, atendimentos);
+        }
+        return ok(atendimentos[idx]);
+      }
+
+      if (idMatch && method === 'delete') {
+        const idx = atendimentos.findIndex(a => a.id === idMatch[1]);
+        if (idx !== -1) {
+          atendimentos[idx].status = 'INATIVO';
+          lsSet(KEY, atendimentos);
+        }
+        return ok({ success: true });
+      }
+
+      if (method === 'get') {
+        return ok({ atendimentos });
+      }
+
+      if (method === 'post') {
+        const novo = {
+          id: `ATD-${Date.now().toString().slice(-6)}`,
+          status: 'ATIVO',
+          data: parsedData.data || new Date().toISOString().split('T')[0],
+          hora: parsedData.hora || new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+          ...parsedData
+        };
+        atendimentos.push(novo);
+        lsSet(KEY, atendimentos);
+
+        // Também atualizar o status do paciente
+        const pacs: any[] = lsGet('inove_pacientes_mock', []);
+        const pIdx = pacs.findIndex((p: any) => p.id === parsedData.paciente_id);
+        if (pIdx !== -1) {
+          pacs[pIdx].status = parsedData.tipo === 'INTERNAMENTO' ? 'Internado' : 'Em Atendimento';
+          lsSet('inove_pacientes_mock', pacs);
+        }
+
         return ok(novo);
       }
     }
@@ -386,11 +648,26 @@ if (USE_MOCK) {
     if (url.includes('/cadastros/convenios')) {
       const KEY = 'inove_convenios_mock';
       const SEED = [
-        { id: '1', nome: 'Unimed Nacional', registro_ans: '354801', tipo: 'COOPERATIVA', email: 'credenciamento@unimed.com.br', telefone: '0800 722 0022', cobertura: 'COMPLETO', tabela_preco: 'TISS', ativo: true, criado_em: '2025-01-10' },
-        { id: '2', nome: 'Amil Saúde', registro_ans: '326305', tipo: 'PLANO_SAUDE', email: 'redes@amil.com.br', telefone: '0800 202 6001', cobertura: 'AMBULATORIAL_HOSPITALAR', tabela_preco: 'TUSS', ativo: true, criado_em: '2025-01-15' },
-        { id: '3', nome: 'SulAmérica Seguros', registro_ans: '006246', tipo: 'SEGURO_SAUDE', email: 'saude@sulamerica.com.br', telefone: '0800 970 0500', cobertura: 'HOSPITALAR', tabela_preco: 'TISS', ativo: true, criado_em: '2025-02-20' },
-        { id: '4', nome: 'SUS - Sistema Único de Saúde', registro_ans: 'N/A', tipo: 'SUS', email: 'sas@saude.gov.br', telefone: '136', cobertura: 'COMPLETO', tabela_preco: 'SUS', ativo: true, criado_em: '2025-01-01' },
-        { id: '5', nome: 'Bradesco Saúde', registro_ans: '005711', tipo: 'SEGURO_SAUDE', email: 'saude@bradesco.com.br', telefone: '0800 727 9966', cobertura: 'COMPLETO', tabela_preco: 'TUSS', ativo: true, criado_em: '2025-03-05' },
+        {
+          id: '1', nome: 'Unimed Nacional', registro_ans: '354801', tipo: 'COOPERATIVA', email: 'credenciamento@unimed.com.br', telefone: '0800 722 0022', cobertura: 'COMPLETO', tabela_preco: 'TISS', ativo: true, criado_em: '2025-01-10',
+          tabelas_vinculadas: [{ tabela_id: 't-proc-unimed', nome: 'PROCEDIMENTOS UNIMED' }, { tabela_id: 't-dia-unimed', nome: 'DIÁRIAS UNIMED' }, { tabela_id: 't-tax-unimed', nome: 'TAXAS UNIMED' }, { tabela_id: 't-gas-unimed', nome: 'GASES UNIMED' }, { tabela_id: 't-med-unimed', nome: 'MEDICAMENTOS UNIMED TNUMM' }, { tabela_id: 't-mat-unimed-00', nome: 'MATERIAIS UNIMED (TABELA 00)' }, { tabela_id: 't-mat-unimed-19', nome: 'MATERIAIS UNIMED (TABELA 19)' }, { tabela_id: 't-pacote-unimed', nome: 'PACOTE UNIMED' }, { tabela_id: 't-proc-amb-unimed', nome: 'PROCEDIMENTOS AMBULATORIAIS UNIMED' }]
+        },
+        {
+          id: '2', nome: 'Amil Saúde', registro_ans: '326305', tipo: 'PLANO_SAUDE', email: 'redes@amil.com.br', telefone: '0800 202 6001', cobertura: 'AMBULATORIAL_HOSPITALAR', tabela_preco: 'TUSS', ativo: true, criado_em: '2025-01-15',
+          tabelas_vinculadas: [{ tabela_id: 't-proc-unimed', nome: 'PROCEDIMENTOS UNIMED' }, { tabela_id: 't-brasindice', nome: 'MEDICAMENTOS BRASINDICE' }]
+        },
+        {
+          id: '3', nome: 'SulAmérica Seguros', registro_ans: '006246', tipo: 'SEGURO_SAUDE', email: 'saude@sulamerica.com.br', telefone: '0800 970 0500', cobertura: 'HOSPITALAR', tabela_preco: 'TISS', ativo: true, criado_em: '2025-02-20',
+          tabelas_vinculadas: [{ tabela_id: 't-brasindice', nome: 'MEDICAMENTOS BRASINDICE' }, { tabela_id: 't-simpro', nome: 'MATERIAIS DESCARTÁVEIS SIMPRO' }]
+        },
+        {
+          id: '4', nome: 'SUS - Sistema Único de Saúde', registro_ans: 'N/A', tipo: 'SUS', email: 'sas@saude.gov.br', telefone: '136', cobertura: 'COMPLETO', tabela_preco: 'SUS', ativo: true, criado_em: '2025-01-01',
+          tabelas_vinculadas: []
+        },
+        {
+          id: '5', nome: 'Bradesco Saúde', registro_ans: '005711', tipo: 'SEGURO_SAUDE', email: 'saude@bradesco.com.br', telefone: '0800 727 9966', cobertura: 'COMPLETO', tabela_preco: 'TUSS', ativo: true, criado_em: '2025-03-05',
+          tabelas_vinculadas: [{ tabela_id: 't-urg-moura', nome: 'CONSULTA URGÊNCIA MOURA' }]
+        },
       ];
       let convenios: any[] = lsGet(KEY, SEED);
 
@@ -619,6 +896,20 @@ if (USE_MOCK) {
         const KEY = 'inove_tabelas_mock';
         let tabelas: any[] = lsGet(KEY, SEED_TABELAS);
         const idMatch = url.match(/\/tabelas\/([a-zA-Z0-9_-]+)$/);
+
+        // POST /faturamento/tabelas/:id/itens
+        const itemMatch = url.match(/\/tabelas\/([a-zA-Z0-9_-]+)\/itens$/);
+        if (itemMatch && method === 'post') {
+          const idx = tabelas.findIndex(t => t.id === itemMatch[1]);
+          if (idx !== -1) {
+            const novoItem = { id: `i${Date.now()}`, ...parsedData };
+            if (!Array.isArray(tabelas[idx].itens)) tabelas[idx].itens = [];
+            tabelas[idx].itens.push(novoItem);
+            lsSet(KEY, tabelas);
+            return ok(novoItem);
+          }
+        }
+
         if (idMatch && method === 'put') {
           const idx = tabelas.findIndex(t => t.id === idMatch[1]);
           if (idx !== -1) { tabelas[idx] = { ...tabelas[idx], ...parsedData }; lsSet(KEY, tabelas); }
@@ -659,6 +950,43 @@ if (USE_MOCK) {
         if (method === 'get') return ok({ glosas });
         if (method === 'post') { const n = { id: `gl${Date.now()}`, status: 'PENDENTE', data: new Date().toISOString().split('T')[0], ...parsedData }; glosas.push(n); lsSet(KEY, glosas); return ok(n); }
       }
+
+      // --- Lançamentos de Consumo (Procedimentos/Materiais) ---
+      if (url.includes('/faturamento/lancamentos')) {
+        const KEY = 'inove_faturamento_lancamentos_mock';
+        let lancamentos = lsGet<any[]>(KEY, []);
+
+        // GET /faturamento/lancamentos?atendimento_id=...
+        if (method === 'get') {
+          const params = new URLSearchParams(url.split('?')[1]);
+          const atendimentoId = params.get('atendimento_id');
+          if (atendimentoId) {
+            return ok({ lancamentos: lancamentos.filter(l => l.atendimento_id === atendimentoId) });
+          }
+          return ok({ lancamentos });
+        }
+
+        // POST /faturamento/lancamentos
+        if (method === 'post') {
+          const novo = {
+            id: `lan-${Date.now()}`,
+            faturado_por: 'Admin',
+            criado_em: new Date().toISOString(),
+            ...parsedData
+          };
+          lancamentos.push(novo);
+          lsSet(KEY, lancamentos);
+          return ok(novo);
+        }
+
+        // DELETE /faturamento/lancamentos/:id
+        const idMatch = url.match(/\/faturamento\/lancamentos\/([a-zA-Z0-9_-]+)$/);
+        if (idMatch && method === 'delete') {
+          lancamentos = lancamentos.filter(l => l.id !== idMatch[1]);
+          lsSet(KEY, lancamentos);
+          return ok({ success: true });
+        }
+      }
     }
 
     // ── 16. Laboratório ────────────────────────────────────
@@ -690,8 +1018,13 @@ if (USE_MOCK) {
 
     // ── 17. BI e Relatórios ────────────────────────────────
     if (url.includes('/relatorios/bi')) {
+      const medicos = lsGet('inove_medicos_mock', SEED_MEDICOS);
+      const enfermeiros = lsGet('inove_enfermeiros_mock', SEED_ENFERMEIROS);
+      const totalAtivos = medicos.filter((m: any) => m.ativo).length + enfermeiros.filter((e: any) => e.ativo).length;
+
       return ok({
-        atendimentos_mes: [450, 520, 610, 480],
+        total_profissionais_ativos: totalAtivos,
+        atendimentos_mes: [450, 520, 610, 480], // Pode ser dinamizado futuramente
         tempo_medio_espera: '18 min',
         produtividade_equipe: [],
         consumo_insumos_abc: [

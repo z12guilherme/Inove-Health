@@ -23,6 +23,7 @@ import {
   FileSpreadsheet,
   PackageOpen,
   AlertTriangle,
+  ClipboardList,
   ChevronDown,
   ChevronRight
 } from 'lucide-react';
@@ -38,6 +39,7 @@ export function Layout() {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     'Visão Geral': true,
     'Cadastros Base': true,
+    'Recepção & Atendimentos': true,
     'Atendimento Clínico': true,
     'Financeiro': true,
     'Faturamento Hospitalar': true
@@ -62,6 +64,15 @@ export function Layout() {
         { name: 'Profissionais', path: '/admin/profissionais', icon: Users },
         { name: 'Fornecedores', path: '/admin/cadastros/fornecedores', icon: Package },
         { name: 'Convênios', path: '/admin/cadastros/convenios', icon: Building },
+      ]
+    },
+    {
+      name: 'Recepção & Atendimentos',
+      links: [
+        { name: 'Fluxo de Atendimento', path: '/clinical/atendimentos', icon: ClipboardList },
+        { name: 'Novo Internamento', path: '/clinical/atendimentos/internamento/novo', icon: Hospital },
+        { name: 'Nova Urgência', path: '/clinical/atendimentos/urgencia/novo', icon: AlertTriangle },
+        { name: 'Consulta Eletiva', path: '/clinical/atendimentos/consulta/novo', icon: Stethoscope },
       ]
     },
     {
@@ -91,6 +102,15 @@ export function Layout() {
   ];
 
   const clinicGroups: NavGroup[] = [
+    {
+      name: 'Recepção & Atendimentos',
+      links: [
+        { name: 'Fluxo de Atendimento', path: '/clinical/atendimentos', icon: ClipboardList },
+        { name: 'Novo Internamento', path: '/clinical/atendimentos/internamento/novo', icon: Hospital },
+        { name: 'Nova Urgência', path: '/clinical/atendimentos/urgencia/novo', icon: AlertTriangle },
+        { name: 'Consulta Eletiva', path: '/clinical/atendimentos/consulta/novo', icon: Stethoscope },
+      ]
+    },
     {
       name: 'Atendimento Clínico',
       links: [

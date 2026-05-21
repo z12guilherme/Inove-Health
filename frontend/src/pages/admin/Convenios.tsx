@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Building, Plus, Pencil, Trash2, X, Loader2, Search, Shield, Phone, Mail, Hash } from 'lucide-react';
 import { api } from '../../lib/api';
+import { Building, Plus, Pencil, Trash2, X, Loader2, Search, Shield, Phone, Mail, Hash, Table } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface Convenio {
@@ -12,8 +12,14 @@ interface Convenio {
   telefone: string;
   cobertura: string;
   tabela_preco: string;
+  tabelas_vinculadas?: Array<{ tabela_id: string; nome: string; }>; // Adicionado
   ativo: boolean;
   criado_em: string;
+}
+
+interface LinkedTable {
+  tabela_id: string;
+  nome: string;
 }
 
 interface ConvenioForm {
@@ -24,6 +30,7 @@ interface ConvenioForm {
   telefone: string;
   cobertura: string;
   tabela_preco: string;
+  tabelas_vinculadas: LinkedTable[]; // Adicionado
 }
 
 const emptyForm: ConvenioForm = {
@@ -54,12 +61,17 @@ export function Convenios() {
   const [form, setForm] = useState<ConvenioForm>(emptyForm);
   const [submitting, setSubmitting] = useState(false);
   const [search, setSearch] = useState('');
+  const [allTabelas, setAllTabelas] = useState<Array<{ id: string; nome: string; }>>([]); // Todas as tabelas disponíveis
 
   const fetchConvenios = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await api.get('/cadastros/convenios');
-      setConvenios(Array.isArray(data) ? data : data.convenios || []);
+      const [conveniosRes, tabelasRes] = await Promise.all([
+        api.get('/cadastros/convenios'),
+        api.get('/faturamento/tabelas')
+      ]);
+      setConvenios(Array.isArray(conveniosRes.data) ? conveniosRes.data : conveniosRes.data.convenios || []);
+      setAllTabelas(Array.isArray(tabelasRes.data) ? tabelasRes.data : tabelasRes.data.tabelas || []);
     } catch {
       // Toast handled by interceptor
     } finally {
@@ -104,7 +116,8 @@ export function Convenios() {
     setEditing(c.id);
     setForm({
       nome: c.nome, registro_ans: c.registro_ans, tipo: c.tipo,
-      email: c.email, telefone: c.telefone, cobertura: c.cobertura, tabela_preco: c.tabela_preco
+      email: c.email, telefone: c.telefone, cobertura: c.cobertura, tabela_preco: c.tabela_preco,
+      tabelas_vinculadas: c.tabelas_vinculadas || []
     });
     setModalOpen(true);
   };
@@ -112,6 +125,18 @@ export function Convenios() {
   const openCreate = () => {
     setEditing(null);
     setForm(emptyForm);
+    setModalOpen(true);
+  };
+
+  const handleToggleTable = (tabelaId: string, tabelaNome: string) => {
+    setForm(prevForm => {
+      const isLinked = prevForm.tabelas_vinculadas.some(t => t.tabela_id === tabelaId);
+      if (isLinked) {
+        return { ...prevForm, tabelas_vinculadas: prevForm.tabelas_vinculadas.filter(t => t.tabela_id !== tabelaId) };
+      } else {
+        return { ...prevForm, tabelas_vinculadas: [...prevForm.tabelas_vinculadas, { tabela_id: tabelaId, nome: tabelaNome }] };
+      }
+    });
     setModalOpen(true);
   };
 
@@ -280,6 +305,30 @@ export function Convenios() {
                   <label className="block text-sm font-medium mb-1.5">Telefone</label>
                   <input type="text" value={form.telefone} onChange={e => setForm(p => ({ ...p, telefone: e.target.value }))}
                     className="w-full h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="0800 XXX XXXX" />
+                </div>
+              </div>
+
+              {/* Seletor de Tabelas de Preço */}
+              <div>
+                <label className="block text-sm font-medium mb-1.5 flex items-center gap-2">
+                  <Table className="w-4 h-4" /> Tabelas de Preço Vinculadas
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto p-2 border border-border rounded-xl bg-background/50">
+                  {allTabelas.length === 0 ? (
+                    <p className="text-sm text-muted-foreground col-span-2">Nenhuma tabela disponível.</p>
+                  ) : (
+                    allTabelas.map(tabela => (
+                      <label key={tabela.id} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-secondary/50 p-2 rounded-lg transition-colors">
+                        <input
+                          type="checkbox"
+                          checked={form.tabelas_vinculadas.some(lt => lt.tabela_id === tabela.id)}
+                          onChange={() => handleToggleTable(tabela.id, tabela.nome)}
+                          className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
+                        />
+                        {tabela.nome}
+                      </label>
+                    ))
+                  )}
                 </div>
               </div>
               <div className="flex gap-3 pt-4">

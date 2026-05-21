@@ -17,23 +17,28 @@ import { TabelasPrecos } from './pages/admin/faturamento/TabelasPrecos';
 import { GuiasAtendimento } from './pages/admin/faturamento/GuiasAtendimento';
 import { FechamentoLote } from './pages/admin/faturamento/FechamentoLote';
 import { GestaoGlosas } from './pages/admin/faturamento/GestaoGlosas';
+import { LancamentosFaturamento } from './pages/admin/faturamento/Lancamentos';
 import { Pacientes } from './pages/clinical/Pacientes';
 import { PerfilPaciente } from './pages/clinical/PerfilPaciente';
 import { Triagem } from './pages/clinical/Triagem';
 import { Atendimento } from './pages/clinical/Atendimento';
 import { Prescricoes } from './pages/clinical/Prescricoes';
 import { IAAssistiva } from './pages/clinical/IAAssistiva';
+import { AtendimentosLista } from './pages/clinical/AtendimentosLista';
+import { NovoInternamento } from './pages/clinical/NovoInternamento';
+import { NovaUrgencia } from './pages/clinical/NovaUrgencia';
+import { NovaConsultaEletiva } from './pages/clinical/NovaConsultaEletiva';
 
 export function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
-        
+
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to="/admin" replace />} />
-            
+
             {/* Admin Routes */}
             <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
               <Route path="/admin" element={<AdminDashboard />} />
@@ -55,8 +60,9 @@ export function App() {
               <Route path="/admin/faturamento/guias" element={<GuiasAtendimento />} />
               <Route path="/admin/faturamento/lotes" element={<FechamentoLote />} />
               <Route path="/admin/faturamento/glosas" element={<GestaoGlosas />} />
+              <Route path="/admin/faturamento/lancamentos" element={<LancamentosFaturamento />} />
             </Route>
-            
+
             {/* Clinical Routes */}
             <Route element={<ProtectedRoute allowedRoles={['MEDICO', 'ENFERMEIRO']} />}>
               <Route path="/clinical/pacientes" element={<Pacientes />} />
@@ -64,6 +70,14 @@ export function App() {
               <Route path="/clinical/triagem" element={<Triagem />} />
               <Route path="/clinical/atendimento" element={<Atendimento />} />
               <Route path="/clinical/prescricoes" element={<Prescricoes />} />
+            </Route>
+
+            {/* Atendimento Flow Routes */}
+            <Route element={<ProtectedRoute allowedRoles={['MEDICO', 'ENFERMEIRO', 'ADMIN']} />}>
+              <Route path="/clinical/atendimentos" element={<AtendimentosLista />} />
+              <Route path="/clinical/atendimentos/internamento/novo" element={<NovoInternamento />} />
+              <Route path="/clinical/atendimentos/urgencia/novo" element={<NovaUrgencia />} />
+              <Route path="/clinical/atendimentos/consulta/novo" element={<NovaConsultaEletiva />} />
             </Route>
 
             {/* Doctor-only Routes */}
