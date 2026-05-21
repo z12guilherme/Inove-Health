@@ -2,7 +2,7 @@ import { Groq } from 'groq-sdk';
 import { supabaseServiceClient } from '@/shared/database/supabase';
 
 const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY!,
+    apiKey: process.env.GROQ_API_KEY || 'gsk_mock_key_for_local_development',
 });
 
 const SYSTEM_PROMPT = `
@@ -153,7 +153,7 @@ export class GroqService {
             indicadores: analise.indicadores,
             recomendacoes: analise.recomendacoes,
             conteudo: analise.conteudo_completo,
-            dados_agregados: { paciente_id_hash: pacienteId.slice(0,8), contagens: { consultas: consultas?.length, triagens: triagens?.length } },
+            dados_agregados: { paciente_id_hash: pacienteId.slice(0, 8), contagens: { consultas: consultas?.length, triagens: triagens?.length } },
             criado_por: profissionalId,
         });
 
