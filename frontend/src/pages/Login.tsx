@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore, type Role } from '../store/authStore';
 import { api } from '../lib/api';
 import { Activity, Lock, Mail, Loader2 } from 'lucide-react';
 import { cn } from '../lib/utils';
@@ -19,26 +19,36 @@ export function Login() {
     setError('');
 
     try {
-      // Mocking login for the visual prototype if API is not available
-      // In production, uncomment the API call
-      /*
+      // Chamada real à API Mockada
       const { data } = await api.post('/auth/login', { email, password });
-      setAuth(data.user, data.token);
-      */
 
-      // MOCK LOGIN FOR PROTOTYPE
-      setTimeout(() => {
-        if (email.includes('admin')) {
-          setAuth({ id: '1', name: 'Administrador', email, role: 'ADMIN' }, 'mock-token-admin');
-          navigate('/admin');
-        } else {
-          setAuth({ id: '2', name: 'Dr. Roberto', email, role: 'MEDICO' }, 'mock-token-medico');
-          navigate('/clinical/pacientes');
-        }
-      }, 1000);
+      // Mapeamento defensivo para chaves em português ou inglês e normalização de papéis
+      let roleMapped: Role = 'MEDICO';
+      const rawRole = data.user.role || data.user.papel;
+      if (rawRole === 'ADMIN' || rawRole === 'ADMINISTRADOR_PRINCIPAL') {
+        roleMapped = 'ADMIN';
+      } else if (rawRole === 'ENFERMEIRO') {
+        roleMapped = 'ENFERMEIRO';
+      }
 
+      const userMapped = {
+        id: data.user.id || data.user.uid || 'mock-id',
+        name: data.user.name || data.user.nome || 'Usuário',
+        email: data.user.email || email,
+        role: roleMapped
+      };
+
+      setAuth(userMapped, data.token);
+
+      // Redirecionamento correto conforme o papel
+      if (roleMapped === 'ADMIN') {
+        navigate('/admin');
+      } else {
+        navigate('/clinical/pacientes');
+      }
     } catch (err) {
       setError('Credenciais inválidas. Tente novamente.');
+    } finally {
       setIsLoading(false);
     }
   };

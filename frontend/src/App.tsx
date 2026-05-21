@@ -6,6 +6,17 @@ import { AdminDashboard } from './pages/admin/Dashboard';
 import { UnidadesSaude } from './pages/admin/UnidadesSaude';
 import { Profissionais } from './pages/admin/Profissionais';
 import { RelatoriosIA } from './pages/admin/RelatoriosIA';
+import { Fornecedores } from './pages/admin/Fornecedores';
+import { Convenios } from './pages/admin/Convenios';
+import { Insumos } from './pages/admin/Insumos';
+import { Contas } from './pages/admin/Contas';
+import { GestaoCustos } from './pages/admin/GestaoCustos';
+import { IntegracaoBancaria } from './pages/admin/IntegracaoBancaria';
+import { DRE } from './pages/admin/DRE';
+import { TabelasPrecos } from './pages/admin/faturamento/TabelasPrecos';
+import { GuiasAtendimento } from './pages/admin/faturamento/GuiasAtendimento';
+import { FechamentoLote } from './pages/admin/faturamento/FechamentoLote';
+import { GestaoGlosas } from './pages/admin/faturamento/GestaoGlosas';
 import { Pacientes } from './pages/clinical/Pacientes';
 import { PerfilPaciente } from './pages/clinical/PerfilPaciente';
 import { Triagem } from './pages/clinical/Triagem';
@@ -29,6 +40,21 @@ export function App() {
               <Route path="/admin/unidades" element={<UnidadesSaude />} />
               <Route path="/admin/profissionais" element={<Profissionais />} />
               <Route path="/admin/relatorios" element={<RelatoriosIA />} />
+              {/* Cadastros Expandidos */}
+              <Route path="/admin/cadastros/fornecedores" element={<Fornecedores />} />
+              <Route path="/admin/cadastros/convenios" element={<Convenios />} />
+              {/* Estoque & Farmácia */}
+              <Route path="/admin/estoque/insumos" element={<Insumos />} />
+              {/* Financeiro */}
+              <Route path="/admin/financeiro/contas" element={<Contas />} />
+              <Route path="/admin/financeiro/custos" element={<GestaoCustos />} />
+              <Route path="/admin/financeiro/banco" element={<IntegracaoBancaria />} />
+              <Route path="/admin/financeiro/dre" element={<DRE />} />
+              {/* Faturamento Hospitalar */}
+              <Route path="/admin/faturamento/tabelas" element={<TabelasPrecos />} />
+              <Route path="/admin/faturamento/guias" element={<GuiasAtendimento />} />
+              <Route path="/admin/faturamento/lotes" element={<FechamentoLote />} />
+              <Route path="/admin/faturamento/glosas" element={<GestaoGlosas />} />
             </Route>
             
             {/* Clinical Routes */}

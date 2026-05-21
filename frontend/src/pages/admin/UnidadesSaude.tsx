@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Hospital, Plus, Pencil, Trash2, Users, X, Loader2, Search, MapPin } from 'lucide-react';
+import { Hospital, Plus, Pencil, Trash2, Users, X, Loader2, Search, MapPin, Building2, Phone, Bed } from 'lucide-react';
 import { api } from '../../lib/api';
 import toast from 'react-hot-toast';
 
@@ -105,22 +105,22 @@ export function UnidadesSaude() {
   );
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-8 animate-in fade-in duration-500">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Gestão de Unidades de Saúde</h1>
-          <p className="text-muted-foreground mt-2">Gerencie UPAs, Hospitais e unidades do sistema municipal.</p>
+          <h1 className="text-4xl font-black tracking-tight text-slate-900">Gestão Hospitalar</h1>
+          <p className="text-slate-500 mt-2 font-medium">Controle centralizado de UPAs, Hospitais e Clínicas parceiras.</p>
         </div>
-        <button onClick={openCreate} className="bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 transition-all hover:-translate-y-0.5 shadow-lg shadow-primary/25">
+        <button onClick={openCreate} className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-indigo-200">
           <Plus className="w-5 h-5" /> Nova Unidade
         </button>
       </div>
 
-      <div className="glass rounded-2xl p-4 sm:p-6">
+      <div className="bg-white/40 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl shadow-slate-200/50">
         <div className="relative mb-6">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <input type="text" placeholder="Buscar por nome, tipo ou endereço..." value={search} onChange={e => setSearch(e.target.value)}
-            className="w-full h-12 pl-10 pr-4 rounded-xl bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+            className="w-full h-14 pl-12 pr-4 rounded-2xl bg-white/50 border-none focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all shadow-inner text-slate-700 font-medium placeholder:text-slate-400" />
         </div>
 
         {loading ? (
@@ -136,32 +136,35 @@ export function UnidadesSaude() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 stagger-children">
             {filtered.map(u => (
-              <div key={u.id} className="animate-fade-in-up border border-border/50 rounded-xl p-5 hover:shadow-lg transition-all hover:-translate-y-0.5 bg-background/50">
+              <div key={u.id} className="group animate-in slide-in-from-bottom-4 duration-500 border border-white bg-white/60 backdrop-blur-md rounded-2xl p-6 hover:shadow-2xl transition-all hover:-translate-y-1">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                      <Hospital className="w-5 h-5 text-blue-500" />
+                    <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Building2 className="w-6 h-6 text-indigo-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground">{u.nome}</h3>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">{u.tipo}</span>
+                      <h3 className="font-bold text-slate-800 text-lg leading-tight">{u.nome}</h3>
+                      <span className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-lg bg-indigo-100 text-indigo-700 font-black">{u.tipo}</span>
                     </div>
                   </div>
-                  <div className="flex gap-1">
-                    <button onClick={() => openEdit(u)} className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Editar">
+                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button onClick={() => openEdit(u)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors" title="Editar">
                       <Pencil className="w-4 h-4" />
                     </button>
-                    <button onClick={() => handleDelete(u.id)} className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors" title="Inativar">
+                    <button onClick={() => handleDelete(u.id)} className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors" title="Inativar">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
-                <div className="space-y-2 text-sm text-muted-foreground">
-                  <p className="flex items-center gap-2"><MapPin className="w-4 h-4" /> {u.endereco || 'Endereço não informado'}</p>
-                  <p>📞 {u.telefone || 'N/A'} • 🛏️ {u.capacidade_leitos} leitos</p>
+                <div className="space-y-3 mt-4 text-sm text-slate-500 font-medium">
+                  <p className="flex items-center gap-2"><MapPin className="w-4 h-4 text-slate-400" /> {u.endereco || 'Endereço não informado'}</p>
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-100/50">
+                    <p className="flex items-center gap-1.5"><Phone className="w-4 h-4 text-slate-400" /> {u.telefone || 'N/A'}</p>
+                    <p className="flex items-center gap-1.5 font-bold text-slate-700"><Bed className="w-4 h-4 text-indigo-500" /> {u.capacidade_leitos} leitos</p>
+                  </div>
                 </div>
-                <button onClick={() => fetchFuncionarios(u.id)} className="mt-3 text-xs text-primary hover:underline flex items-center gap-1">
-                  <Users className="w-3.5 h-3.5" /> Ver funcionários
+                <button onClick={() => fetchFuncionarios(u.id)} className="mt-4 w-full py-2 text-xs text-indigo-600 font-bold bg-indigo-50/50 hover:bg-indigo-100 rounded-xl transition-colors flex items-center justify-center gap-2">
+                  <Users className="w-3.5 h-3.5" /> Colaboradores
                 </button>
                 {funcionarios[u.id] && (
                   <div className="mt-2 text-xs text-muted-foreground bg-secondary/50 rounded-lg p-2">

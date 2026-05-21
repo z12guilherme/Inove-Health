@@ -12,61 +12,151 @@ import {
   X,
   Hospital,
   Pill,
-  Brain
+  Brain,
+  Package,
+  Building,
+  Box,
+  Wallet,
+  Calculator,
+  Landmark,
+  PieChart,
+  FileSpreadsheet,
+  PackageOpen,
+  AlertTriangle,
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react';
 import { cn } from '../lib/utils';
+
+type NavLink = { name: string; path: string; icon: any };
+type NavGroup = { name: string; links: NavLink[] };
 
 export function Layout() {
   const { user, logout } = useAuthStore();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const adminLinks = [
-    { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
-    { name: 'Unidades de Saúde', path: '/admin/unidades', icon: Hospital },
-    { name: 'Profissionais', path: '/admin/profissionais', icon: Users },
-    { name: 'Relatórios de IA', path: '/admin/relatorios', icon: FileText },
-  ];
-
-  const clinicLinks = [
-    { name: 'Pacientes', path: '/clinical/pacientes', icon: Users },
-    { name: 'Triagem', path: '/clinical/triagem', icon: Activity },
-    { name: 'Atendimento', path: '/clinical/atendimento', icon: Stethoscope },
-    { name: 'Prescrições', path: '/clinical/prescricoes', icon: Pill },
-    { name: 'IA Assistiva', path: '/clinical/ia', icon: Brain },
-  ];
-
-  const links = user?.role === 'ADMIN' ? adminLinks : clinicLinks;
-
-  // Filter links based on role for RBAC
-  const filteredLinks = links.filter(link => {
-    if (user?.role === 'ENFERMEIRO' && link.path === '/clinical/ia') return false;
-    return true;
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
+    'Visão Geral': true,
+    'Cadastros Base': true,
+    'Atendimento Clínico': true,
+    'Financeiro': true,
+    'Faturamento Hospitalar': true
   });
 
+  const toggleGroup = (name: string) => {
+    setOpenGroups(prev => ({ ...prev, [name]: !prev[name] }));
+  };
+
+  const adminGroups: NavGroup[] = [
+    {
+      name: 'Visão Geral',
+      links: [
+        { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+        { name: 'Relatórios de IA', path: '/admin/relatorios', icon: FileText },
+      ]
+    },
+    {
+      name: 'Cadastros Base',
+      links: [
+        { name: 'Unidades de Saúde', path: '/admin/unidades', icon: Hospital },
+        { name: 'Profissionais', path: '/admin/profissionais', icon: Users },
+        { name: 'Fornecedores', path: '/admin/cadastros/fornecedores', icon: Package },
+        { name: 'Convênios', path: '/admin/cadastros/convenios', icon: Building },
+      ]
+    },
+    {
+      name: 'Estoque & Farmácia',
+      links: [
+        { name: 'Gestão de Insumos', path: '/admin/estoque/insumos', icon: Box },
+      ]
+    },
+    {
+      name: 'Financeiro',
+      links: [
+        { name: 'Contas a Pagar/Receber', path: '/admin/financeiro/contas', icon: Wallet },
+        { name: 'Gestão de Custos', path: '/admin/financeiro/custos', icon: Calculator },
+        { name: 'Integração Bancária', path: '/admin/financeiro/banco', icon: Landmark },
+        { name: 'DRE de Unidade', path: '/admin/financeiro/dre', icon: PieChart },
+      ]
+    },
+    {
+      name: 'Faturamento Hospitalar',
+      links: [
+        { name: 'Tabelas de Preços', path: '/admin/faturamento/tabelas', icon: FileSpreadsheet },
+        { name: 'Guias de Atendimento', path: '/admin/faturamento/guias', icon: Stethoscope },
+        { name: 'Fechamento de Lote', path: '/admin/faturamento/lotes', icon: PackageOpen },
+        { name: 'Gestão de Glosas', path: '/admin/faturamento/glosas', icon: AlertTriangle },
+      ]
+    }
+  ];
+
+  const clinicGroups: NavGroup[] = [
+    {
+      name: 'Atendimento Clínico',
+      links: [
+        { name: 'Pacientes', path: '/clinical/pacientes', icon: Users },
+        { name: 'Triagem', path: '/clinical/triagem', icon: Activity },
+        { name: 'Atendimento', path: '/clinical/atendimento', icon: Stethoscope },
+        { name: 'Prescrições', path: '/clinical/prescricoes', icon: Pill },
+        { name: 'IA Assistiva', path: '/clinical/ia', icon: Brain },
+      ]
+    }
+  ];
+
+  const groups = user?.role === 'ADMIN' ? adminGroups : clinicGroups;
+
+  // Filter links based on role for RBAC
+  const filteredGroups = groups.map(group => ({
+    ...group,
+    links: group.links.filter(link => {
+      if (user?.role === 'ENFERMEIRO' && link.path === '/clinical/ia') return false;
+      return true;
+    })
+  })).filter(group => group.links.length > 0);
+
   const NavLinks = () => (
-    <>
-      {filteredLinks.map((link) => {
-        const isActive = location.pathname === link.path;
-        const Icon = link.icon;
-        return (
-          <Link
-            key={link.name}
-            to={link.path}
-            onClick={() => setSidebarOpen(false)}
-            className={cn(
-              "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group",
-              isActive 
-                ? "bg-primary/10 text-primary font-medium" 
-                : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-            )}
+    <div className="space-y-4">
+      {filteredGroups.map((group) => (
+        <div key={group.name} className="space-y-1">
+          <button
+            onClick={() => toggleGroup(group.name)}
+            className="w-full flex items-center justify-between px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
           >
-            <Icon className={cn("w-5 h-5", isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
-            {link.name}
-          </Link>
-        );
-      })}
-    </>
+            {group.name}
+            {openGroups[group.name] ? (
+              <ChevronDown className="w-4 h-4" />
+            ) : (
+              <ChevronRight className="w-4 h-4" />
+            )}
+          </button>
+          
+          {openGroups[group.name] && (
+            <div className="space-y-1">
+              {group.links.map((link) => {
+                const isActive = location.pathname === link.path || location.pathname.startsWith(`${link.path}/`);
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.path}
+                    onClick={() => setSidebarOpen(false)}
+                    className={cn(
+                      "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 group",
+                      isActive 
+                        ? "bg-primary/10 text-primary font-medium" 
+                        : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    )}
+                  >
+                    <Icon className={cn("w-5 h-5", isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
   );
 
   return (
