@@ -5,13 +5,16 @@ import toast from 'react-hot-toast';
 
 interface Guia {
   id: string;
+  numero?: string;
   tipo: string;
   paciente: string;
   convenio: string;
-  dataEmissao: string;
+  data_emissao?: string;
+  dataEmissao?: string;
   status: string;
-  valorTotal: number;
-  senhaAutorizacao: string | null;
+  valor?: number;
+  valorTotal?: number;
+  senhaAutorizacao?: string | null;
 }
 
 export function GuiasAtendimento() {
@@ -23,7 +26,7 @@ export function GuiasAtendimento() {
     try {
       setLoading(true);
       const { data } = await api.get('/faturamento/guias');
-      setGuias(data);
+      setGuias(Array.isArray(data) ? data : data?.guias || []);
     } catch {
     } finally {
       setLoading(false);
@@ -42,9 +45,9 @@ export function GuiasAtendimento() {
   };
 
   const filtered = guias.filter(g =>
-    g.paciente.toLowerCase().includes(search.toLowerCase()) ||
-    g.id.toLowerCase().includes(search.toLowerCase()) ||
-    g.convenio.toLowerCase().includes(search.toLowerCase())
+    g.paciente?.toLowerCase().includes(search.toLowerCase()) ||
+    (g.numero || g.id)?.toLowerCase().includes(search.toLowerCase()) ||
+    g.convenio?.toLowerCase().includes(search.toLowerCase())
   );
 
   const formatCurrency = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
@@ -90,8 +93,8 @@ export function GuiasAtendimento() {
               <tbody className="divide-y divide-border/50 bg-background/50">
                 {filtered.map(g => (
                   <tr key={g.id} className="hover:bg-secondary/20 transition-colors">
-                    <td className="px-4 py-4 font-mono font-medium text-primary">{g.id}</td>
-                    <td className="px-4 py-4 text-muted-foreground">{new Date(g.dataEmissao).toLocaleDateString('pt-BR')}</td>
+                    <td className="px-4 py-4 font-mono font-medium text-primary">{g.numero || g.id}</td>
+                    <td className="px-4 py-4 text-muted-foreground">{new Date(g.data_emissao || g.dataEmissao || new Date()).toLocaleDateString('pt-BR')}</td>
                     <td className="px-4 py-4 font-semibold">{g.paciente}</td>
                     <td className="px-4 py-4">
                       <div className="flex flex-col">
@@ -105,7 +108,7 @@ export function GuiasAtendimento() {
                         {g.senhaAutorizacao && <span className="text-[10px] text-muted-foreground font-mono">Senha: {g.senhaAutorizacao}</span>}
                       </div>
                     </td>
-                    <td className="px-4 py-4 text-right font-medium">{formatCurrency(g.valorTotal)}</td>
+                    <td className="px-4 py-4 text-right font-medium">{formatCurrency(g.valor ?? g.valorTotal ?? 0)}</td>
                     <td className="px-4 py-4 text-center">
                       {g.status === 'PENDENTE' ? (
                         <button onClick={() => handleAutorizar(g.id)} className="bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white px-3 py-1.5 rounded-lg transition-colors text-xs font-semibold">

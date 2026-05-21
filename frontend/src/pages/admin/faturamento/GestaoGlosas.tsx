@@ -5,12 +5,15 @@ import toast from 'react-hot-toast';
 
 interface Glosa {
   id: string;
-  guiaId: string;
-  paciente: string;
+  guia?: string;
+  guiaId?: string;
+  paciente?: string;
   convenio: string;
-  dataRetorno: string;
+  data?: string;
+  dataRetorno?: string;
   motivo: string;
-  valorGlosado: number;
+  valor_glosado?: number;
+  valorGlosado?: number;
   status: string;
 }
 
@@ -28,7 +31,7 @@ export function GestaoGlosas() {
     try {
       setLoading(true);
       const { data } = await api.get('/faturamento/glosas');
-      setGlosas(data);
+      setGlosas(Array.isArray(data) ? data : data?.glosas || []);
     } catch {
     } finally {
       setLoading(false);
@@ -62,8 +65,8 @@ export function GestaoGlosas() {
   };
 
   const filtered = glosas.filter(g =>
-    g.guiaId.toLowerCase().includes(search.toLowerCase()) ||
-    g.paciente.toLowerCase().includes(search.toLowerCase())
+    (g.guia || g.guiaId || '')?.toLowerCase().includes(search.toLowerCase()) ||
+    (g.paciente || g.convenio || '')?.toLowerCase().includes(search.toLowerCase())
   );
 
   const formatCurrency = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
@@ -99,13 +102,13 @@ export function GestaoGlosas() {
                       <AlertTriangle className="w-5 h-5 text-destructive" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-foreground">Guia: {g.guiaId} - {g.paciente}</h3>
-                      <p className="text-sm text-muted-foreground mt-1">Convênio: {g.convenio} | Retorno: {new Date(g.dataRetorno).toLocaleDateString('pt-BR')}</p>
-                    </div>
+                    <h3 className="font-bold text-foreground">Guia: {g.guia || g.guiaId} {g.paciente ? `- ${g.paciente}` : ''}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">Convênio: {g.convenio} | Data: {new Date(g.data || g.dataRetorno || new Date()).toLocaleDateString('pt-BR')}</p>
+                  </div>
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-muted-foreground uppercase font-bold">Valor Glosado</p>
-                    <p className="font-bold text-lg text-destructive">{formatCurrency(g.valorGlosado)}</p>
+                    <p className="font-bold text-lg text-destructive">{formatCurrency(g.valor_glosado ?? g.valorGlosado ?? 0)}</p>
                   </div>
                 </div>
 
@@ -114,7 +117,7 @@ export function GestaoGlosas() {
                 </div>
 
                 <div className="flex justify-end">
-                  {g.status === 'PENDENTE_RECURSO' ? (
+                  {(g.status === 'PENDENTE' || g.status === 'PENDENTE_RECURSO') ? (
                     <button onClick={() => openModal(g)} className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
                       <RefreshCcw className="w-4 h-4" /> Interpor Recurso
                     </button>

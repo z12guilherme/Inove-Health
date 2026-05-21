@@ -28,7 +28,7 @@ export function GestaoCustos() {
     try {
       setLoading(true);
       const { data } = await api.get('/financeiro/custos');
-      setAtendimentos(data);
+      setAtendimentos(Array.isArray(data) ? data : data.custos || []);
     } catch {
       // handled by interceptor
     } finally {
@@ -39,9 +39,9 @@ export function GestaoCustos() {
   useEffect(() => { fetchCustos(); }, [fetchCustos]);
 
   const filtered = atendimentos.filter(a =>
-    a.paciente.toLowerCase().includes(search.toLowerCase()) ||
-    a.medico.toLowerCase().includes(search.toLowerCase()) ||
-    a.id.toLowerCase().includes(search.toLowerCase())
+    a.paciente?.toLowerCase().includes(search.toLowerCase()) ||
+    a.medico?.toLowerCase().includes(search.toLowerCase()) ||
+    a.id?.toLowerCase().includes(search.toLowerCase())
   );
 
   const formatCurrency = (value: number) => {

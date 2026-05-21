@@ -82,3 +82,5 @@
 - [x] **Feedback Visual**: Glassmorphism e animações aplicadas no Dashboard de BI e Unidades de Saúde.
 - [/] **Navegação**: Páginas de BI e Unidades prontas para integração na Sidebar.
 - [ ] **Exportação**: Adicionar botão "Exportar PDF/Excel" nas listagens de estoque e fornecedores.
+
+# Trocar API por BaaS

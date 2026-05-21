@@ -4,12 +4,15 @@ import { api } from '../../../lib/api';
 
 interface TabelaPreco {
   id: string;
+  nome?: string;
   convenio: string;
   tipo: string;
-  vigenciaInicio: string;
-  vigenciaFim: string;
-  status: string;
-  itens: Array<{ codigo: string, descricao: string, valor: number }>;
+  vigencia_inicio?: string;
+  vigencia_fim?: string;
+  vigenciaInicio?: string;
+  vigenciaFim?: string;
+  ativo?: boolean;
+  itens: number | Array<{ codigo: string; descricao: string; valor: number }>;
 }
 
 export function TabelasPrecos() {
@@ -43,9 +46,11 @@ export function TabelasPrecos() {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
   };
 
-  const filteredItens = selectedTabela?.itens.filter(i =>
-    i.codigo.includes(searchItem) || i.descricao.toLowerCase().includes(searchItem.toLowerCase())
-  ) || [];
+  const filteredItens = Array.isArray(selectedTabela?.itens)
+    ? (selectedTabela!.itens as Array<{codigo: string; descricao: string; valor: number}>).filter(i =>
+        i.codigo.includes(searchItem) || i.descricao.toLowerCase().includes(searchItem.toLowerCase())
+      )
+    : [];
 
   return (
     <div className="space-y-8">
@@ -72,8 +77,11 @@ export function TabelasPrecos() {
                   <span className="text-xs px-2 py-0.5 rounded-full bg-secondary font-mono">{t.tipo}</span>
                 </div>
                 <div className="text-sm text-muted-foreground space-y-1">
-                  <p>ID: {t.id}</p>
-                  <p>Vigência: {new Date(t.vigenciaInicio).toLocaleDateString('pt-BR')} até {new Date(t.vigenciaFim).toLocaleDateString('pt-BR')}</p>
+                  <p>{t.nome || t.convenio}</p>
+                  {(t.vigencia_inicio || t.vigenciaInicio) && (
+                    <p>Vig.: {new Date(t.vigencia_inicio || t.vigenciaInicio!).toLocaleDateString('pt-BR')} até {new Date(t.vigencia_fim || t.vigenciaFim!).toLocaleDateString('pt-BR')}</p>
+                  )}
+                  {typeof t.itens === 'number' && <p className="font-medium">{t.itens.toLocaleString('pt-BR')} itens</p>}
                 </div>
               </div>
             ))}
