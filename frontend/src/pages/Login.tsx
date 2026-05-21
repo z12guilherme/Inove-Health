@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-// import { api } from '../lib/api';
+import { api } from '../lib/api';
 import { Activity, Lock, Mail, Loader2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -25,7 +25,7 @@ export function Login() {
       const { data } = await api.post('/auth/login', { email, password });
       setAuth(data.user, data.token);
       */
-      
+
       // MOCK LOGIN FOR PROTOTYPE
       setTimeout(() => {
         if (email.includes('admin')) {
@@ -48,7 +48,7 @@ export function Login() {
       {/* Background Orbs */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-secondary/20 blur-[120px] pointer-events-none" />
-      
+
       <div className="w-full max-w-md animate-in fade-in zoom-in-95 duration-500 relative z-10">
         <div className="glass rounded-3xl p-8 sm:p-10 shadow-2xl">
           <div className="flex flex-col items-center mb-10">
@@ -56,7 +56,7 @@ export function Login() {
               <Activity className="w-8 h-8 text-primary-foreground" />
             </div>
             <h1 className="text-3xl font-bold tracking-tight text-foreground text-center">
-              Bem-vindo ao Medi<span className="text-primary">Core</span>
+              Bem-vindo ao Inove<span className="text-primary">Health</span>
             </h1>
             <p className="text-muted-foreground text-sm mt-2 text-center">
               Acesse o sistema hospitalar integrado
@@ -101,8 +101,8 @@ export function Login() {
               disabled={isLoading}
               className={cn(
                 "w-full h-14 rounded-xl font-medium text-primary-foreground shadow-lg shadow-primary/25 transition-all flex items-center justify-center",
-                isLoading 
-                  ? "bg-primary/70 cursor-not-allowed" 
+                isLoading
+                  ? "bg-primary/70 cursor-not-allowed"
                   : "bg-primary hover:bg-primary/90 hover:-translate-y-0.5 active:translate-y-0"
               )}
             >
@@ -113,10 +113,6 @@ export function Login() {
               )}
             </button>
           </form>
-          
-          <div className="mt-8 text-center text-sm text-muted-foreground">
-            Dica: Digite "admin" no email para entrar como Administrador ou qualquer outro para Médico.
-          </div>
         </div>
       </div>
     </div>

@@ -10,7 +10,9 @@ import {
   LogOut,
   Menu,
   X,
-  Hospital
+  Hospital,
+  Pill,
+  Brain
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -30,13 +32,21 @@ export function Layout() {
     { name: 'Pacientes', path: '/clinical/pacientes', icon: Users },
     { name: 'Triagem', path: '/clinical/triagem', icon: Activity },
     { name: 'Atendimento', path: '/clinical/atendimento', icon: Stethoscope },
+    { name: 'Prescrições', path: '/clinical/prescricoes', icon: Pill },
+    { name: 'IA Assistiva', path: '/clinical/ia', icon: Brain },
   ];
 
   const links = user?.role === 'ADMIN' ? adminLinks : clinicLinks;
 
+  // Filter links based on role for RBAC
+  const filteredLinks = links.filter(link => {
+    if (user?.role === 'ENFERMEIRO' && link.path === '/clinical/ia') return false;
+    return true;
+  });
+
   const NavLinks = () => (
     <>
-      {links.map((link) => {
+      {filteredLinks.map((link) => {
         const isActive = location.pathname === link.path;
         const Icon = link.icon;
         return (
