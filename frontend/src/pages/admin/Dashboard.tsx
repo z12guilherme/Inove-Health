@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Activity, Users, Hospital, TrendingUp, AlertTriangle } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { api } from '../../lib/api';
+import localStorageService from '../../services/localStorageService';
 import {
   AreaChart,
   Area,
@@ -36,11 +37,10 @@ export function AdminDashboard() {
   useEffect(() => {
     async function fetchDashboardData() {
       try {
-        const [unidadesRes, medicosRes, enfermeirosRes, atendimentosRes, iaRes, biRes] = await Promise.allSettled([
+        const [unidadesRes, medicosRes, enfermeirosRes, iaRes, biRes] = await Promise.allSettled([
           api.get('/unidades-saude'),
           api.get('/medicos'),
           api.get('/enfermeiros'),
-          api.get('/atendimentos'),
           api.get('/ia/relatorios?limit=3'),
           api.get('/relatorios/bi') // Busca os dados de BI, incluindo o total de profissionais
         ]);
@@ -61,9 +61,7 @@ export function AdminDashboard() {
         const biData = biRes.status === 'fulfilled' ? biRes.value.data : {};
         const totalProfissionaisAtivos = biData.total_profissionais_ativos || 0;
 
-        const atendimentosList = (atendimentosRes.status === 'fulfilled' && Array.isArray(atendimentosRes.value.data?.atendimentos))
-          ? atendimentosRes.value.data.atendimentos
-          : [];
+        const atendimentosList = localStorageService.getAtendimentos() || [];
 
         // Obter data local formatada YYYY-MM-DD
         const getLocalDateString = () => {
@@ -84,15 +82,16 @@ export function AdminDashboard() {
 
         const internadosAtivos = atendimentosList.filter((a: any) => a.tipo === 'INTERNAMENTO' && a.status === 'ATIVO').length;
 
-        // Baseline realista de leitos ocupados
-        const leitosOcupados = 379 + internadosAtivos;
-        const ocupacaoPercent = Math.min(100, Math.round((leitosOcupados / (totalLeitos || 500)) * 100));
+        // Cálculo de ocupação real baseado em leitos cadastrados e internados ativos
+        const ocupacaoPercent = totalLeitos > 0
+          ? Math.min(100, Math.round((internadosAtivos / totalLeitos) * 100))
+          : 0;
 
         setData({
-          unidades: unidadesCount || 4,
+          unidades: unidadesCount,
           profissionais: (medicosCount || 0) + (enfermeirosCount || 0), // Removido baseline fixo
           total_profissionais_ativos: totalProfissionaisAtivos, // Usando o valor do BI
-          atendimentos: 1281 + atendimentosHoje, // baseline 1281 + real atendimentos de hoje = 1284 com seeds
+          atendimentos: atendimentosHoje,
           ocupacao: `${ocupacaoPercent}%`,
         });
 
@@ -115,16 +114,11 @@ export function AdminDashboard() {
           const countUrgencia = atendimentosList.filter((a: any) => a.data === dateStr && a.tipo === 'URGENCIA' && a.status !== 'INATIVO').length;
           const countConsulta = atendimentosList.filter((a: any) => a.data === dateStr && a.tipo === 'CONSULTA' && a.status !== 'INATIVO').length;
 
-          // Baseline senoidal/cossenooidal para dias anteriores, gerando variações orgânicas e realistas
-          const baseInternacao = i > 0 ? (Math.floor(Math.sin(d.getDate() + 1) * 3) + 8) : 0;
-          const baseUrgencia = i > 0 ? (Math.floor(Math.cos(d.getDate() + 2) * 15) + 42) : 0;
-          const baseConsulta = i > 0 ? (Math.floor(Math.sin(d.getDate() + 3) * 10) + 28) : 0;
-
           tempChartData.push({
             name: label,
-            'Internações': countInternamento + baseInternacao,
-            'Urgências': countUrgencia + baseUrgencia,
-            'Consultas': countConsulta + baseConsulta,
+            'Internações': countInternamento,
+            'Urgências': countUrgencia,
+            'Consultas': countConsulta,
           });
         }
         setChartData(tempChartData);

@@ -17,7 +17,7 @@ import { DRE } from './pages/admin/DRE';
 import { TabelasPrecos } from './pages/admin/faturamento/TabelasPrecos';
 import { GuiasAtendimento } from './pages/admin/faturamento/GuiasAtendimento';
 import { FechamentoLote } from './pages/admin/faturamento/FechamentoLote';
-import { RemessasTISS } from './pages/admin/faturamento/RemessasTISS';
+import { RemessasTiss } from './pages/admin/faturamento/RemessasTiss';
 import { GestaoGlosas } from './pages/admin/faturamento/GestaoGlosas';
 import { LancamentosFaturamento } from './pages/admin/faturamento/Lancamentos';
 import { Pacientes } from './pages/clinical/Pacientes';
@@ -66,7 +66,7 @@ export function App() {
               <Route path="/admin/faturamento/tabelas" element={<TabelasPrecos />} />
               <Route path="/admin/faturamento/guias" element={<GuiasAtendimento />} />
               <Route path="/admin/faturamento/lotes" element={<FechamentoLote />} />
-              <Route path="/admin/faturamento/remessas" element={<RemessasTISS />} />
+              <Route path="/admin/faturamento/remessas" element={<RemessasTiss />} />
               <Route path="/admin/faturamento/glosas" element={<GestaoGlosas />} />
               <Route path="/admin/faturamento/lancamentos" element={<LancamentosFaturamento />} />
             </Route>

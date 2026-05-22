@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     ArrowLeft,
     Save,
@@ -13,58 +13,115 @@ import {
     Calendar,
     ExternalLink,
     History,
+    Loader2,
     MoreHorizontal
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { api } from '../../lib/api';
+import localStorageService from '../../services/localStorageService';
 import toast from 'react-hot-toast';
-import { cn } from '../../lib/utils';
 
 export function ExamesProcedimentos() {
     const navigate = useNavigate();
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
 
-    // Mock de dados baseado no seu exemplo HAPVIDA
-    const [formData, setFormData] = useState({
-        data_cadastro: '2025-10-02',
-        hora_cadastro: '10:55',
-        categoria: 'Convênio',
-        convenio_nome: 'HAPVIDA',
-        // Dados Autorização
+    const [formData, setFormData] = useState<any>({
+        data_cadastro: '',
+        hora_cadastro: '',
+        categoria: 'Particular',
+        convenio_nome: '',
         guia_principal: '',
-        numero_autorizacao: '257719465',
-        guia_operadora: '257719465',
-        data_emissao: '2025-10-02',
+        numero_autorizacao: '',
+        guia_operadora: '',
+        data_emissao: '',
         data_vencimento: '',
         autorizador: '',
-        senha: 'W67125162',
-        // Dados Beneficiário
-        prontuario: '000042672',
-        paciente_nome: 'VICTOR FILIPE DO NASCIMENTO VIANA',
-        carteira: '03K1A000598003',
-        validade_carteira: '2028-05-09',
-        // Dados Atendimento
+        senha: '',
+        prontuario: '',
+        paciente_nome: '',
+        carteira: '',
+        validade_carteira: '',
         tipo_atendimento: 'Exames',
         setor: 'LABORATÓRIO',
         acomodacao: '',
         leito: '',
-        profissional_executante: 'WILIAM SOARES DE BRITO FILHO',
-        // Dados Solicitação
-        data_solicitacao: '2025-09-30',
-        hora_solicitacao: '10:55',
+        profissional_executante: '',
+        data_solicitacao: '',
+        hora_solicitacao: '',
         contratado_solicitante: 'Hospital',
-        profissional_solicitante: 'TITO JOSE DE BARROS CORREIA',
-        especialidade_solicitante: 'Médico clínico',
+        profissional_solicitante: '',
+        especialidade_solicitante: '',
         indicacao_clinica: '',
         observacoes: '',
         motivo_encerramento: ''
     });
 
-    const [itens, setItens] = useState([
-        { data: '2025-10-02', codigo: '40307220', nome: 'EXAMES HAPVIDA - CARTA DE REDE IgA', bilateral: false, qtd: 1, especialidade: '221205 Biomédico', profissional: 'WILIAM SOARES DE BRITO FILHO', valor: 13.55 },
-        { data: '2025-10-02', codigo: '40302164', nome: 'EXAMES HAPVIDA - CARTA DE REDE Lactose, teste de tolerância', bilateral: false, qtd: 1, especialidade: '221205 Biomédico', profissional: 'WILIAM SOARES DE BRITO FILHO', valor: 25.12 }
-    ]);
+    const [itens, setItens] = useState<any[]>([]);
+
+    const loadData = useCallback(async () => {
+        if (!id) return;
+        try {
+            setLoading(true);
+            const atendimentos = localStorageService.getAtendimentos();
+            const atd = atendimentos.find((a: any) => a.id === id);
+
+            if (atd) {
+                setFormData({
+                    data_cadastro: atd.data || '',
+                    hora_cadastro: atd.hora || '',
+                    categoria: atd.categoria || 'Particular',
+                    convenio_nome: atd.categoria === 'Convênio' ? (atd.convenio_nome || 'CONVÊNIO') : atd.categoria,
+                    guia_principal: atd.dados_autorizacao?.guia_principal || '',
+                    numero_autorizacao: atd.dados_autorizacao?.autorizacao || '',
+                    guia_operadora: atd.dados_autorizacao?.guia_operadora || '',
+                    data_emissao: atd.dados_autorizacao?.data_emissao || atd.data || '',
+                    data_vencimento: atd.dados_autorizacao?.data_vencimento || '',
+                    autorizador: atd.dados_autorizacao?.autorizador || '',
+                    senha: atd.dados_autorizacao?.senha || '',
+                    prontuario: atd.paciente_prontuario || '',
+                    paciente_nome: atd.paciente_nome || '',
+                    carteira: atd.dados_autorizacao?.carteira || '',
+                    validade_carteira: atd.dados_autorizacao?.validade_carteira || '',
+                    tipo_atendimento: atd.tipo || 'Exames',
+                    setor: atd.dados_atendimento?.setor || 'LABORATÓRIO',
+                    acomodacao: atd.dados_atendimento?.acomodacao || '',
+                    leito: atd.dados_atendimento?.leito || '',
+                    profissional_executante: atd.dados_atendimento?.profissional_executante || '',
+                    data_solicitacao: atd.dados_solicitacao?.data || '',
+                    hora_solicitacao: atd.dados_solicitacao?.hora || '',
+                    contratado_solicitante: atd.dados_solicitacao?.contratado || 'Hospital',
+                    profissional_solicitante: atd.dados_solicitacao?.profissional || '',
+                    especialidade_solicitante: atd.dados_solicitacao?.especialidade || '',
+                    indicacao_clinica: atd.dados_solicitacao?.indicacao || '',
+                    observacoes: atd.observacoes || '',
+                    motivo_encerramento: ''
+                });
+                setItens(atd.procedimentos || []);
+            }
+        } catch (error) {
+            toast.error('Erro ao carregar dados da guia.');
+        } finally {
+            setLoading(false);
+        }
+    }, [id]);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
+
+    const handleSave = async () => {
+        setLoading(true);
+        try {
+            // Update attendance via service
+            const updatedAtd = { id, ...formData, procedimentos: itens };
+            localStorageService.updateAtendimento(updatedAtd);
+            toast.success('Guia salva com sucesso!');
+        } catch (error) {
+            toast.error('Erro ao persistir dados localmente.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const totalGeral = itens.reduce((acc, item) => acc + (item.valor * item.qtd), 0);
 
@@ -86,8 +143,8 @@ export function ExamesProcedimentos() {
                 </div>
                 <div className="flex gap-2">
                     <button className="px-6 py-2.5 rounded-xl border border-gray-100 text-gray-400 font-bold text-xs uppercase hover:bg-gray-50">Histórico</button>
-                    <button className="px-8 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs uppercase shadow-lg shadow-blue-100 flex items-center gap-2">
-                        <Save size={16} /> Salvar Alterações
+                    <button onClick={handleSave} disabled={loading} className="px-8 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs uppercase shadow-lg shadow-blue-100 flex items-center gap-2 disabled:opacity-50">
+                        {loading ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} Salvar Alterações
                     </button>
                 </div>
             </div>
@@ -119,7 +176,7 @@ export function ExamesProcedimentos() {
                                 <label className="text-[10px] font-black text-gray-400 uppercase mr-1 mb-1">Categoria</label>
                                 <div className="flex bg-gray-100 p-1 rounded-xl">
                                     {['SUS', 'Particular', 'Convênio'].map(c => (
-                                        <button key={c} className={cn("px-4 py-1.5 text-[10px] font-black uppercase rounded-lg transition-all", formData.categoria === c ? "bg-white text-blue-600 shadow-sm" : "text-gray-400")}>{c}</button>
+                                        <button key={c} onClick={() => setFormData({ ...formData, categoria: c })} className={cn("px-4 py-1.5 text-[10px] font-black uppercase rounded-lg transition-all", formData.categoria === c ? "bg-white text-blue-600 shadow-sm" : "text-gray-400")}>{c}</button>
                                     ))}
                                 </div>
                             </div>
@@ -297,7 +354,7 @@ export function ExamesProcedimentos() {
                 <button onClick={() => toast.success('Gerando XML TISS 4.01.00...')} className="px-6 py-3 rounded-2xl text-[10px] font-black uppercase hover:bg-white/10 transition-all flex items-center gap-2 text-blue-400">
                     <FileText size={16} /> Exportar XML
                 </button>
-                <button onClick={() => setLoading(true)} className="px-8 py-3 bg-blue-600 rounded-2xl text-[10px] font-black uppercase hover:bg-blue-500 transition-all flex items-center gap-2 shadow-lg shadow-blue-500/20">
+                <button onClick={handleSave} disabled={loading} className="px-8 py-3 bg-blue-600 rounded-2xl text-[10px] font-black uppercase hover:bg-blue-500 transition-all flex items-center gap-2 shadow-lg shadow-blue-500/20 disabled:opacity-50">
                     <Save size={16} /> Salvar Tudo
                 </button>
             </div>

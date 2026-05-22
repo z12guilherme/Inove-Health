@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Stethoscope, Loader2, Search, CheckCircle, ShieldAlert } from 'lucide-react';
-import { api } from '../../../lib/api';
 import toast from 'react-hot-toast';
+import localStorageService from '../../../services/localStorageService';
 
 interface Guia {
   id: string;
@@ -25,9 +25,27 @@ export function GuiasAtendimento() {
   const fetchGuias = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await api.get('/faturamento/guias');
-      setGuias(Array.isArray(data) ? data : data?.guias || []);
+      await new Promise(resolve => setTimeout(resolve, 400));
+      
+      const atendimentos = localStorageService.getAtendimentos();
+      
+      const mappedGuias: Guia[] = atendimentos
+        .filter(a => a.convenio_nome && a.convenio_nome.toUpperCase() !== 'PARTICULAR' && a.status !== 'CANCELADO' && a.status !== 'INATIVO')
+        .map(a => ({
+          id: a.id,
+          numero: a.numero_guia || `GUI-${a.id.replace('ATD-', '')}`,
+          tipo: a.tipo,
+          paciente: a.paciente_nome,
+          convenio: a.convenio_nome,
+          data_emissao: a.data,
+          status: (a as any).status_guia || 'PENDENTE',
+          valor: a.valor_total || a.procedimentos?.reduce((acc, p) => acc + (p.valor || 0) * (p.qtd || 1), 0) || 0,
+          senhaAutorizacao: (a as any).senha_autorizacao || null
+        }));
+
+      setGuias(mappedGuias);
     } catch {
+      toast.error('Erro ao carregar guias');
     } finally {
       setLoading(false);
     }
@@ -37,10 +55,19 @@ export function GuiasAtendimento() {
 
   const handleAutorizar = async (id: string) => {
     try {
-      await api.post(`/faturamento/guias/${id}/autorizar`);
+      await new Promise(resolve => setTimeout(resolve, 300));
+      const atendimentos = localStorageService.getAtendimentos();
+      const aIndex = atendimentos.findIndex(a => a.id === id);
+      if (aIndex !== -1) {
+          (atendimentos[aIndex] as any).status_guia = 'AUTORIZADA';
+          (atendimentos[aIndex] as any).senha_autorizacao = Math.floor(100000 + Math.random() * 900000).toString();
+          localStorageService.setAtendimentos(atendimentos);
+      }
+      
       toast.success('Guia autorizada com sucesso!');
       fetchGuias();
     } catch {
+      toast.error('Erro ao autorizar guia');
     }
   };
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Hospital, Plus, Pencil, Trash2, Users, X, Loader2, Search, MapPin, Building2, Phone, Bed } from 'lucide-react';
-import { api } from '../../lib/api';
 import toast from 'react-hot-toast';
+import localStorageService from '../../services/localStorageService';
 
 interface Unidade {
   id: string;
@@ -37,8 +37,7 @@ export function UnidadesSaude() {
   const fetchUnidades = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await api.get('/unidades-saude');
-      setUnidades(Array.isArray(data) ? data : data.unidades || []);
+      setUnidades(localStorageService.getUnidadesSaude());
     } catch {
       // Toast handled by interceptor
     } finally {
@@ -48,24 +47,28 @@ export function UnidadesSaude() {
 
   useEffect(() => { fetchUnidades(); }, [fetchUnidades]);
 
-  const fetchFuncionarios = async (unidadeId: string) => {
-    try {
-      const { data } = await api.get(`/unidades-saude/${unidadeId}/funcionarios`);
-      setFuncionarios(prev => ({ ...prev, [unidadeId]: Array.isArray(data) ? data : data.funcionarios || [] }));
-    } catch { /* silent */ }
-  };
+  // const fetchFuncionarios = async (unidadeId: string) => { // This would need a specific mock in localStorageService
+  //   try {
+  //     const { data } = await api.get(`/unidades-saude/${unidadeId}/funcionarios`);
+  //     setFuncionarios(prev => ({ ...prev, [unidadeId]: Array.isArray(data) ? data : data.funcionarios || [] }));
+  //   } catch { /* silent */ }
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     try {
+      const allUnidades = localStorageService.getUnidadesSaude();
       if (editing) {
-        await api.put(`/unidades-saude/${editing}`, form);
+        const index = allUnidades.findIndex((u: any) => u.id === editing);
+        if (index !== -1) allUnidades[index] = { ...allUnidades[index], ...form, id: editing };
         toast.success('Unidade atualizada com sucesso!');
       } else {
-        await api.post('/unidades-saude', form);
+        const newUnidade = { ...form, id: `UNI-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, ativo: true, criado_em: new Date().toISOString() };
+        allUnidades.push(newUnidade);
         toast.success('Unidade criada com sucesso!');
       }
+      localStorageService.setUnidadesSaude(allUnidades);
       setModalOpen(false);
       setEditing(null);
       setForm(emptyForm);
@@ -80,7 +83,12 @@ export function UnidadesSaude() {
   const handleDelete = async (id: string) => {
     if (!confirm('Tem certeza que deseja inativar esta unidade?')) return;
     try {
-      await api.delete(`/unidades-saude/${id}`);
+      const allUnidades = localStorageService.getUnidadesSaude();
+      const index = allUnidades.findIndex((u: any) => u.id === id);
+      if (index !== -1) {
+        allUnidades[index].ativo = false; // Mark as inactive
+        localStorageService.setUnidadesSaude(allUnidades);
+      }
       toast.success('Unidade inativada com sucesso!');
       fetchUnidades();
     } catch { /* interceptor */ }
@@ -98,11 +106,15 @@ export function UnidadesSaude() {
     setModalOpen(true);
   };
 
-  const filtered = unidades.filter(u =>
-    u.nome?.toLowerCase().includes(search.toLowerCase()) ||
-    u.tipo?.toLowerCase().includes(search.toLowerCase()) ||
-    u.endereco?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = unidades.filter(u => {
+    const matchesSearch =
+      u.nome?.toLowerCase().includes(search.toLowerCase()) ||
+      u.tipo?.toLowerCase().includes(search.toLowerCase()) ||
+      u.endereco?.toLowerCase().includes(search.toLowerCase());
+
+    // Filtrar apenas unidades ativas
+    return matchesSearch && u.ativo !== false;
+  });
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -120,7 +132,7 @@ export function UnidadesSaude() {
         <div className="relative mb-6">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <input type="text" placeholder="Buscar por nome, tipo ou endereço..." value={search} onChange={e => setSearch(e.target.value)}
-            className="w-full h-14 pl-12 pr-4 rounded-2xl bg-white/50 border-none focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all shadow-inner text-slate-700 font-medium placeholder:text-slate-400" />
+            className="w-full h-14 pl-12 pr-4 rounded-2xl bg-white/50 border border-slate-200/50 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all shadow-inner text-slate-700 font-medium placeholder:text-slate-400" />
         </div>
 
         {loading ? (
@@ -147,7 +159,7 @@ export function UnidadesSaude() {
                       <span className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-lg bg-indigo-100 text-indigo-700 font-black">{u.tipo}</span>
                     </div>
                   </div>
-                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex gap-1 opacity-100 transition-opacity">
                     <button onClick={() => openEdit(u)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors" title="Editar">
                       <Pencil className="w-4 h-4" />
                     </button>

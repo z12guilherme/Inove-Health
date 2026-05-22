@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { FileSpreadsheet, Loader2, Search, Plus, X, Building2, Tag, Link as LinkIcon, Table as TableIcon, ChevronDown, ChevronRight, Info, TrendingUp, Hash } from 'lucide-react';
-import { api } from '../../../lib/api';
 import { cn } from '../../../lib/utils';
 import toast from 'react-hot-toast';
+import localStorageService from '../../../services/localStorageService';
 
 interface TabelaPreco {
   id: string;
@@ -42,23 +42,33 @@ export function TabelasPrecos() {
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const [resTabs, resConv] = await Promise.all([
-        api.get('/faturamento/tabelas'),
-        api.get('/cadastros/convenios')
-      ]);
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      let convs = localStorageService.getConvenios();
+      let lista = localStorageService.getTabelas();
 
-      const data = resTabs.data;
-      const convs = Array.isArray(resConv.data) ? resConv.data : (resConv.data.convenios || []);
+      // Mock inicial se estiver vazio (para o exemplo da Unimed que o usuário pediu)
+      if (lista.length === 0) {
+          const mockTabelas: TabelaPreco[] = [
+              { id: 't1', nome: 'PROCEDIMENTOS UNIMED', tipo: '22 - TUSS', itens: [{codigo: '10101012', descricao: 'CONSULTA EM CONSULTORIO', valor: 150}] },
+              { id: 't2', nome: 'DIÁRIAS UNIMED', tipo: 'PROPRIO', itens: [] },
+              { id: 't3', nome: 'TAXAS UNIMED', tipo: 'PROPRIO', itens: [] },
+              { id: 't4', nome: 'GASES UNIMED', tipo: 'PROPRIO', itens: [] },
+              { id: 't5', nome: 'MEDICAMENTOS UNIMED TNUMM', tipo: 'TNUMM', itens: [] },
+              { id: 't6', nome: 'MATERIAIS UNIMED (TABELA 00)', tipo: 'PROPRIO', itens: [] },
+              { id: 't7', nome: 'MATERIAIS UNIMED (TABELA 19)', tipo: 'PROPRIO', itens: [] },
+              { id: 't8', nome: 'PACOTE UNIMED', tipo: 'PROPRIO', itens: [] },
+          ];
+          localStorageService.setTabelas(mockTabelas);
+          lista = mockTabelas;
+      }
+      
+      if (convs.length === 0) {
+          // Add dummy conv se precisar, mas deve pegar do cadastro de convenios real
+      }
+
       setConvenios(convs);
-
-      const lista: TabelaPreco[] = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.tabelas)
-          ? data.tabelas
-          : Array.isArray(data?.data)
-            ? data.data
-            : [];
-
       setTabelas(lista);
       if (lista.length > 0 && !selectedTabela) setSelectedTabela(lista[0]);
     } catch {
@@ -66,7 +76,7 @@ export function TabelasPrecos() {
     } finally {
       setLoading(false);
     }
-  }, []); // Removido selectedTabela da lista de dependências para evitar re-execuções desnecessárias
+  }, []);
 
   const toggleConvenio = (id: string) => {
     setExpandedConvenios(prev => ({
@@ -96,21 +106,29 @@ export function TabelasPrecos() {
     setSubmitting(true);
     const formData = new FormData(e.currentTarget);
     const newItem = {
-      codigo: formData.get('codigo'),
-      tuss: formData.get('codigo'),
-      descricao: formData.get('descricao'),
+      codigo: formData.get('codigo') as string,
+      descricao: formData.get('descricao') as string,
       valor: Number(formData.get('valor'))
     };
 
     try {
-      await api.post(`/faturamento/tabelas/${selectedTabela.id}/itens`, newItem);
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      const allTabelas = localStorageService.getTabelas();
+      const tIndex = allTabelas.findIndex(t => t.id === selectedTabela.id);
+      if (tIndex !== -1) {
+          if (!Array.isArray(allTabelas[tIndex].itens)) {
+              allTabelas[tIndex].itens = [];
+          }
+          allTabelas[tIndex].itens.push(newItem);
+          localStorageService.setTabelas(allTabelas);
+          
+          setTabelas(allTabelas);
+          setSelectedTabela(allTabelas[tIndex]);
+      }
+
       toast.success("Item adicionado com sucesso!");
       setModalOpen(false);
-      // Atualiza a tabela selecionada localmente para refletir na UI sem recarregar tudo
-      setSelectedTabela({
-        ...selectedTabela,
-        itens: [...(Array.isArray(selectedTabela.itens) ? selectedTabela.itens : []), newItem as any]
-      });
     } catch {
       toast.error("Erro ao adicionar item.");
     } finally {
@@ -122,18 +140,23 @@ export function TabelasPrecos() {
     e.preventDefault();
     setSubmitting(true);
     const formData = new FormData(e.currentTarget);
-    const newTabela = {
-      nome: formData.get('nome'),
-      tipo: formData.get('tipo'),
+    const newTabela: TabelaPreco = {
+      id: `TAB-${Date.now()}`,
+      nome: formData.get('nome') as string,
+      tipo: formData.get('tipo') as string,
       ativo: true,
       itens: []
     };
 
     try {
-      const { data } = await api.post('/faturamento/tabelas', newTabela);
+      await new Promise(resolve => setTimeout(resolve, 300));
+      const allTabelas = localStorageService.getTabelas();
+      allTabelas.push(newTabela);
+      localStorageService.setTabelas(allTabelas);
+
       toast.success("Tabela criada com sucesso!");
-      setTabelas(prev => [...prev, data]);
-      setSelectedTabela(data);
+      setTabelas(allTabelas);
+      setSelectedTabela(newTabela);
       setModalTabelaOpen(false);
     } catch {
       toast.error("Erro ao criar tabela.");
@@ -146,12 +169,18 @@ export function TabelasPrecos() {
     if (!selectedTabela) return;
     setSubmitting(true);
     try {
-      await Promise.all(convenios.map(conv => {
+      await new Promise(resolve => setTimeout(resolve, 300));
+      const allConvenios = localStorageService.getConvenios();
+      
+      const updatedConvenios = allConvenios.map(conv => {
         const isLinked = conveniosIds.includes(conv.id);
         const otherTables = conv.tabelas_vinculadas?.filter((v: any) => v.tabela_id !== selectedTabela.id) || [];
-        const newLinks = isLinked ? [...otherTables, { tabela_id: selectedTabela.id, nome: selectedTabela.nome || selectedTabela.convenio }] : otherTables;
-        return api.put(`/cadastros/convenios/${conv.id}`, { ...conv, tabelas_vinculadas: newLinks });
-      }));
+        const newLinks = isLinked ? [...otherTables, { tabela_id: selectedTabela.id, nome: selectedTabela.nome || selectedTabela.convenio || '' }] : otherTables;
+        return { ...conv, tabelas_vinculadas: newLinks };
+      });
+      
+      localStorageService.setConvenios(updatedConvenios);
+      
       toast.success("Vínculos atualizados!");
       fetchData();
       setModalVinculoOpen(false);
