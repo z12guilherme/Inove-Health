@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Download, Plus, CheckCircle, FileText, Search, Loader2 } from 'lucide-react';
+import { Download, Plus, CheckCircle, FileText, Search, Loader2, Trash2 } from 'lucide-react';
 import localStorageService from '../../../services/localStorageService';
 import type { LoteTiss } from '../../../services/localStorageService';
 import { generateTissXml } from '../../../services/tissXmlGenerator';
@@ -175,6 +175,14 @@ export function RemessasTiss() {
         toast.success('Foram criadas 2 Guias Autorizadas (Consulta e SADT)! Agora você pode gerar o lote.');
     };
 
+    const handleLimparLotes = () => {
+        if (confirm('Tem certeza que deseja excluir todos os lotes gerados? Isso não pode ser desfeito.')) {
+            localStorageService.setLotesTiss([]);
+            setLotes([]);
+            toast.success('Todos os lotes foram excluídos.');
+        }
+    };
+
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex justify-between items-center">
@@ -182,12 +190,20 @@ export function RemessasTiss() {
                     <h1 className="text-3xl font-bold tracking-tight">Remessas e XML TISS</h1>
                     <p className="text-muted-foreground mt-2">Agrupamento de guias e geração de lotes padrão TISS 4.01.00.</p>
                 </div>
-                <button 
-                    onClick={handleGerarGuiasMock}
-                    className="bg-secondary text-secondary-foreground px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-secondary/80"
-                >
-                    <Plus size={16} /> Forçar Guias Autorizadas (Teste)
-                </button>
+                <div className="flex gap-2">
+                    <button 
+                        onClick={handleLimparLotes}
+                        className="bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-red-600 transition-colors"
+                    >
+                        <Trash2 size={16} /> Excluir Lotes
+                    </button>
+                    <button 
+                        onClick={handleGerarGuiasMock}
+                        className="bg-secondary text-secondary-foreground px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-secondary/80"
+                    >
+                        <Plus size={16} /> Forçar Guias Autorizadas (Teste)
+                    </button>
+                </div>
             </div>
 
             <div className="flex border-b border-border">
