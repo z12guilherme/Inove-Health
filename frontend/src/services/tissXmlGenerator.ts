@@ -150,8 +150,9 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
   const endIndex = xmlString.indexOf(endTag);
   const hashContent = xmlString.substring(startIndex, endIndex);
 
-  // 3. Gerar o MD5 sobre a representação Latin-1 (ISO-8859-1) dos caracteres
-  const hashVal = md5(Array.from(hashContent).map(c => c.charCodeAt(0) & 0xFF));
+  // 3. Gerar o MD5. A biblioteca md5 nativamente calcula o hash UTF-8, o que satisfaz 
+  // o segundo padrão tolerado pelo validador TISS (a hash UTF-8).
+  const hashVal = md5(hashContent);
 
   // 4. Injetar na string final e retornar
   return xmlString.replace('PLACEHOLDER_HASH', hashVal).trim();
