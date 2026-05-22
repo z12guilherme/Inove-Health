@@ -3,6 +3,7 @@ import { Activity, Loader2, Search, ThermometerSun, Heart, Wind, Printer } from 
 import { cn } from '../../lib/utils';
 import { api } from '../../lib/api';
 import toast from 'react-hot-toast';
+import { generateDigitalSignature } from '../../lib/crypto';
 
 interface TriagemForm {
   atendimento_id: string;
@@ -66,7 +67,7 @@ export function Triagem() {
     if (!form.atendimento_id) { toast.error('Selecione um paciente aguardando triagem.'); return; }
     setBusy(true);
     try {
-      await api.post('/triagens', {
+      const triageData = {
         ...form,
         temperatura: parseFloat(form.temperatura),
         freq_cardiaca: parseInt(form.freq_cardiaca),
@@ -74,7 +75,31 @@ export function Triagem() {
         saturacao_o2: parseFloat(form.saturacao_o2),
         peso: parseFloat(form.peso || '0'),
         glicose: parseFloat(form.glicose || '0')
+      };
+
+      // Gerar Assinatura Digital do Enfermeiro
+      const signaturePayload = {
+        ...triageData,
+        timestamp: new Date().toISOString(),
+        profissional: {
+          nome: 'Enfermeira Chefe Mock', // Pegaria do Auth
+          conselho: 'COREN 54321-PE'
+        }
+      };
+      
+      const hash = await generateDigitalSignature(signaturePayload);
+      const assinatura = `Assinado digitalmente por ${signaturePayload.profissional.nome} | ${signaturePayload.profissional.conselho} | SHA256: ${hash} | Data: ${new Date(signaturePayload.timestamp).toLocaleString('pt-BR')}`;
+
+      await api.post('/triagens', {
+        ...triageData,
+        assinatura_enfermagem: assinatura
       });
+
+      // Atualizar o Atendimento com a assinatura da triagem para espelhar no prontuário
+      await api.patch(`/atendimentos/${form.atendimento_id}`, {
+        assinatura_enfermagem: assinatura
+      });
+
       toast.success('Triagem registrada com sucesso!');
       
       // Imprimir automaticamente

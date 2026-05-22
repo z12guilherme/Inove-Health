@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Search, FileText, Loader2, Edit, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
+import { Plus, Search, FileText, Loader2, Edit, CheckCircle, Clock, AlertTriangle, Printer } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import localStorageService from '../../services/localStorageService';
+import { TissGuidePrintView } from '../../components/TissGuidePrintView';
+
 interface Atendimento {
     id: string;
     data: string;
@@ -19,6 +21,7 @@ export function GuiasDeAtendimento() {
     const [guias, setGuias] = useState<Atendimento[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
+    const [printingAtd, setPrintingAtd] = useState<any | null>(null);
 
     const fetchGuias = useCallback(async () => {
         try {
@@ -137,9 +140,18 @@ export function GuiasDeAtendimento() {
                                                     <AlertTriangle size={12} /> Solicitar Autorização
                                                 </button>
                                             ) : (
-                                                <button onClick={() => navigate(`/clinical/exames-procedimentos/${guia.id}`)} className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors">
-                                                    <Edit className="w-4 h-4" />
-                                                </button>
+                                                <div className="flex justify-end gap-2">
+                                                    <button 
+                                                        onClick={() => setPrintingAtd(guia)} 
+                                                        className="text-gray-400 hover:text-blue-600 transition-colors p-1"
+                                                        title="Imprimir Guia TISS"
+                                                    >
+                                                        <Printer className="w-5 h-5" />
+                                                    </button>
+                                                    <button onClick={() => navigate(`/clinical/exames-procedimentos/${guia.id}`)} className="p-1 text-muted-foreground hover:text-primary transition-colors">
+                                                        <Edit className="w-5 h-5" />
+                                                    </button>
+                                                </div>
                                             )}
                                         </td>
                                     </tr>
@@ -149,6 +161,9 @@ export function GuiasDeAtendimento() {
                     </div>
                 )}
             </div>
+            {printingAtd && (
+                <TissGuidePrintView atendimento={printingAtd} onClose={() => setPrintingAtd(null)} />
+            )}
         </div>
     );
 }

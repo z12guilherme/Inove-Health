@@ -5,6 +5,7 @@ import { api } from '../../lib/api';
 import toast from 'react-hot-toast';
 import { cn } from '../../lib/utils';
 import { useAuthStore } from '../../store/authStore';
+import { generateDigitalSignature } from '../../lib/crypto';
 
 const coresRisco: any = { vermelho: 'bg-red-500', laranja: 'bg-orange-500', amarelo: 'bg-yellow-500', verde: 'bg-green-500', azul: 'bg-blue-500' };
 
@@ -130,18 +131,37 @@ export function Atendimento() {
     }
     setBusy(true);
     try {
-      // Salva a consulta no histórico
+      // Gerar Assinatura Digital
+      const signaturePayload = {
+        paciente_id: paciente.id,
+        atendimento_id: atdId,
+        diagnostico: formConsulta.queixa_principal,
+        cid_10: formConsulta.cid_10,
+        observacoes: formConsulta.observacoes,
+        timestamp: new Date().toISOString(),
+        profissional: {
+          nome: 'Dr. Executante Mock', // Pegaria do Auth real
+          conselho: '12345-PE'
+        }
+      };
+      
+      const hash = await generateDigitalSignature(signaturePayload);
+      const assinatura = `Assinado digitalmente por ${signaturePayload.profissional.nome} | CRM: ${signaturePayload.profissional.conselho} | SHA256: ${hash} | Data: ${new Date(signaturePayload.timestamp).toLocaleString('pt-BR')}`;
+
+      // Salva a consulta no histórico com a assinatura
       await api.post('/consultas', {
         paciente_id: paciente.id,
         atendimento_id: atdId,
         diagnostico: formConsulta.queixa_principal,
         cid_10: formConsulta.cid_10,
-        observacoes: formConsulta.observacoes
+        observacoes: formConsulta.observacoes,
+        assinatura_digital: assinatura
       });
 
-      // Atualiza o Atendimento
+      // Atualiza o Atendimento com a Assinatura
       await api.patch(`/atendimentos/${atdId}`, {
         status_fila: 'FINALIZADO',
+        assinatura_medico: assinatura,
         dados_atendimento: {
           ...atendimento.dados_atendimento,
           cid10: formConsulta.cid_10
@@ -361,12 +381,12 @@ export function Atendimento() {
 
       {/* Footer Actions */}
       <div className="flex justify-between items-center bg-background p-4 rounded-2xl border border-border shadow-sm">
-        <button onClick={() => navigate('/clinical/fila-medica')} className="px-6 py-3 rounded-xl border border-border font-bold hover:bg-secondary transition-colors">
-          Pausar / Voltar
-        </button>
-        <button onClick={handleFinalizar} disabled={busy} className="px-8 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold transition-all shadow-lg shadow-emerald-500/25 flex items-center gap-2">
-          {busy ? <Loader2 className="w-5 h-5 animate-spin" /> : <><CheckCircle2 className="w-5 h-5" /> Finalizar Consulta</>}
-        </button>
+        <div className="flex justify-end gap-3 pt-6 border-t border-border/50">
+          <button className="px-6 py-2.5 rounded-xl border border-border font-bold text-sm hover:bg-secondary transition-all">Salvar Rascunho</button>
+          <button onClick={handleFinalizar} disabled={busy} className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg shadow-primary/25 disabled:opacity-50 flex items-center gap-2">
+            {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CheckCircle2 className="w-5 h-5" /> Assinar e Fechar Atendimento</>}
+          </button>
+        </div>
       </div>
 
     </div>
