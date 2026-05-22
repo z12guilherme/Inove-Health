@@ -1,349 +1,566 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Building,
+  Save,
+  ArrowLeft,
+  Globe,
+  Phone,
+  User,
+  CreditCard,
+  Settings,
+  ShieldCheck,
+  Table as TableIcon,
+  Percent,
+  Plus,
+  Trash2,
+  Image as ImageIcon,
+  FileText,
+  MapPin,
+  Search,
+  Loader2,
+  ChevronRight,
+  LayoutGrid,
+  List as ListIcon,
+  Activity
+} from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../../lib/api';
-import { Building, Plus, Pencil, Trash2, X, Loader2, Search, Shield, Phone, Mail, Hash, Table } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { cn } from '../../lib/utils';
 
 interface Convenio {
   id: string;
   nome: string;
   registro_ans: string;
-  tipo: string;
-  email: string;
-  telefone: string;
-  cobertura: string;
-  tabela_preco: string;
-  tabelas_vinculadas?: Array<{ tabela_id: string; nome: string; }>; // Adicionado
-  ativo: boolean;
-  criado_em: string;
+  cnpj: string;
+  situacao: string;
+  razao_social?: string;
 }
-
-interface LinkedTable {
-  tabela_id: string;
-  nome: string;
-}
-
-interface ConvenioForm {
-  nome: string;
-  registro_ans: string;
-  tipo: string;
-  email: string;
-  telefone: string;
-  cobertura: string;
-  tabela_preco: string;
-  tabelas_vinculadas: LinkedTable[]; // Adicionado
-}
-
-const emptyForm: ConvenioForm = {
-  nome: '', registro_ans: '', tipo: 'PLANO_SAUDE', email: '', telefone: '', cobertura: 'AMBULATORIAL', tabela_preco: 'TISS'
-};
-
-const tipos = [
-  { value: 'PLANO_SAUDE', label: 'Plano de Saúde' },
-  { value: 'SEGURO_SAUDE', label: 'Seguro Saúde' },
-  { value: 'COOPERATIVA', label: 'Cooperativa Médica' },
-  { value: 'SUS', label: 'SUS' },
-  { value: 'PARTICULAR', label: 'Particular' },
-];
-
-const coberturas = [
-  { value: 'AMBULATORIAL', label: 'Ambulatorial' },
-  { value: 'HOSPITALAR', label: 'Hospitalar' },
-  { value: 'OBSTETRICO', label: 'Obstétrico' },
-  { value: 'AMBULATORIAL_HOSPITALAR', label: 'Ambulatorial + Hospitalar' },
-  { value: 'COMPLETO', label: 'Completo (Amb + Hosp + Odonto)' },
-];
 
 export function Convenios() {
+  const navigate = useNavigate();
+  const [view, setView] = useState<'LIST' | 'FORM'>('LIST');
+  const [loading, setLoading] = useState(false);
   const [convenios, setConvenios] = useState<Convenio[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState<string | null>(null);
-  const [form, setForm] = useState<ConvenioForm>(emptyForm);
-  const [submitting, setSubmitting] = useState(false);
   const [search, setSearch] = useState('');
-  const [allTabelas, setAllTabelas] = useState<Array<{ id: string; nome: string; }>>([]); // Todas as tabelas disponíveis
+  const [tabelasDisponiveis, setTabelasDisponiveis] = useState<any[]>([]);
+
+  const [formData, setFormData] = useState<any>({
+    nome: '',
+    registro_ans: '',
+    cnpj: '',
+    razao_social: '',
+    grupo: 'Portal do convênio',
+    situacao: 'Ativo',
+    // Endereço
+    cep: '60150-160',
+    tipo_logradouro: 'AVENIDA',
+    logradouro: 'Avenida Santos Dumont',
+    numero: '782',
+    municipio: 'Fortaleza',
+    estado: 'Ceará',
+    bairro: 'Centro',
+    complemento: 'até 978/979',
+    // Contato
+    telefone: '(85) 4004-2323',
+    pessoa_contato: '',
+    telefone_contato: '',
+    // Faturamento
+    numero_guia_inicial: '',
+    ultimo_numero_guia: '36',
+    tiss_versao: '4.01.00',
+    codigo_ciha: 'Convênio Plano Privado',
+    dias_retorno: 30,
+    digitos_matricula: 16,
+    acrescimo_apartamento: 100,
+    valor_filme: 0,
+    deflator_porte: 0,
+    valor_ch: 0,
+    valor_uco: 0,
+    deflator_uco: 0,
+    // Checkboxes Config
+    utiliza_abramge: false,
+    utiliza_planserv: false,
+    lote_como_nome_arquivo: true,
+    gerar_consulta_sadt: true,
+    // Obrigatórios
+    req_guia_principal: true,
+    req_guia_autorizacao: true,
+    req_guia_operadora: true,
+    req_senha: true,
+    req_setor: true,
+    req_hipotese: true,
+    req_cns: false,
+    req_cep: false,
+  });
+
+  const [viasAcesso, setViasAcesso] = useState([
+    { descricao: 'Única', percentual: 100 },
+    { descricao: 'Mesma via', percentual: 50 },
+    { descricao: 'Diferentes vias', percentual: 30 },
+  ]);
+
+  const [tabelasVinculadas, setTabelasVinculadas] = useState([
+    { id: '1', nome: 'DIÁRIAS, TAXAS E GASES', faixas: '' },
+    { id: '2', nome: 'PROCEDIMENTOS AMBULATORIAIS', faixas: '' },
+    { id: '3', nome: 'PROCEDIMENTOS GERAIS', faixas: '' },
+    { id: '4', nome: 'MEDICAMENTOS RESTRITO HOSPITALAR', faixas: '' },
+  ]);
 
   const fetchConvenios = useCallback(async () => {
     try {
       setLoading(true);
-      const [conveniosRes, tabelasRes] = await Promise.all([
-        api.get('/cadastros/convenios'),
-        api.get('/faturamento/tabelas')
-      ]);
-      setConvenios(Array.isArray(conveniosRes.data) ? conveniosRes.data : conveniosRes.data.convenios || []);
-      setAllTabelas(Array.isArray(tabelasRes.data) ? tabelasRes.data : tabelasRes.data.tabelas || []);
-    } catch {
-      // Toast handled by interceptor
+      const res = await api.get('/cadastros/convenios');
+      setConvenios(res.data.convenios || []);
+      const resTabs = await api.get('/faturamento/tabelas');
+      setTabelasDisponiveis(resTabs.data.tabelas || []);
+    } catch (err) {
+      toast.error("Erro ao carregar dados");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => { fetchConvenios(); }, [fetchConvenios]);
+  useEffect(() => {
+    fetchConvenios();
+  }, [fetchConvenios]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
+  const handleEdit = (c: any) => {
+    setFormData({
+      ...c,
+      // Se os dados vierem aninhados do mock/banco, espalhamos aqui
+      ...(c.financeiro || {}),
+      ...(c.obrigatorios_atendimento || {})
+    });
+    setView('FORM');
+  };
+
+  const handleNew = () => {
+    setFormData({
+      id: null,
+      nome: '', registro_ans: '', cnpj: '', razao_social: '',
+      grupo: 'Portal do convênio', situacao: 'Ativo',
+      cep: '60150-160', tipo_logradouro: 'AVENIDA', logradouro: '', numero: '', municipio: '', estado: '', bairro: '', complemento: '',
+      telefone: '', pessoa_contato: '', telefone_contato: '',
+      tiss_versao: '4.01.00', dias_retorno: 30, digitos_matricula: 16, acrescimo_apartamento: 100,
+      valor_ch: 0, valor_uco: 0, deflator_porte: 0,
+      req_guia_principal: true, req_guia_autorizacao: true, req_guia_operadora: true, req_senha: true, req_setor: true, req_hipotese: true,
+    });
+    setView('FORM');
+  };
+
+  const filteredConvenios = convenios.filter(c =>
+    c.nome.toLowerCase().includes(search.toLowerCase()) ||
+    c.cnpj.includes(search) ||
+    c.registro_ans.includes(search)
+  );
+
+  const handleSave = async () => {
+    setLoading(true);
     try {
-      if (editing) {
-        await api.put(`/cadastros/convenios/${editing}`, form);
-        toast.success('Convênio atualizado com sucesso!');
-      } else {
-        await api.post('/cadastros/convenios', form);
-        toast.success('Convênio cadastrado com sucesso!');
-      }
-      setModalOpen(false);
-      setEditing(null);
-      setForm(emptyForm);
+      const payload = {
+        ...formData,
+        vias_acesso: viasAcesso,
+        tabelas_vinculadas: tabelasVinculadas
+      };
+      await api.post('/cadastros/convenios', payload);
+      toast.success(formData.id ? 'Alterações salvas!' : 'Convênio cadastrado!');
+      setView('LIST');
       fetchConvenios();
-    } catch {
-      // handled by interceptor
+    } catch (error) {
+      toast.error('Erro ao salvar convênio');
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Tem certeza que deseja inativar este convênio?')) return;
-    try {
-      await api.delete(`/cadastros/convenios/${id}`);
-      toast.success('Convênio inativado com sucesso!');
-      fetchConvenios();
-    } catch { /* interceptor */ }
-  };
+  if (view === 'LIST') {
+    return (
+      <div className="space-y-8 animate-in fade-in duration-500">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-4xl font-black tracking-tighter text-slate-900">Operadoras e Convênios</h1>
+            <p className="text-slate-500 mt-2 font-medium">Gestão de credenciamento, regras de faturamento e tabelas TISS/TUSS.</p>
+          </div>
+          <button onClick={handleNew} className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-blue-200">
+            <Plus className="w-6 h-6 stroke-[3]" /> Novo Convênio
+          </button>
+        </div>
 
-  const openEdit = (c: Convenio) => {
-    setEditing(c.id);
-    setForm({
-      nome: c.nome, registro_ans: c.registro_ans, tipo: c.tipo,
-      email: c.email, telefone: c.telefone, cobertura: c.cobertura, tabela_preco: c.tabela_preco,
-      tabelas_vinculadas: c.tabelas_vinculadas || []
-    });
-    setModalOpen(true);
-  };
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
+            <div className="p-4 bg-blue-50 text-blue-600 rounded-2xl"><Building size={24} /></div>
+            <div><p className="text-2xl font-black text-gray-800">{convenios.length}</p><p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Total de Operadoras</p></div>
+          </div>
+          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
+            <div className="p-4 bg-emerald-50 text-emerald-600 rounded-2xl"><ShieldCheck size={24} /></div>
+            <div><p className="text-2xl font-black text-gray-800">{convenios.filter(c => c.situacao !== 'Inativo').length}</p><p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Convênios Ativos</p></div>
+          </div>
+          <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
+            <div className="p-4 bg-purple-50 text-purple-600 rounded-2xl"><Activity size={24} /></div>
+            <div><p className="text-2xl font-black text-gray-800">12.4k</p><p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Atendimentos/Mês</p></div>
+          </div>
+        </div>
 
-  const openCreate = () => {
-    setEditing(null);
-    setForm(emptyForm);
-    setModalOpen(true);
-  };
+        <div className="bg-white/40 backdrop-blur-xl border border-white rounded-[40px] p-8 shadow-2xl shadow-slate-200/50">
+          <div className="relative mb-8">
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-300" />
+            <input
+              type="text"
+              placeholder="Buscar por nome, ANS ou CNPJ..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full h-16 pl-14 pr-6 rounded-[24px] bg-white border-none focus:ring-4 focus:ring-blue-100 outline-none transition-all shadow-inner text-lg font-medium placeholder:text-slate-300"
+            />
+          </div>
 
-  const handleToggleTable = (tabelaId: string, tabelaNome: string) => {
-    setForm(prevForm => {
-      const isLinked = prevForm.tabelas_vinculadas.some(t => t.tabela_id === tabelaId);
-      if (isLinked) {
-        return { ...prevForm, tabelas_vinculadas: prevForm.tabelas_vinculadas.filter(t => t.tabela_id !== tabelaId) };
-      } else {
-        return { ...prevForm, tabelas_vinculadas: [...prevForm.tabelas_vinculadas, { tabela_id: tabelaId, nome: tabelaNome }] };
-      }
-    });
-    setModalOpen(true);
-  };
-
-  const filtered = convenios.filter(c =>
-    c.nome?.toLowerCase().includes(search.toLowerCase()) ||
-    c.registro_ans?.includes(search) ||
-    c.tipo?.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const getTipoColor = (tipo: string) => {
-    const colors: Record<string, string> = {
-      'PLANO_SAUDE': 'bg-blue-500/10 text-blue-500',
-      'SEGURO_SAUDE': 'bg-violet-500/10 text-violet-500',
-      'COOPERATIVA': 'bg-emerald-500/10 text-emerald-500',
-      'SUS': 'bg-amber-500/10 text-amber-500',
-      'PARTICULAR': 'bg-rose-500/10 text-rose-500',
-    };
-    return colors[tipo] || 'bg-gray-500/10 text-gray-500';
-  };
-
-  const getTipoLabel = (tipo: string) => tipos.find(t => t.value === tipo)?.label || tipo;
-  const getCoberturaLabel = (cob: string) => coberturas.find(c => c.value === cob)?.label || cob;
+          {loading ? (
+            <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-blue-600" /></div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {filteredConvenios.map(c => (
+                <div
+                  key={c.id}
+                  onClick={() => handleEdit(c)}
+                  className="group bg-white border border-gray-100 rounded-[32px] p-6 hover:shadow-2xl hover:border-blue-200 transition-all cursor-pointer relative overflow-hidden"
+                >
+                  <div className="flex items-center gap-4 mb-6 relative z-10">
+                    <div className="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-inner">
+                      <Building size={24} />
+                    </div>
+                    <div>
+                      <h3 className="font-black text-gray-800 uppercase tracking-tight group-hover:text-blue-700 transition-colors">{c.nome}</h3>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">ANS: {c.registro_ans}</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center pt-4 border-t border-gray-50">
+                    <span className={cn("text-[10px] font-black uppercase px-3 py-1 rounded-full", c.situacao === 'Inativo' ? "bg-red-50 text-red-500" : "bg-emerald-50 text-emerald-600")}>{c.situacao || 'Ativo'}</span>
+                    <ChevronRight className="text-gray-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" size={20} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Operadoras e Convênios</h1>
-          <p className="text-muted-foreground mt-2">Configure regras de negócio e tabelas de preço por plano de saúde.</p>
+    <div className="space-y-6 pb-20">
+      {/* Header Profissional */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-blue-600 rounded-2xl text-white shadow-lg shadow-blue-100">
+            <Building size={24} />
+          </div>
+          <div>
+            <h1 className="text-2xl font-black text-gray-900 tracking-tighter uppercase">{formData.id ? 'Editar' : 'Novo'} Convênio</h1>
+            <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">{formData.nome || 'Novo Cadastro'} {formData.registro_ans && `• ANS: ${formData.registro_ans}`}</p>
+          </div>
         </div>
-        <button onClick={openCreate} className="bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 transition-all hover:-translate-y-0.5 shadow-lg shadow-primary/25">
-          <Plus className="w-5 h-5" /> Novo Convênio
+        <div className="flex gap-3">
+          <button onClick={() => setView('LIST')} className="px-6 py-2.5 rounded-xl border border-gray-200 text-gray-500 font-bold text-xs uppercase hover:bg-gray-50 transition-all">
+            Cancelar
+          </button>
+          <button onClick={handleSave} disabled={loading} className="px-8 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs uppercase hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 flex items-center gap-2">
+            {loading ? 'Salvando...' : <><Save size={16} /> Salvar Convênio</>}
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* Dados Gerais */}
+        <div className="space-y-6">
+          <section className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm space-y-6">
+            <h3 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+              <Globe size={16} className="text-blue-500" /> Informações Básicas
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Nome Fantasia</label>
+                <input type="text" value={formData.nome} onChange={e => setFormData({ ...formData, nome: e.target.value })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700 focus:bg-white focus:border-blue-200 outline-none transition-all" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Registro ANS</label>
+                <input type="text" value={formData.registro_ans} onChange={e => setFormData({ ...formData, registro_ans: e.target.value })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700" />
+              </div>
+              <div className="md:col-span-2 space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Razão Social</label>
+                <input type="text" value={formData.razao_social} onChange={e => setFormData({ ...formData, razao_social: e.target.value })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">CNPJ</label>
+                <input type="text" value={formData.cnpj} onChange={e => setFormData({ ...formData, cnpj: e.target.value })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Situação</label>
+                <div className="flex gap-2 p-1 bg-gray-100 rounded-xl">
+                  {['Ativo', 'Inativo'].map(s => (
+                    <button key={s} onClick={() => setFormData({ ...formData, situacao: s })} className={cn("flex-1 py-1.5 text-[10px] font-black uppercase rounded-lg transition-all", formData.situacao === s ? "bg-white text-blue-600 shadow-sm" : "text-gray-400")}>{s}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border-2 border-dashed border-gray-100 rounded-3xl flex flex-col items-center justify-center gap-3 bg-gray-50/50">
+              <ImageIcon className="text-gray-300" size={32} />
+              <p className="text-[10px] font-black text-gray-400 uppercase">Logomarca (jpeg, jpg, png)</p>
+              <button className="text-[10px] font-black text-blue-600 uppercase underline">Selecionar arquivo</button>
+            </div>
+          </section>
+
+          {/* Endereço e Contato */}
+          <section className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm space-y-6">
+            <h3 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+              <MapPin size={16} className="text-emerald-500" /> Localização e Contato
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">CEP</label>
+                <input type="text" value={formData.cep} onChange={e => setFormData({ ...formData, cep: e.target.value })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700" />
+              </div>
+              <div className="md:col-span-2 space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Logradouro</label>
+                <input type="text" value={formData.logradouro} onChange={e => setFormData({ ...formData, logradouro: e.target.value })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Município</label>
+                <input type="text" value={formData.municipio} onChange={e => setFormData({ ...formData, municipio: e.target.value })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Estado</label>
+                <input type="text" value={formData.estado} onChange={e => setFormData({ ...formData, estado: e.target.value })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Telefone Principal</label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={14} />
+                  <input type="text" value={formData.telefone} onChange={e => setFormData({ ...formData, telefone: e.target.value })} className="w-full p-3 pl-10 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700" />
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {/* Dados para Faturamento e TISS */}
+        <div className="space-y-6">
+          <section className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm space-y-6">
+            <h3 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+              <CreditCard size={16} className="text-purple-500" /> Dados para Faturamento
+            </h3>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="md:col-span-2 space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Versão TISS</label>
+                <select value={formData.tiss_versao} onChange={e => setFormData({ ...formData, tiss_versao: e.target.value })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700 outline-none">
+                  <option>4.01.00</option>
+                  <option>3.05.00</option>
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Dias Retorno</label>
+                <input type="number" value={formData.dias_retorno} onChange={e => setFormData({ ...formData, dias_retorno: Number(e.target.value) })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700 text-center" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">% Acrésc. Apto</label>
+                <input type="number" value={formData.acrescimo_apartamento} onChange={e => setFormData({ ...formData, acrescimo_apartamento: Number(e.target.value) })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700 text-center" />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Valor CH</label>
+                <input type="number" step="0.01" value={formData.valor_ch} onChange={e => setFormData({ ...formData, valor_ch: Number(e.target.value) })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700 text-right" placeholder="0,00" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Valor UCO</label>
+                <input type="number" step="0.01" value={formData.valor_uco} onChange={e => setFormData({ ...formData, valor_uco: Number(e.target.value) })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700 text-right" placeholder="0,00" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Deflator Porte (%)</label>
+                <input type="number" value={formData.deflator_porte} onChange={e => setFormData({ ...formData, deflator_porte: Number(e.target.value) })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700 text-center" placeholder="0" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Matrícula (Dígitos)</label>
+                <input type="number" value={formData.digitos_matricula} onChange={e => setFormData({ ...formData, digitos_matricula: Number(e.target.value) })} className="w-full p-3 bg-gray-50 border border-transparent rounded-2xl font-bold text-gray-700 text-center" />
+              </div>
+            </div>
+
+            {/* Regras de Atendimento Checkboxes */}
+            <div className="pt-4 border-t border-gray-50 grid grid-cols-1 md:grid-cols-2 gap-3">
+              {[
+                { id: 'req_guia_principal', label: 'Número Guia Principal' },
+                { id: 'req_guia_autorizacao', label: 'Número Guia Autorização' },
+                { id: 'req_guia_operadora', label: 'Número Guia Operadora' },
+                { id: 'req_senha', label: 'Senha' },
+                { id: 'req_setor', label: 'Setor' },
+                { id: 'req_hipotese', label: 'Hipótese Diagnóstica' },
+              ].map(item => (
+                <label key={item.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={(formData as any)[item.id]}
+                    onChange={e => setFormData({ ...formData, [item.id]: e.target.checked })}
+                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="text-[11px] font-black text-gray-600 uppercase">{item.label}</span>
+                </label>
+              ))}
+            </div>
+          </section>
+
+          {/* Vias de Acesso */}
+          <section className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm space-y-6">
+            <div className="flex justify-between items-center">
+              <h3 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                <Percent size={16} className="text-rose-500" /> Percentuais de Vias de Acesso
+              </h3>
+              <button className="text-[10px] font-black text-blue-600 uppercase flex items-center gap-1">
+                <Plus size={12} /> Adicionar
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              {viasAcesso.map((via, idx) => (
+                <div key={idx} className="flex items-center gap-4 p-3 bg-gray-50 rounded-2xl">
+                  <div className="flex-1">
+                    <p className="text-[10px] font-black text-gray-400 uppercase mb-1">Via de Acesso</p>
+                    <p className="text-xs font-bold text-gray-700">{via.descricao}</p>
+                  </div>
+                  <div className="w-24">
+                    <p className="text-[10px] font-black text-gray-400 uppercase mb-1">Percentual</p>
+                    <div className="flex items-center gap-2">
+                      <input type="number" value={via.percentual} className="w-full p-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-center" />
+                      <span className="text-xs font-bold text-gray-400">%</span>
+                    </div>
+                  </div>
+                  <button className="p-2 text-gray-300 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+
+      {/* Tabelas de Preço Vinculadas */}
+      <section className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm space-y-8">
+        <div className="flex justify-between items-center border-b border-gray-50 pb-4">
+          <div className="flex items-center gap-3">
+            <TableIcon className="text-blue-600" size={24} />
+            <div>
+              <h3 className="text-lg font-black text-gray-800 uppercase tracking-tighter">Vínculos de Tabelas</h3>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Defina as faixas de procedimentos e tabelas base</p>
+            </div>
+          </div>
+          <button className="bg-gray-900 text-white px-6 py-2 rounded-2xl text-[10px] font-black uppercase flex items-center gap-2 hover:bg-black transition-all">
+            <Plus size={14} /> Adicionar Tabela
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {tabelasVinculadas.map((tab, idx) => (
+            <div key={idx} className="p-6 bg-gray-50/50 rounded-3xl border border-gray-100 space-y-4 group hover:border-blue-200 transition-all">
+              <div className="flex justify-between items-start">
+                <div className="space-y-1">
+                  <span className="text-[8px] font-black text-blue-500 uppercase tracking-widest px-2 py-0.5 bg-blue-50 rounded">Tabela Ativa</span>
+                  <p className="text-sm font-black text-gray-700 uppercase leading-tight">{tab.nome}</p>
+                </div>
+                <div className="flex gap-2">
+                  <button className="text-[10px] font-black text-gray-400 uppercase hover:text-blue-600">Exportar</button>
+                  <button className="text-[10px] font-black text-gray-400 uppercase hover:text-red-500">Remover</button>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Faixas de Procedimentos</label>
+                <input
+                  type="text"
+                  placeholder="Separar por vírgula (ex: 10101012, 10101039...)"
+                  className="w-full p-3 bg-white border border-gray-100 rounded-2xl text-xs font-bold text-gray-600 mt-1"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Regras Gerais e Ajustes */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <section className="lg:col-span-1 bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm space-y-6">
+          <h3 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+            <Settings size={16} className="text-orange-500" /> Regras Gerais
+          </h3>
+
+          <div className="space-y-4">
+            <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <p className="text-[10px] font-black text-gray-400 uppercase mb-2">Ajuste de Tabela SIMPRO</p>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-gray-600">Deflator aplicado:</span>
+                <span className="text-sm font-black text-red-500">-30,00 %</span>
+              </div>
+            </div>
+            <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <p className="text-[10px] font-black text-gray-400 uppercase mb-2">Brasíndice</p>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="w-4 h-4 rounded text-blue-600" />
+                <span className="text-[10px] font-black text-gray-500 uppercase">Pagar apenas genéricos</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section className="lg:col-span-2 bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm space-y-6">
+          <div className="flex justify-between items-center">
+            <h3 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+              <FileText size={16} className="text-blue-500" /> Itens de Referência (De-Para)
+            </h3>
+            <button className="text-[10px] font-black text-blue-600 uppercase">Adicionar Regra</button>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-gray-50">
+                  <th className="pb-3 text-[10px] font-black text-gray-400 uppercase tracking-widest">Item Original</th>
+                  <th className="pb-3 text-[10px] font-black text-gray-400 uppercase tracking-widest">Novo Código</th>
+                  <th className="pb-3 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Ação</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {[
+                  { nome: 'CATETER NASAL OXIGENIO', cod: '0002340147' },
+                  { nome: 'ELETRODO ECG ADULTO', cod: '0000330296' },
+                ].map((item, i) => (
+                  <tr key={i} className="group hover:bg-gray-50/50 transition-colors">
+                    <td className="py-3">
+                      <p className="text-[11px] font-bold text-gray-700">{item.nome}</p>
+                      <p className="text-[9px] text-gray-400 font-mono">SIMPRO</p>
+                    </td>
+                    <td className="py-3">
+                      <span className="px-2 py-0.5 bg-gray-100 rounded font-mono text-xs font-bold text-gray-500">{item.cod}</span>
+                    </td>
+                    <td className="py-3 text-right">
+                      <button className="p-1.5 text-gray-300 hover:text-blue-500 transition-colors"><Settings size={14} /></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      {/* Botões de Ação Inferiores */}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 sm:left-auto sm:right-8 sm:translate-x-0 z-40 bg-gray-900 text-white p-2 rounded-3xl shadow-2xl flex items-center gap-2">
+        <button onClick={() => setView('LIST')} className="px-6 py-3 rounded-2xl text-[10px] font-black uppercase hover:bg-white/10 transition-all flex items-center gap-2">
+          <ArrowLeft size={16} /> Voltar
+        </button>
+        <div className="w-[1px] h-6 bg-white/10" />
+        <button onClick={handleSave} className="px-8 py-3 bg-blue-600 rounded-2xl text-[10px] font-black uppercase hover:bg-blue-500 transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2">
+          <Save size={16} /> Salvar Tudo
         </button>
       </div>
-
-      {/* Stats Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-        {[
-          { label: 'Total', value: convenios.length, color: 'text-primary' },
-          { label: 'Planos de Saúde', value: convenios.filter(c => c.tipo === 'PLANO_SAUDE').length, color: 'text-blue-500' },
-          { label: 'Cooperativas', value: convenios.filter(c => c.tipo === 'COOPERATIVA').length, color: 'text-emerald-500' },
-          { label: 'SUS', value: convenios.filter(c => c.tipo === 'SUS').length, color: 'text-amber-500' },
-          { label: 'Particular', value: convenios.filter(c => c.tipo === 'PARTICULAR').length, color: 'text-rose-500' },
-        ].map(stat => (
-          <div key={stat.label} className="glass rounded-xl p-4 text-center">
-            <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
-            <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="glass rounded-2xl p-4 sm:p-6">
-        <div className="relative mb-6">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-          <input type="text" placeholder="Buscar por nome, registro ANS ou tipo..." value={search} onChange={e => setSearch(e.target.value)}
-            className="w-full h-12 pl-10 pr-4 rounded-xl bg-background/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-        </div>
-
-        {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-20 text-muted-foreground">
-            <Building className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p className="font-medium">Nenhum convênio encontrado</p>
-            <p className="text-sm mt-1">Clique em "Novo Convênio" para cadastrar o primeiro.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 stagger-children">
-            {filtered.map(c => (
-              <div key={c.id} className="animate-fade-in-up border border-border/50 rounded-xl p-5 hover:shadow-lg transition-all hover:-translate-y-0.5 bg-background/50">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                      <Shield className="w-5 h-5 text-blue-500" />
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="font-semibold text-foreground truncate">{c.nome}</h3>
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getTipoColor(c.tipo)}`}>
-                        {getTipoLabel(c.tipo)}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex gap-1 flex-shrink-0">
-                    <button onClick={() => openEdit(c)} className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Editar">
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                    <button onClick={() => handleDelete(c.id)} className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors" title="Inativar">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-                <div className="space-y-1.5 text-sm text-muted-foreground">
-                  <p className="flex items-center gap-2"><Hash className="w-4 h-4 flex-shrink-0" /> ANS: {c.registro_ans || 'Não informado'}</p>
-                  <p className="flex items-center gap-2"><Shield className="w-4 h-4 flex-shrink-0" /> {getCoberturaLabel(c.cobertura)}</p>
-                  <p className="flex items-center gap-2"><Mail className="w-4 h-4 flex-shrink-0" /> <span className="truncate">{c.email || 'N/A'}</span></p>
-                  <p className="flex items-center gap-2"><Phone className="w-4 h-4 flex-shrink-0" /> {c.telefone || 'N/A'}</p>
-                </div>
-                <div className="mt-3 pt-3 border-t border-border/30 flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">Tabela: <span className="font-medium text-foreground">{c.tabela_preco}</span></span>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${c.ativo !== false ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'}`}>
-                    {c.ativo !== false ? 'Ativo' : 'Inativo'}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Modal */}
-      {modalOpen && (
-        <div className="modal-overlay" onClick={() => setModalOpen(false)}>
-          <div className="modal-content max-w-lg" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between p-6 border-b border-border/50">
-              <h2 className="text-xl font-semibold">{editing ? 'Editar Convênio' : 'Novo Convênio'}</h2>
-              <button onClick={() => setModalOpen(false)} className="p-2 hover:bg-secondary rounded-lg transition-colors"><X className="w-5 h-5" /></button>
-            </div>
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-1.5">Nome da Operadora *</label>
-                <input type="text" required value={form.nome} onChange={e => setForm(p => ({ ...p, nome: e.target.value }))}
-                  className="w-full h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="Ex: Unimed, Amil, SulAmérica..." />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1.5">Registro ANS</label>
-                  <input type="text" value={form.registro_ans} onChange={e => setForm(p => ({ ...p, registro_ans: e.target.value }))}
-                    className="w-full h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="Nº ANS" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1.5">Tipo *</label>
-                  <select value={form.tipo} onChange={e => setForm(p => ({ ...p, tipo: e.target.value }))}
-                    className="w-full h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                    {tipos.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-                  </select>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1.5">Cobertura *</label>
-                  <select value={form.cobertura} onChange={e => setForm(p => ({ ...p, cobertura: e.target.value }))}
-                    className="w-full h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                    {coberturas.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1.5">Tabela de Preço</label>
-                  <select value={form.tabela_preco} onChange={e => setForm(p => ({ ...p, tabela_preco: e.target.value }))}
-                    className="w-full h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                    <option value="TISS">TISS</option>
-                    <option value="TUSS">TUSS</option>
-                    <option value="SUS">Tabela SUS</option>
-                    <option value="PROPRIA">Tabela Própria</option>
-                  </select>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1.5">E-mail</label>
-                  <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                    className="w-full h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="contato@operadora.com" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1.5">Telefone</label>
-                  <input type="text" value={form.telefone} onChange={e => setForm(p => ({ ...p, telefone: e.target.value }))}
-                    className="w-full h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="0800 XXX XXXX" />
-                </div>
-              </div>
-
-              {/* Seletor de Tabelas de Preço */}
-              <div>
-                <label className="block text-sm font-medium mb-1.5 flex items-center gap-2">
-                  <Table className="w-4 h-4" /> Tabelas de Preço Vinculadas
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto p-2 border border-border rounded-xl bg-background/50">
-                  {allTabelas.length === 0 ? (
-                    <p className="text-sm text-muted-foreground col-span-2">Nenhuma tabela disponível.</p>
-                  ) : (
-                    allTabelas.map(tabela => (
-                      <label key={tabela.id} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-secondary/50 p-2 rounded-lg transition-colors">
-                        <input
-                          type="checkbox"
-                          checked={form.tabelas_vinculadas.some(lt => lt.tabela_id === tabela.id)}
-                          onChange={() => handleToggleTable(tabela.id, tabela.nome)}
-                          className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
-                        />
-                        {tabela.nome}
-                      </label>
-                    ))
-                  )}
-                </div>
-              </div>
-              <div className="flex gap-3 pt-4">
-                <button type="button" onClick={() => setModalOpen(false)} className="flex-1 h-12 rounded-xl border border-border font-medium hover:bg-secondary transition-colors">
-                  Cancelar
-                </button>
-                <button type="submit" disabled={submitting}
-                  className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-lg shadow-primary/25">
-                  {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : editing ? 'Salvar Alterações' : 'Cadastrar Convênio'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

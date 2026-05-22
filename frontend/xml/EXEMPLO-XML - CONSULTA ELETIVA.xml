@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ans:mensagemTISS xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas">
+  <ans:cabecalho>
+    <ans:identificacaoTransacao>
+  <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
+  <ans:sequencialTransacao>000000013150</ans:sequencialTransacao>
+  <ans:dataRegistroTransacao>2026-05-22</ans:dataRegistroTransacao>
+  <ans:horaRegistroTransacao>09:15:43</ans:horaRegistroTransacao>
+</ans:identificacaoTransacao>
+    <ans:origem>
+  <ans:identificacaoPrestador>
+    <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  </ans:identificacaoPrestador>
+</ans:origem>
+    <ans:destino>
+      <ans:registroANS>368253</ans:registroANS>
+    </ans:destino>
+    <ans:Padrao>4.01.00</ans:Padrao>
+  </ans:cabecalho>
+  <ans:prestadorParaOperadora>
+    <ans:loteGuias>
+      <ans:numeroLote>7419</ans:numeroLote>
+      <ans:guiasTISS>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>281604353</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>281604353</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>04HFC000666009</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>VALDEMILSON ALVES</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>8696</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225250</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-16</ans:dataAtendimento>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>281612760</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>281612760</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>0DVNF000203009</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>VALDEMILSON ALVES</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>8696</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225250</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-16</ans:dataAtendimento>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>281771659</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>281771659</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000164011</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>LEONARDO ARAUJO LINS</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>23458</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225270</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-17</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282151588</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282151588</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000426032</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>João Victor Holanda Camurça</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>22767</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225275</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-22</ans:dataAtendimento>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282291244</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282291244</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>06ZGS000044008</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>CAIQUE AINÃ BISPO DE ARAUJO</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>33602</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225155</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-23</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282034543</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282034543</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000426008</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>DIEGO JONH BEZERRA DO NASCIMENTO</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>24054</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225203</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-24</ans:dataAtendimento>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282394064</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282394064</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000063002</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>DIEGO JONH BEZERRA DO NASCIMENTO</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>24054</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225203</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-24</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282519650</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282519650</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000206024</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>LEONARDO ARAUJO LINS</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>23458</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225270</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-24</ans:dataAtendimento>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282517736</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282517736</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000177008</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>DIEGO JONH BEZERRA DO NASCIMENTO</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>24054</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225203</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-24</ans:dataAtendimento>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282525358</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282525358</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>B4177006242006</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>LEONARDO ARAUJO LINS</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>23458</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225270</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-24</ans:dataAtendimento>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282559307</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282559307</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>08UXY000027006</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>IRANILDA GOMES DA SILVA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>33577</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225155</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-24</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282761477</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282761477</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000649007</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>TITO JOSE DE BARROS CORREIA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>8258</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225125</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-27</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282986711</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282986711</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000214019</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>MARIA EUGENIA SANTANA ROCHA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>22779</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225135</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-28</ans:dataAtendimento>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282987670</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282987670</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000214000</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>MARIA EUGENIA SANTANA ROCHA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>22779</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225135</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-28</ans:dataAtendimento>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>283176688</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>283176688</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>B4178001305000</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>PEDRO MARINHO SOBRINHO</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>11304</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225120</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-29</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>283178007</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>283178007</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>04DGP007474008</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>PEDRO MARINHO SOBRINHO</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>11304</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225120</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-29</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>283180607</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>283180607</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000614009</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>PEDRO MARINHO SOBRINHO</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>11304</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225120</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-29</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>283222538</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>283222538</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000214019</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>OLIVIA MARIA MUNIZ DE ANDRADE E SILVA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>8328</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225250</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-30</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>283267414</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>283267414</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000063002</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>OLIVIA MARIA MUNIZ DE ANDRADE E SILVA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>8328</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225250</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-30</ans:dataAtendimento>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>283286764</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>283286764</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000177008</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>OLIVIA MARIA MUNIZ DE ANDRADE E SILVA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>8328</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225250</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-30</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282423375</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282423375</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>B4177003761002</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>VALDEMILSON ALVES</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>8696</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225250</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-23</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+        <ans:guiaConsulta>
+          <ans:cabecalhoConsulta>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282773250</ans:numeroGuiaPrestador>
+          </ans:cabecalhoConsulta>
+          <ans:numeroGuiaOperadora>282773250</ans:numeroGuiaOperadora>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000163007</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  <ans:CNES>6931561</ans:CNES>
+</ans:contratadoExecutante>
+          <ans:profissionalExecutante>
+  <ans:nomeProfissional>TITO JOSE DE BARROS CORREIA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>8258</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225125</ans:CBOS>
+</ans:profissionalExecutante>
+          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+          <ans:dadosAtendimento>
+            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:dataAtendimento>2026-04-27</ans:dataAtendimento>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:procedimento>
+              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+              <ans:valorProcedimento>120.0</ans:valorProcedimento>
+            </ans:procedimento>
+          </ans:dadosAtendimento>
+          <ans:observacao>Nenhuma Observacao</ans:observacao>
+        </ans:guiaConsulta>
+      </ans:guiasTISS>
+    </ans:loteGuias>
+  </ans:prestadorParaOperadora>
+  <ans:epilogo>
+    <ans:hash>bb396ed375b13536faf8c66a0a12a38a</ans:hash>
+  </ans:epilogo>
+</ans:mensagemTISS>

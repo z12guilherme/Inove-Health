@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { FileSpreadsheet, Loader2, Search, Plus, X, Building2, Tag, Pencil, Link as LinkIcon, Table as TableIcon, ChevronDown, ChevronRight } from 'lucide-react';
+import { FileSpreadsheet, Loader2, Search, Plus, X, Building2, Tag, Link as LinkIcon, Table as TableIcon, ChevronDown, ChevronRight, Info, TrendingUp, Hash } from 'lucide-react';
 import { api } from '../../../lib/api';
 import { cn } from '../../../lib/utils';
 import toast from 'react-hot-toast';
@@ -16,6 +16,15 @@ interface TabelaPreco {
   ativo?: boolean;
   itens: number | Array<{ codigo: string; descricao: string; valor: number }>;
 }
+
+const TIPO_COLORS: Record<string, string> = {
+  '22 - TUSS': 'bg-blue-50 text-blue-600 border-blue-100',
+  'PROPRIO': 'bg-purple-50 text-purple-600 border-purple-100',
+  'CBHPM': 'bg-amber-50 text-amber-600 border-amber-100',
+  'TNUMM': 'bg-emerald-50 text-emerald-600 border-emerald-100',
+  'PRECO_FABRICA': 'bg-rose-50 text-rose-600 border-rose-100',
+  'SIMPRO': 'bg-indigo-50 text-indigo-600 border-indigo-100',
+};
 
 export function TabelasPrecos() {
   const [tabelas, setTabelas] = useState<TabelaPreco[]>([]);
@@ -173,44 +182,54 @@ export function TabelasPrecos() {
       ) : (
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar Seleção de Tabelas */}
-          <div className="lg:w-1/3 space-y-6">
-            <h3 className="font-black text-xs uppercase tracking-widest text-muted-foreground mb-4">Convênios e Tabelas</h3>
+          <div className="lg:w-1/3 space-y-4">
+            <h3 className="font-black text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-4 ml-2">Convênios e Tabelas</h3>
             {convenios.map(conv => {
               const isExpanded = expandedConvenios[conv.id] !== false;
               return (
-                <div key={conv.id} className="space-y-2">
+                <div key={conv.id} className="bg-white/50 rounded-2xl p-2 border border-gray-100">
                   <button
                     onClick={() => toggleConvenio(conv.id)}
-                    className="flex items-center justify-between w-full px-2 py-1 hover:bg-secondary/30 rounded-lg transition-colors group text-left"
+                    className="flex items-center justify-between w-full px-3 py-2 hover:bg-white rounded-xl transition-all group text-left"
                   >
                     <div className="flex items-center gap-2">
-                      <Building2 className="w-4 h-4 text-primary" />
-                      <span className="text-sm font-black uppercase text-foreground">{conv.nome}</span>
+                      <Building2 className="w-4 h-4 text-blue-500" />
+                      <span className="text-xs font-black uppercase tracking-tight text-gray-700">{conv.nome}</span>
                     </div>
                     {isExpanded ? (
-                      <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                      <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
                     ) : (
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                      <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
                     )}
                   </button>
 
-                  {isExpanded && (
-                    <div className="space-y-2 ml-4 animate-in fade-in slide-in-from-top-1 duration-200">
+                  {isExpanded && conv.tabelas_vinculadas?.length > 0 && (
+                    <div className="space-y-1 mt-2 animate-in fade-in slide-in-from-top-1 duration-200">
                       {tabelas.filter(t => conv.tabelas_vinculadas?.some((v: any) => v.tabela_id === t.id)).map(t => (
                         <div
                           key={t.id}
                           onClick={() => setSelectedTabela(t)}
                           className={cn(
-                            "p-4 rounded-xl cursor-pointer border transition-all shadow-sm",
-                            selectedTabela?.id === t.id ? 'bg-primary/10 border-primary shadow-md' : 'glass hover:bg-secondary/50 border-border/50'
+                            "p-3 rounded-xl cursor-pointer border transition-all flex items-center justify-between group",
+                            selectedTabela?.id === t.id
+                              ? 'bg-blue-600 border-blue-600 shadow-lg shadow-blue-100'
+                              : 'bg-white hover:border-blue-200 border-transparent shadow-sm'
                           )}
                         >
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary font-black uppercase tracking-tighter">{t.tipo}</span>
-                          </div>
-                          <p className={cn("text-xs font-bold leading-tight", selectedTabela?.id === t.id ? "text-primary" : "text-muted-foreground")}>
-                            {t.nome || t.convenio}
+                          <p className={cn(
+                            "text-xs font-bold transition-colors truncate pr-2",
+                            selectedTabela?.id === t.id ? "text-white" : "text-gray-600"
+                          )}>
+                            {t.nome}
                           </p>
+                          <span className={cn(
+                            "text-[8px] px-1.5 py-0.5 rounded-md font-black border transition-colors",
+                            selectedTabela?.id === t.id
+                              ? "bg-white/20 text-white border-white/30"
+                              : (TIPO_COLORS[t.tipo] || "bg-gray-100 text-gray-500 border-gray-200")
+                          )}>
+                            {t.tipo.split(' ')[0]}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -220,15 +239,15 @@ export function TabelasPrecos() {
             })}
 
             {/* Seção de Fallback para tabelas não vinculadas explicitamente */}
-            {tabelas.filter(t => !convenios.some(c => c.tabelas_vinculadas?.some((v: any) => v.tabela_id === t.id))).length > 0 && (
-              <div className="space-y-2 pt-6 border-t border-border/30">
+            <div className="pt-4">
+              <div className="bg-gray-100/50 rounded-2xl p-2 border border-dashed border-gray-200">
                 <button
                   onClick={() => setExpandedGerais(!expandedGerais)}
-                  className="flex items-center justify-between w-full px-2 py-1 hover:bg-secondary/30 rounded-lg transition-colors group text-left"
+                  className="flex items-center justify-between w-full px-3 py-2 hover:bg-white rounded-xl transition-all group text-left"
                 >
                   <div className="flex items-center gap-2">
-                    <Tag className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Tabelas Gerais / Avulsas</span>
+                    <Tag className="w-4 h-4 text-gray-400" />
+                    <span className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Tabelas Gerais / Avulsas</span>
                   </div>
                   {expandedGerais ? (
                     <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
@@ -238,79 +257,108 @@ export function TabelasPrecos() {
                 </button>
 
                 {expandedGerais && (
-                  <div className="space-y-2 ml-4 animate-in fade-in slide-in-from-top-1 duration-200">
+                  <div className="space-y-1 mt-2 animate-in fade-in slide-in-from-top-1 duration-200">
                     {tabelas.filter(t => !convenios.some(c => c.tabelas_vinculadas?.some((v: any) => v.tabela_id === t.id))).map(t => (
                       <div
                         key={t.id}
                         onClick={() => setSelectedTabela(t)}
                         className={cn(
-                          "p-4 rounded-xl cursor-pointer border transition-all",
-                          selectedTabela?.id === t.id ? 'bg-primary/10 border-primary shadow-md' : 'glass hover:bg-secondary/50 border-border/50'
+                          "p-3 rounded-xl cursor-pointer border transition-all flex items-center justify-between group",
+                          selectedTabela?.id === t.id
+                            ? 'bg-gray-800 border-gray-800 shadow-lg'
+                            : 'bg-white/60 hover:border-gray-300 border-transparent'
                         )}
                       >
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary font-black uppercase tracking-tighter">{t.tipo}</span>
-                        </div>
-                        <p className={cn("text-xs font-bold leading-tight", selectedTabela?.id === t.id ? "text-primary" : "text-muted-foreground")}>
+                        <p className={cn(
+                          "text-xs font-bold transition-colors truncate pr-2",
+                          selectedTabela?.id === t.id ? "text-white" : "text-gray-500"
+                        )}>
                           {t.nome}
                         </p>
+                        <span className={cn(
+                          "text-[8px] px-1.5 py-0.5 rounded-md font-black border transition-colors",
+                          selectedTabela?.id === t.id
+                            ? "bg-white/10 text-white border-white/20"
+                            : "bg-gray-50 text-gray-400 border-gray-100"
+                        )}>
+                          {t.tipo.split(' ')[0]}
+                        </span>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
-            )}
+            </div>
           </div>
 
           {/* Área de Itens da Tabela */}
-          <div className="lg:w-2/3 glass rounded-2xl p-6">
+          <div className="lg:w-2/3 bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
             {selectedTabela ? (
               <>
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 pb-6 border-b border-gray-50">
                   <div>
-                    <h2 className="text-xl font-black flex items-center gap-2 uppercase tracking-tighter text-primary">
-                      <FileSpreadsheet className="w-5 h-5" />
+                    <h2 className="text-2xl font-black flex items-center gap-3 uppercase tracking-tighter text-gray-800">
+                      <FileSpreadsheet className="w-6 h-6 text-blue-600" />
                       Itens da Tabela
                     </h2>
                     <div className="flex items-center gap-2 mt-1">
-                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{selectedTabela.nome}</p>
-                      <button onClick={() => setModalVinculoOpen(true)} className="text-[10px] font-black text-primary uppercase hover:underline flex items-center gap-1">
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-0.5 rounded border border-gray-100">{selectedTabela.nome}</p>
+                      <button onClick={() => setModalVinculoOpen(true)} className="text-[10px] font-black text-blue-600 uppercase hover:text-blue-700 transition-colors flex items-center gap-1 ml-2">
                         <LinkIcon className="w-3 h-3" /> Configurar Vínculos
                       </button>
                     </div>
                   </div>
-                  <div className="relative w-full sm:w-64 group">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                    <input type="text" placeholder="Buscar código ou ref..." value={searchItem} onChange={e => setSearchItem(e.target.value)}
-                      className="w-full h-10 pl-9 pr-4 rounded-lg bg-background border border-border focus:border-primary outline-none text-sm transition-all" />
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <div className="relative flex-1 sm:w-64 group">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                      <input type="text" placeholder="Buscar código ou ref..." value={searchItem} onChange={e => setSearchItem(e.target.value)}
+                        className="w-full h-11 pl-10 pr-4 rounded-xl bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white outline-none text-sm transition-all" />
+                    </div>
+                    <button
+                      onClick={() => setModalOpen(true)}
+                      className="h-11 px-6 bg-gray-900 text-white rounded-xl flex items-center gap-2 text-[10px] font-black uppercase hover:bg-black transition-all shadow-lg shadow-gray-200 active:scale-95"
+                    >
+                      <Plus className="w-4 h-4" /> Item
+                    </button>
                   </div>
                 </div>
 
-                <div className="flex justify-end mb-4">
-                  <button
-                    onClick={() => setModalOpen(true)}
-                    className="btn-primary py-2 px-6 flex items-center gap-2 text-xs font-black uppercase"
-                  >
-                    <Plus className="w-4 h-4" /> Adicionar Item
-                  </button>
+                {/* Stats Summary Area */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+                  <div className="p-4 rounded-2xl bg-blue-50/50 border border-blue-100 flex items-center gap-3">
+                    <div className="p-2 bg-blue-100 rounded-lg text-blue-600"><Hash size={18} /></div>
+                    <div>
+                      <p className="text-[10px] font-black text-blue-400 uppercase leading-none">Total Itens</p>
+                      <p className="text-lg font-black text-blue-700">{filteredItens.length}</p>
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 flex items-center gap-3">
+                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600"><TrendingUp size={18} /></div>
+                    <div>
+                      <p className="text-[10px] font-black text-emerald-400 uppercase leading-none">Média Valor</p>
+                      <p className="text-lg font-black text-emerald-700">
+                        {formatCurrency(filteredItens.reduce((acc, i) => acc + i.valor, 0) / (filteredItens.length || 1))}
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="overflow-x-auto rounded-xl border border-border/50">
-                  <table className="w-full text-left text-sm">
-                    <thead className="bg-secondary/50">
+                  <table className="w-full text-left">
+                    <thead className="bg-gray-50/80">
                       <tr>
-                        <th className="px-4 py-3 font-semibold">Código</th>
-                        <th className="px-4 py-3 font-semibold">Descrição do Procedimento</th>
-                        <th className="px-4 py-3 font-semibold text-right">Valor Negociado</th>
+                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Código</th>
+                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Procedimento</th>
+                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Valor Negociado</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border/50 bg-background/50">
+                    <tbody className="divide-y divide-gray-100">
                       {filteredItens.length > 0 ? (
                         filteredItens.map(item => (
-                          <tr key={item.codigo} className="hover:bg-secondary/20 transition-colors">
-                            <td className="px-4 py-3 font-mono text-muted-foreground">{item.codigo}</td>
-                            <td className="px-4 py-3 font-medium">{item.descricao}</td>
-                            <td className="px-4 py-3 text-right font-bold text-primary">{formatCurrency(item.valor)}</td>
+                          <tr key={item.codigo} className="hover:bg-blue-50/30 transition-colors group">
+                            <td className="px-6 py-4 font-mono text-xs font-bold text-gray-400 group-hover:text-blue-500">{item.codigo}</td>
+                            <td className="px-6 py-4 text-sm font-bold text-gray-700">{item.descricao}</td>
+                            <td className="px-6 py-4 text-right font-black text-gray-900">{formatCurrency(item.valor)}</td>
                           </tr>
                         ))
                       ) : (
@@ -323,7 +371,12 @@ export function TabelasPrecos() {
                 </div>
               </>
             ) : (
-              <div className="h-full flex items-center justify-center text-muted-foreground">Selecione uma tabela ao lado.</div>
+              <div className="h-[400px] flex flex-col items-center justify-center text-center space-y-4">
+                <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-200">
+                  <Info size={40} />
+                </div>
+                <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Selecione uma tabela para visualizar os itens</p>
+              </div>
             )}
           </div>
         </div>

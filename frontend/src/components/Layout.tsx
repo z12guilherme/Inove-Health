@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Stethoscope, 
-  Activity, 
+import {
+  LayoutDashboard,
+  Users,
+  Stethoscope,
+  Activity,
   FileText,
   LogOut,
   Menu,
@@ -13,7 +13,6 @@ import {
   Hospital,
   Pill,
   Brain,
-  Package,
   Building,
   Box,
   Wallet,
@@ -25,7 +24,9 @@ import {
   AlertTriangle,
   ClipboardList,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  ArrowRightLeft, // Importar o ícone ArrowRightLeft
+  FileCode2,
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -62,7 +63,8 @@ export function Layout() {
       links: [
         { name: 'Unidades de Saúde', path: '/admin/unidades', icon: Hospital },
         { name: 'Profissionais', path: '/admin/profissionais', icon: Users },
-        { name: 'Fornecedores', path: '/admin/cadastros/fornecedores', icon: Package },
+        // O ícone Package foi removido pois não é mais usado aqui, mas pode ser adicionado se necessário em outro lugar.
+        { name: 'Fornecedores', path: '/admin/cadastros/fornecedores', icon: Box },
         { name: 'Convênios', path: '/admin/cadastros/convenios', icon: Building },
       ]
     },
@@ -76,9 +78,18 @@ export function Layout() {
       ]
     },
     {
+      name: 'Atendimento Clínico',
+      links: [
+        { name: 'Triagem (Enfermagem)', path: '/clinical/triagem', icon: Activity },
+        { name: 'Fila Médica', path: '/clinical/fila-medica', icon: Users },
+        { name: 'Consultório (Atendimento)', path: '/clinical/atendimento', icon: Stethoscope },
+      ]
+    },
+    {
       name: 'Estoque & Farmácia',
       links: [
         { name: 'Gestão de Insumos', path: '/admin/estoque/insumos', icon: Box },
+        { name: 'Movimentação de Farmácia', path: '/admin/estoque/movimentacao', icon: ArrowRightLeft },
       ]
     },
     {
@@ -95,6 +106,7 @@ export function Layout() {
       links: [
         { name: 'Tabelas de Preços', path: '/admin/faturamento/tabelas', icon: FileSpreadsheet },
         { name: 'Guias de Atendimento', path: '/admin/faturamento/guias', icon: Stethoscope },
+        { name: 'Remessas TISS', path: '/admin/faturamento/remessas', icon: FileCode2 },
         { name: 'Fechamento de Lote', path: '/admin/faturamento/lotes', icon: PackageOpen },
         { name: 'Gestão de Glosas', path: '/admin/faturamento/glosas', icon: AlertTriangle },
       ]
@@ -114,10 +126,10 @@ export function Layout() {
     {
       name: 'Atendimento Clínico',
       links: [
-        { name: 'Pacientes', path: '/clinical/pacientes', icon: Users },
-        { name: 'Triagem', path: '/clinical/triagem', icon: Activity },
-        { name: 'Atendimento', path: '/clinical/atendimento', icon: Stethoscope },
-        { name: 'Prescrições', path: '/clinical/prescricoes', icon: Pill },
+        { name: 'Gestão de Pacientes', path: '/clinical/pacientes', icon: Users },
+        { name: 'Triagem (Enfermagem)', path: '/clinical/triagem', icon: Activity },
+        { name: 'Fila Médica', path: '/clinical/fila-medica', icon: Users },
+        { name: 'Consultório (Atendimento)', path: '/clinical/atendimento', icon: Stethoscope },
         { name: 'IA Assistiva', path: '/clinical/ia', icon: Brain },
       ]
     }
@@ -149,7 +161,7 @@ export function Layout() {
               <ChevronRight className="w-4 h-4" />
             )}
           </button>
-          
+
           {openGroups[group.name] && (
             <div className="space-y-1">
               {group.links.map((link) => {
@@ -162,8 +174,8 @@ export function Layout() {
                     onClick={() => setSidebarOpen(false)}
                     className={cn(
                       "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 group",
-                      isActive 
-                        ? "bg-primary/10 text-primary font-medium" 
+                      isActive
+                        ? "bg-primary/10 text-primary font-medium"
                         : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                     )}
                   >
@@ -183,7 +195,7 @@ export function Layout() {
     <div className="min-h-screen bg-background flex">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
@@ -203,7 +215,7 @@ export function Layout() {
               Medi<span className="text-primary">Core</span>
             </h1>
           </div>
-          <button 
+          <button
             className="ml-auto lg:hidden text-muted-foreground hover:text-foreground"
             onClick={() => setSidebarOpen(false)}
           >
@@ -238,13 +250,13 @@ export function Layout() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header className="h-20 glass border-b sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between lg:justify-end">
-          <button 
+          <button
             className="lg:hidden p-2 rounded-lg hover:bg-secondary text-foreground"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu className="w-6 h-6" />
           </button>
-          
+
           <div className="flex items-center gap-4">
             <div className="hidden sm:block text-right">
               <p className="text-sm font-medium text-foreground">{user?.name}</p>

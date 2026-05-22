@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  Calendar, 
-  Clock, 
-  Search, 
-  Plus, 
-  Trash2, 
-  UserPlus, 
-  Check, 
-  Stethoscope, 
-  Loader2, 
-  Building, 
-  Bed, 
-  FileText 
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  Search,
+  Plus,
+  Trash2,
+  UserPlus,
+  Check,
+  Stethoscope,
+  Loader2,
+  Building,
+  Bed,
+  FileText
 } from 'lucide-react';
 import { api } from '../../lib/api';
 import toast from 'react-hot-toast';
@@ -74,9 +74,14 @@ interface ProcedimentoAdicionado {
 
 export function NovoInternamento() {
   const navigate = useNavigate();
-  
+
   // Modals e Loadings
+  const pacienteRef = useRef<HTMLDivElement>(null);
+  const medicoRef = useRef<HTMLDivElement>(null);
+  const cidRef = useRef<HTMLDivElement>(null);
+  const procRef = useRef<HTMLDivElement>(null);
   const [pacienteModal, setPacienteModal] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   // Beneficiário State
@@ -92,10 +97,10 @@ export function NovoInternamento() {
   const [showMedicoDropdown, setShowMedicoDropdown] = useState(false);
 
   // Form Geral State
-  const [dataAtendimento, setDataAtendimento] = useState(new Date().toISOString().split('T')[0]);
+  const [dataAtendimento, setDataAtendimento] = useState(new Date().toLocaleDateString('en-CA'));
   const [horaAtendimento, setHoraAtendimento] = useState(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
   const [categoria, setCategoria] = useState<'SUS' | 'Particular' | 'Convênio'>('Particular');
-  
+
   // Dados de Internação Específicos
   const [carater, setCarater] = useState<'Eletiva' | 'Urgência/Emergência'>('Eletiva');
   const [tipoInternacao, setTipoInternacao] = useState(TIPO_INTERNACAO[0]);
@@ -118,20 +123,38 @@ export function NovoInternamento() {
   const [procedimentosAdicionados, setProcedimentosAdicionados] = useState<ProcedimentoAdicionado[]>([]);
 
   // Dados da Solicitação State
-  const [solicitacaoData, setSolicitacaoData] = useState(new Date().toISOString().split('T')[0]);
+  const [solicitacaoData, setSolicitacaoData] = useState(new Date().toLocaleDateString('en-CA'));
   const [solicitacaoHora, setSolicitacaoHora] = useState(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
   const [contratadoSolicitante, setContratadoSolicitante] = useState<'Hospital' | 'Pessoa Jurídica' | 'Pessoa Física'>('Hospital');
   const [profissionalSolicitante, setProfissionalSolicitante] = useState('');
   const [especialidadeSolicitante, setEspecialidadeSolicitante] = useState('');
   const [indicacaoClinica, setIndicacaoClinica] = useState('');
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (pacienteRef.current && !pacienteRef.current.contains(event.target as Node)) {
+        setShowPacienteDropdown(false);
+      }
+      if (medicoRef.current && !medicoRef.current.contains(event.target as Node)) {
+        setShowMedicoDropdown(false);
+      }
+      if (cidRef.current && !cidRef.current.contains(event.target as Node)) {
+        setShowCidDropdown(false);
+      }
+      if (procRef.current && !procRef.current.contains(event.target as Node)) {
+        setShowProcDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   // Fetch Lists
   useEffect(() => {
     const fetchData = async () => {
       try {
         const resPac = await api.get('/pacientes');
         setPacientesList(resPac.data.pacientes || resPac.data || []);
-        
+
         const resMed = await api.get('/medicos');
         setMedicosList(resMed.data.medicos || resMed.data || []);
       } catch (err) {
@@ -142,24 +165,24 @@ export function NovoInternamento() {
   }, []);
 
   // Seletores
-  const filteredPacientes = pacientesList.filter(p => 
-    p.nome.toLowerCase().includes(pacienteSearch.toLowerCase()) || 
+  const filteredPacientes = pacientesList.filter(p =>
+    p.nome.toLowerCase().includes(pacienteSearch.toLowerCase()) ||
     p.cpf.includes(pacienteSearch) ||
     p.id.toLowerCase().includes(pacienteSearch.toLowerCase())
   );
 
-  const filteredMedicos = medicosList.filter(m => 
-    m.nome.toLowerCase().includes(medicoSearch.toLowerCase()) || 
+  const filteredMedicos = medicosList.filter(m =>
+    m.nome.toLowerCase().includes(medicoSearch.toLowerCase()) ||
     m.especialidade.toLowerCase().includes(medicoSearch.toLowerCase())
   );
 
-  const filteredCids = SEED_CIDS.filter(c => 
-    c.codigo.toLowerCase().includes(cidSearch.toLowerCase()) || 
+  const filteredCids = SEED_CIDS.filter(c =>
+    c.codigo.toLowerCase().includes(cidSearch.toLowerCase()) ||
     c.descricao.toLowerCase().includes(cidSearch.toLowerCase())
   );
 
-  const filteredProcs = SEED_PROCEDIMENTOS.filter(p => 
-    p.codigo.includes(procSearch) || 
+  const filteredProcs = SEED_PROCEDIMENTOS.filter(p =>
+    p.codigo.includes(procSearch) ||
     p.nome.toLowerCase().includes(procSearch.toLowerCase())
   );
 
@@ -205,7 +228,7 @@ export function NovoInternamento() {
       toast.error('Por favor, insira o leito de acomodação.');
       return;
     }
-    
+
     setLoading(true);
     try {
       const payload = {
@@ -253,8 +276,8 @@ export function NovoInternamento() {
     <div className="space-y-8 pb-12">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <button 
-          onClick={() => navigate('/clinical/atendimentos')} 
+        <button
+          onClick={() => navigate('/clinical/atendimentos')}
           className="p-2.5 rounded-xl border border-border hover:bg-secondary hover:text-foreground text-muted-foreground transition-all duration-300"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -272,8 +295,8 @@ export function NovoInternamento() {
             <label className="block text-sm font-medium mb-2 text-foreground flex items-center gap-1.5">
               <Calendar className="w-4 h-4 text-primary" /> Data do Atendimento
             </label>
-            <input 
-              type="date" 
+            <input
+              type="date"
               required
               value={dataAtendimento}
               onChange={e => setDataAtendimento(e.target.value)}
@@ -284,8 +307,8 @@ export function NovoInternamento() {
             <label className="block text-sm font-medium mb-2 text-foreground flex items-center gap-1.5">
               <Clock className="w-4 h-4 text-primary" /> Hora do Atendimento
             </label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               required
               value={horaAtendimento}
               onChange={e => setHoraAtendimento(e.target.value)}
@@ -300,11 +323,10 @@ export function NovoInternamento() {
                   key={cat}
                   type="button"
                   onClick={() => setCategoria(cat)}
-                  className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
-                    categoria === cat 
-                      ? 'bg-primary text-primary-foreground shadow-sm' 
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
+                  className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${categoria === cat
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                    }`}
                 >
                   {cat}
                 </button>
@@ -331,7 +353,7 @@ export function NovoInternamento() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6" ref={pacienteRef}>
             <div className="relative md:col-span-2">
               <label className="block text-sm font-medium mb-2 text-foreground">
                 Pesquise pelo Nome, CPF ou Prontuário do Paciente
@@ -341,17 +363,16 @@ export function NovoInternamento() {
                 <input
                   type="text"
                   placeholder="Digite para buscar..."
-                  value={selectedPaciente ? selectedPaciente.nome : pacienteSearch}
+                  value={pacienteSearch}
                   onChange={e => {
                     setPacienteSearch(e.target.value);
                     if (selectedPaciente) setSelectedPaciente(null);
                     setShowPacienteDropdown(true);
                   }}
-                  onFocus={() => setShowPacienteDropdown(true)}
                   className="w-full h-12 pl-10 pr-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground"
                 />
               </div>
-              {showPacienteDropdown && filteredPacientes.length > 0 && (
+              {showPacienteDropdown && pacienteSearch.length > 0 && filteredPacientes.length > 0 && (
                 <div className="absolute left-0 right-0 mt-2 bg-background border border-border rounded-xl shadow-xl z-20 max-h-60 overflow-y-auto">
                   {filteredPacientes.map(p => (
                     <button
@@ -359,7 +380,7 @@ export function NovoInternamento() {
                       type="button"
                       onClick={() => {
                         setSelectedPaciente(p);
-                        setPacienteSearch('');
+                        setPacienteSearch(p.nome);
                         setShowPacienteDropdown(false);
                       }}
                       className="w-full text-left px-4 py-3 hover:bg-secondary/50 flex flex-col border-b border-border/30 last:border-0"
@@ -420,11 +441,10 @@ export function NovoInternamento() {
                     key={c}
                     type="button"
                     onClick={() => setCarater(c)}
-                    className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
-                      carater === c 
-                        ? 'bg-primary text-primary-foreground shadow-sm' 
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
+                    className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${carater === c
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                      }`}
                   >
                     {c}
                   </button>
@@ -488,24 +508,25 @@ export function NovoInternamento() {
               />
             </div>
 
-            <div className="relative">
+            <div className="relative" ref={cidRef}>
               <label className="block text-sm font-medium mb-2 text-foreground">Hipótese Diagnóstica (CID-10)</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Pesquise por CID..."
-                  value={selectedCid ? `${selectedCid.codigo} - ${selectedCid.descricao}` : cidSearch}
+                  value={cidSearch}
                   onChange={e => {
-                    setCidSearch(e.target.value);
-                    if (selectedCid) setSelectedCid(null);
+                    const val = e.target.value;
+                    setCidSearch(val);
+                    if (selectedCid && val !== `${selectedCid.codigo} - ${selectedCid.descricao}`) setSelectedCid(null);
                     setShowCidDropdown(true);
                   }}
-                  onFocus={() => setShowCidDropdown(true)}
+                  onFocus={() => setShowCidDropdown(cidSearch.length > 0)}
                   className="w-full h-12 pl-10 pr-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground text-sm"
                 />
               </div>
-              {showCidDropdown && filteredCids.length > 0 && (
+              {showCidDropdown && cidSearch.length > 0 && filteredCids.length > 0 && (
                 <div className="absolute left-0 right-0 mt-2 bg-background border border-border rounded-xl shadow-xl z-20 max-h-48 overflow-y-auto">
                   {filteredCids.map(c => (
                     <button
@@ -513,7 +534,7 @@ export function NovoInternamento() {
                       type="button"
                       onClick={() => {
                         setSelectedCid(c);
-                        setCidSearch('');
+                        setCidSearch(`${c.codigo} - ${c.descricao}`);
                         setShowCidDropdown(false);
                       }}
                       className="w-full text-left px-4 py-2 hover:bg-secondary/50 flex flex-col border-b border-border/30 last:border-0 text-sm"
@@ -526,24 +547,25 @@ export function NovoInternamento() {
               )}
             </div>
 
-            <div className="relative">
+            <div className="relative" ref={medicoRef}>
               <label className="block text-sm font-medium mb-2 text-foreground">Profissional Executante</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Pesquise o médico..."
-                  value={selectedMedico ? selectedMedico.nome : medicoSearch}
+                  value={medicoSearch}
                   onChange={e => {
-                    setMedicoSearch(e.target.value);
-                    if (selectedMedico) setSelectedMedico(null);
+                    const val = e.target.value;
+                    setMedicoSearch(val);
+                    if (selectedMedico && val !== selectedMedico.nome) setSelectedMedico(null);
                     setShowMedicoDropdown(true);
                   }}
-                  onFocus={() => setShowMedicoDropdown(true)}
+                  onFocus={() => setShowMedicoDropdown(medicoSearch.length > 0)}
                   className="w-full h-12 pl-10 pr-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground text-sm"
                 />
               </div>
-              {showMedicoDropdown && filteredMedicos.length > 0 && (
+              {showMedicoDropdown && medicoSearch.length > 0 && filteredMedicos.length > 0 && (
                 <div className="absolute left-0 right-0 mt-2 bg-background border border-border rounded-xl shadow-xl z-20 max-h-48 overflow-y-auto">
                   {filteredMedicos.map(m => (
                     <button
@@ -551,7 +573,7 @@ export function NovoInternamento() {
                       type="button"
                       onClick={() => {
                         setSelectedMedico(m);
-                        setMedicoSearch('');
+                        setMedicoSearch(m.nome);
                         setShowMedicoDropdown(false);
                       }}
                       className="w-full text-left px-4 py-2.5 hover:bg-secondary/50 flex flex-col border-b border-border/30 last:border-0 text-sm"
@@ -582,25 +604,26 @@ export function NovoInternamento() {
                 className="w-full h-12 px-4 rounded-xl bg-secondary/30 border border-border text-muted-foreground outline-none cursor-not-allowed text-sm"
               />
             </div>
-            
-            <div className="md:col-span-6 relative">
+
+            <div className="md:col-span-6 relative" ref={procRef}>
               <label className="block text-sm font-medium mb-2 text-foreground">Procedimento</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Pesquise por código ou nome..."
-                  value={selectedProc ? `${selectedProc.codigo} - ${selectedProc.nome}` : procSearch}
+                  value={procSearch}
                   onChange={e => {
-                    setProcSearch(e.target.value);
-                    if (selectedProc) setSelectedProc(null);
+                    const val = e.target.value;
+                    setProcSearch(val);
+                    if (selectedProc && val !== `${selectedProc.codigo} - ${selectedProc.nome}`) setSelectedProc(null);
                     setShowProcDropdown(true);
                   }}
-                  onFocus={() => setShowProcDropdown(true)}
+                  onFocus={() => setShowProcDropdown(procSearch.length > 0)}
                   className="w-full h-12 pl-10 pr-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground text-sm"
                 />
               </div>
-              {showProcDropdown && filteredProcs.length > 0 && (
+              {showProcDropdown && procSearch.length > 0 && filteredProcs.length > 0 && (
                 <div className="absolute left-0 right-0 mt-2 bg-background border border-border rounded-xl shadow-xl z-20 max-h-48 overflow-y-auto">
                   {filteredProcs.map(p => (
                     <button
@@ -608,7 +631,7 @@ export function NovoInternamento() {
                       type="button"
                       onClick={() => {
                         setSelectedProc(p);
-                        setProcSearch('');
+                        setProcSearch(`${p.codigo} - ${p.nome}`);
                         setShowProcDropdown(false);
                       }}
                       className="w-full text-left px-4 py-2 hover:bg-secondary/50 flex flex-col border-b border-border/30 last:border-0 text-sm"
@@ -709,7 +732,7 @@ export function NovoInternamento() {
                 className="w-full h-12 px-4 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium mb-2 text-foreground">Hora da Solicitação</label>
               <input
@@ -728,11 +751,10 @@ export function NovoInternamento() {
                     key={c}
                     type="button"
                     onClick={() => setContratadoSolicitante(c)}
-                    className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
-                      contratadoSolicitante === c 
-                        ? 'bg-primary text-primary-foreground shadow-sm' 
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
+                    className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${contratadoSolicitante === c
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                      }`}
                   >
                     {c}
                   </button>
@@ -811,7 +833,7 @@ export function NovoInternamento() {
         onClose={() => setPacienteModal(false)}
         onSuccess={(p) => {
           setSelectedPaciente(p);
-          setPacienteSearch('');
+          setPacienteSearch(p.nome);
         }}
       />
     </div>

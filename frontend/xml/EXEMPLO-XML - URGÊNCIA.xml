@@ -1,0 +1,1891 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ans:mensagemTISS xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas">
+  <ans:cabecalho>
+    <ans:identificacaoTransacao>
+  <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
+  <ans:sequencialTransacao>000000013151</ans:sequencialTransacao>
+  <ans:dataRegistroTransacao>2026-05-22</ans:dataRegistroTransacao>
+  <ans:horaRegistroTransacao>09:16:25</ans:horaRegistroTransacao>
+</ans:identificacaoTransacao>
+    <ans:origem>
+  <ans:identificacaoPrestador>
+    <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+  </ans:identificacaoPrestador>
+</ans:origem>
+    <ans:destino>
+      <ans:registroANS>368253</ans:registroANS>
+    </ans:destino>
+    <ans:Padrao>4.01.00</ans:Padrao>
+  </ans:cabecalho>
+  <ans:prestadorParaOperadora>
+    <ans:loteGuias>
+      <ans:numeroLote>7432</ans:numeroLote>
+      <ans:guiasTISS>
+        <ans:guiaSP-SADT>
+          <ans:cabecalhoGuia>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>281593878</ans:numeroGuiaPrestador>
+          </ans:cabecalhoGuia>
+          <ans:dadosAutorizacao>
+  <ans:numeroGuiaOperadora>281593878</ans:numeroGuiaOperadora>
+  <ans:dataAutorizacao>2026-04-15</ans:dataAutorizacao>
+  <ans:senha>AB6865672</ans:senha>
+</ans:dadosAutorizacao>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>0DVNF000203009</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:dadosSolicitante>
+  <ans:contratadoSolicitante>
+  <ans:cnpjContratado>04232442000114</ans:cnpjContratado>
+</ans:contratadoSolicitante>
+  <ans:nomeContratadoSolicitante>HOSPITAL CONSULT IMAGEM E DIAGNOSTICO LTDA</ans:nomeContratadoSolicitante>
+  <ans:profissionalSolicitante>
+  <ans:nomeProfissional>ANDRÉ DE BARROS ARAÚJO</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>40609</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225125</ans:CBOS>
+</ans:profissionalSolicitante>
+</ans:dadosSolicitante>
+          <ans:dadosSolicitacao>
+            <ans:dataSolicitacao>2026-04-15</ans:dataSolicitacao>
+            <ans:caraterAtendimento>2</ans:caraterAtendimento>
+          </ans:dadosSolicitacao>
+          <ans:dadosExecutante>
+            <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+</ans:contratadoExecutante>
+            <ans:CNES>6931561</ans:CNES>
+          </ans:dadosExecutante>
+          <ans:dadosAtendimento>
+            <ans:tipoAtendimento>04</ans:tipoAtendimento>
+            <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:regimeAtendimento>04</ans:regimeAtendimento>
+          </ans:dadosAtendimento>
+          <ans:procedimentosExecutados>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>1</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>10101039</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Consulta em pronto socorro</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>130.00</ans:valorUnitario>
+  <ans:valorTotal>130.00</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>2</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+  <ans:horaInicial>21:35:00</ans:horaInicial>
+  <ans:horaFinal>21:36:00</ans:horaFinal>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40304361</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Hemograma com contagem de plaquetas ou fracoes (eritrograma,
+leucograma, plaquetas)</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>10.11</ans:valorUnitario>
+  <ans:valorTotal>10.11</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>3</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+  <ans:horaInicial>21:35:00</ans:horaInicial>
+  <ans:horaFinal>21:36:00</ans:horaFinal>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40302580</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Ureia</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>4.55</ans:valorUnitario>
+  <ans:valorTotal>4.55</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>4</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+  <ans:horaInicial>21:35:00</ans:horaInicial>
+  <ans:horaFinal>21:36:00</ans:horaFinal>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40301630</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Creatinina</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>4.55</ans:valorUnitario>
+  <ans:valorTotal>4.55</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>5</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+  <ans:horaInicial>21:35:00</ans:horaInicial>
+  <ans:horaFinal>21:36:00</ans:horaFinal>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40308383</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Proteina C reativa, qualitativa</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>13.55</ans:valorUnitario>
+  <ans:valorTotal>13.55</ans:valorTotal>
+</ans:procedimentoExecutado>
+</ans:procedimentosExecutados>
+          <ans:outrasDespesas>
+  <ans:despesa>
+    <ans:sequencialItem>6</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+      <ans:horaInicial>07:55:23</ans:horaInicial>
+      <ans:horaFinal>07:55:23</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60023430</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>47.52</ans:valorUnitario>
+      <ans:valorTotal>47.52</ans:valorTotal>
+      <ans:descricaoProcedimento>TAXA DE REPOUSO ATE 2 HORAS NA URGENCIA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>7</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+      <ans:horaInicial>19:50:00</ans:horaInicial>
+      <ans:horaFinal>19:50:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90123093</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>004</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>10.99</ans:valorUnitario>
+      <ans:valorTotal>10.99</ans:valorTotal>
+      <ans:descricaoProcedimento>SOL. CLORETO DE SODIO 0,9% EP (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>8</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+      <ans:horaInicial>19:50:00</ans:horaInicial>
+      <ans:horaFinal>19:50:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90288157</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>8.57</ans:valorUnitario>
+      <ans:valorTotal>17.15</ans:valorTotal>
+      <ans:descricaoProcedimento>ACIDO TRANEXAMICO - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>9</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+      <ans:horaInicial>19:50:00</ans:horaInicial>
+      <ans:horaFinal>19:50:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90096924</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>3.95</ans:valorUnitario>
+      <ans:valorTotal>3.95</ans:valorTotal>
+      <ans:descricaoProcedimento>DIPIRONA MONOIDRATADA - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>10</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+      <ans:horaInicial>19:50:00</ans:horaInicial>
+      <ans:horaFinal>19:50:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90072081</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>1.04</ans:valorUnitario>
+      <ans:valorTotal>1.04</ans:valorTotal>
+      <ans:descricaoProcedimento>AGUA PARA INJECAO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>11</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+      <ans:horaInicial>19:50:00</ans:horaInicial>
+      <ans:horaFinal>19:50:00</ans:horaFinal>
+      <ans:codigoTabela>00</ans:codigoTabela>
+      <ans:codigoProcedimento>78211565</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>65.00</ans:valorUnitario>
+      <ans:valorTotal>65.00</ans:valorTotal>
+      <ans:descricaoProcedimento>CATETER INTRAVENOSO C/AG 22 GA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>12</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+      <ans:horaInicial>19:50:00</ans:horaInicial>
+      <ans:horaFinal>19:50:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78986249</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>6.74</ans:valorUnitario>
+      <ans:valorTotal>6.74</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 10ML AG.25X0,70MM LUER LOCK PTA.LATERAL PLASTIPAK</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>13</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+      <ans:horaInicial>19:50:00</ans:horaInicial>
+      <ans:horaFinal>19:50:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78986273</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>4.68</ans:valorUnitario>
+      <ans:valorTotal>4.68</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 05ML AG.25X0,70MM LUER LOCK PTA.LATERAL PLASTIPAK</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>14</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-15</ans:dataExecucao>
+      <ans:horaInicial>19:50:00</ans:horaInicial>
+      <ans:horaFinal>19:50:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78352010</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>67.00</ans:valorUnitario>
+      <ans:valorTotal>67.00</ans:valorTotal>
+      <ans:descricaoProcedimento>EQUIPO INFUSAO GRAVITACIONAL MACROGOTAS 05100-014</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+</ans:outrasDespesas>
+          <ans:valorTotal>
+  <ans:valorProcedimentos>162.76</ans:valorProcedimentos>
+  <ans:valorDiarias>0.00</ans:valorDiarias>
+  <ans:valorTaxasAlugueis>47.52</ans:valorTaxasAlugueis>
+  <ans:valorMateriais>143.42</ans:valorMateriais>
+  <ans:valorMedicamentos>33.13</ans:valorMedicamentos>
+  <ans:valorOPME>0.00</ans:valorOPME>
+  <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+  <ans:valorTotalGeral>386.83</ans:valorTotalGeral>
+</ans:valorTotal>
+        </ans:guiaSP-SADT>
+        <ans:guiaSP-SADT>
+          <ans:cabecalhoGuia>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>281750615</ans:numeroGuiaPrestador>
+          </ans:cabecalhoGuia>
+          <ans:dadosAutorizacao>
+  <ans:numeroGuiaOperadora>281750615</ans:numeroGuiaOperadora>
+  <ans:dataAutorizacao>2026-04-16</ans:dataAutorizacao>
+  <ans:senha>AB7940553</ans:senha>
+</ans:dadosAutorizacao>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000214027</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:dadosSolicitante>
+  <ans:contratadoSolicitante>
+  <ans:cnpjContratado>04232442000114</ans:cnpjContratado>
+</ans:contratadoSolicitante>
+  <ans:nomeContratadoSolicitante>HOSPITAL CONSULT IMAGEM E DIAGNOSTICO LTDA</ans:nomeContratadoSolicitante>
+  <ans:profissionalSolicitante>
+  <ans:nomeProfissional>ISADORA ARIELLE DE SOUZA HOLANDA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>37301</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225125</ans:CBOS>
+</ans:profissionalSolicitante>
+</ans:dadosSolicitante>
+          <ans:dadosSolicitacao>
+            <ans:dataSolicitacao>2026-04-16</ans:dataSolicitacao>
+            <ans:caraterAtendimento>2</ans:caraterAtendimento>
+          </ans:dadosSolicitacao>
+          <ans:dadosExecutante>
+            <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+</ans:contratadoExecutante>
+            <ans:CNES>6931561</ans:CNES>
+          </ans:dadosExecutante>
+          <ans:dadosAtendimento>
+            <ans:tipoAtendimento>04</ans:tipoAtendimento>
+            <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:regimeAtendimento>04</ans:regimeAtendimento>
+          </ans:dadosAtendimento>
+          <ans:procedimentosExecutados>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>1</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>10101039</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Consulta em pronto socorro</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>100.00</ans:valorUnitario>
+  <ans:valorTotal>100.00</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>2</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40302512</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Transaminase piruvica (amino transferase de alanina)</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>8.38</ans:valorUnitario>
+  <ans:valorTotal>8.38</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>3</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40304361</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Hemograma com contagem de plaquetas ou fracoes (eritrograma, leucograma, plaquetas)</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>10.11</ans:valorUnitario>
+  <ans:valorTotal>10.11</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>4</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40302504</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Transaminase oxalacetica (amino transferase aspartato)</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>8.38</ans:valorUnitario>
+  <ans:valorTotal>8.38</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>5</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40304507</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Proteina C</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>64.76</ans:valorUnitario>
+  <ans:valorTotal>64.76</ans:valorTotal>
+</ans:procedimentoExecutado>
+</ans:procedimentosExecutados>
+          <ans:outrasDespesas>
+  <ans:despesa>
+    <ans:sequencialItem>6</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+      <ans:horaInicial>07:56:47</ans:horaInicial>
+      <ans:horaFinal>07:56:47</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60023430</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>47.52</ans:valorUnitario>
+      <ans:valorTotal>47.52</ans:valorTotal>
+      <ans:descricaoProcedimento>TAXA DE REPOUSO ATE 2 HORAS NA URGENCIA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>7</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+      <ans:horaInicial>07:56:55</ans:horaInicial>
+      <ans:horaFinal>07:56:55</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60033738</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>22.68</ans:valorUnitario>
+      <ans:valorTotal>22.68</ans:valorTotal>
+      <ans:descricaoProcedimento>REPOUSO NA URGENCIA POR HORA SUBSEQUENTE</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>8</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+      <ans:horaInicial>17:42:00</ans:horaInicial>
+      <ans:horaFinal>17:42:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90095936</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>4.17</ans:valorUnitario>
+      <ans:valorTotal>4.17</ans:valorTotal>
+      <ans:descricaoProcedimento>BUTILBROMETO DE ESCOPOLAMINA + DIPIRONA MONOIDRATADA - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>9</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+      <ans:horaInicial>17:42:00</ans:horaInicial>
+      <ans:horaFinal>17:42:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90535693</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>13.07</ans:valorUnitario>
+      <ans:valorTotal>13.07</ans:valorTotal>
+      <ans:descricaoProcedimento>FOSFATO DISSODICO DE DEXAMETASONA - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>10</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+      <ans:horaInicial>17:42:00</ans:horaInicial>
+      <ans:horaFinal>17:42:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90461185</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>125.29</ans:valorUnitario>
+      <ans:valorTotal>125.29</ans:valorTotal>
+      <ans:descricaoProcedimento>CLORIDRATO DE ONDANSETRONA - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>11</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+      <ans:horaInicial>17:42:00</ans:horaInicial>
+      <ans:horaFinal>17:42:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90123115</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>004</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>10.63</ans:valorUnitario>
+      <ans:valorTotal>10.63</ans:valorTotal>
+      <ans:descricaoProcedimento>SOL. CLORETO DE SODIO 0,9% EP (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>12</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+      <ans:horaInicial>17:42:00</ans:horaInicial>
+      <ans:horaFinal>17:42:00</ans:horaFinal>
+      <ans:codigoTabela>00</ans:codigoTabela>
+      <ans:codigoProcedimento>78211565</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>65.00</ans:valorUnitario>
+      <ans:valorTotal>65.00</ans:valorTotal>
+      <ans:descricaoProcedimento>CATETER INTRAVASCULAR PERIFERICO C/ AG 24 GA POLYMED</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>13</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+      <ans:horaInicial>17:42:00</ans:horaInicial>
+      <ans:horaFinal>17:42:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78986273</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>4.68</ans:valorUnitario>
+      <ans:valorTotal>4.68</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 05ML AG.25X0,70MM LUER LOCK PTA.LATERAL PLASTIPAK</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>14</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+      <ans:horaInicial>17:42:00</ans:horaInicial>
+      <ans:horaFinal>17:42:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78352010</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>67.00</ans:valorUnitario>
+      <ans:valorTotal>67.00</ans:valorTotal>
+      <ans:descricaoProcedimento>EQUIPO INFUSAO GRAVITACIONAL MACROGOTAS 05100-014</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>15</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-16</ans:dataExecucao>
+      <ans:horaInicial>17:42:00</ans:horaInicial>
+      <ans:horaFinal>17:42:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90427661</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>39.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>017</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>0.04</ans:valorUnitario>
+      <ans:valorTotal>1.56</ans:valorTotal>
+      <ans:descricaoProcedimento>PARACETAMOL GTS. FR. 15ML (POR GOTA)	</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+</ans:outrasDespesas>
+          <ans:valorTotal>
+  <ans:valorProcedimentos>191.63</ans:valorProcedimentos>
+  <ans:valorDiarias>0.00</ans:valorDiarias>
+  <ans:valorTaxasAlugueis>70.20</ans:valorTaxasAlugueis>
+  <ans:valorMateriais>136.68</ans:valorMateriais>
+  <ans:valorMedicamentos>154.72</ans:valorMedicamentos>
+  <ans:valorOPME>0.00</ans:valorOPME>
+  <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+  <ans:valorTotalGeral>553.23</ans:valorTotalGeral>
+</ans:valorTotal>
+        </ans:guiaSP-SADT>
+        <ans:guiaSP-SADT>
+          <ans:cabecalhoGuia>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>281901701</ans:numeroGuiaPrestador>
+          </ans:cabecalhoGuia>
+          <ans:dadosAutorizacao>
+  <ans:numeroGuiaOperadora>281901701</ans:numeroGuiaOperadora>
+  <ans:dataAutorizacao>2026-04-17</ans:dataAutorizacao>
+  <ans:senha>AB8934108</ans:senha>
+</ans:dadosAutorizacao>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000638005</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:dadosSolicitante>
+  <ans:contratadoSolicitante>
+  <ans:cnpjContratado>04232442000114</ans:cnpjContratado>
+</ans:contratadoSolicitante>
+  <ans:nomeContratadoSolicitante>HOSPITAL CONSULT IMAGEM E DIAGNOSTICO LTDA</ans:nomeContratadoSolicitante>
+  <ans:profissionalSolicitante>
+  <ans:nomeProfissional>Jonas Gomes de Oliveira</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>40251</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225125</ans:CBOS>
+</ans:profissionalSolicitante>
+</ans:dadosSolicitante>
+          <ans:dadosSolicitacao>
+            <ans:dataSolicitacao>2026-04-17</ans:dataSolicitacao>
+            <ans:caraterAtendimento>2</ans:caraterAtendimento>
+          </ans:dadosSolicitacao>
+          <ans:dadosExecutante>
+            <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+</ans:contratadoExecutante>
+            <ans:CNES>6931561</ans:CNES>
+          </ans:dadosExecutante>
+          <ans:dadosAtendimento>
+            <ans:tipoAtendimento>04</ans:tipoAtendimento>
+            <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:regimeAtendimento>04</ans:regimeAtendimento>
+          </ans:dadosAtendimento>
+          <ans:procedimentosExecutados>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>1</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>10101039</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Consulta em pronto socorro</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>100.00</ans:valorUnitario>
+  <ans:valorTotal>100.00</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>2</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40101010</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>ECG convencional de ate 12 derivacoes</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>2</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>30.00</ans:valorUnitario>
+  <ans:valorTotal>60.00</ans:valorTotal>
+</ans:procedimentoExecutado>
+</ans:procedimentosExecutados>
+          <ans:outrasDespesas>
+  <ans:despesa>
+    <ans:sequencialItem>3</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>08:00:04</ans:horaInicial>
+      <ans:horaFinal>08:00:04</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60023430</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>47.52</ans:valorUnitario>
+      <ans:valorTotal>47.52</ans:valorTotal>
+      <ans:descricaoProcedimento>TAXA DE REPOUSO ATE 2 HORAS NA URGENCIA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>4</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>08:02:07</ans:horaInicial>
+      <ans:horaFinal>08:02:07</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60031921</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>216.00</ans:valorUnitario>
+      <ans:valorTotal>216.00</ans:valorTotal>
+      <ans:descricaoProcedimento>TAXA DE MONITOR DE FREQUENCIA CARDIACA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>5</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>16:16:00</ans:horaInicial>
+      <ans:horaFinal>16:16:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90123255</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>004</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>12.31</ans:valorUnitario>
+      <ans:valorTotal>12.31</ans:valorTotal>
+      <ans:descricaoProcedimento>SOL. DE RINGER C/LACTATO ECOFLAC P (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>6</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>16:16:00</ans:horaInicial>
+      <ans:horaFinal>16:16:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90047273</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>8.19</ans:valorUnitario>
+      <ans:valorTotal>8.19</ans:valorTotal>
+      <ans:descricaoProcedimento>NEPRESOL (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>7</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>16:16:00</ans:horaInicial>
+      <ans:horaFinal>16:16:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90096924</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>3.95</ans:valorUnitario>
+      <ans:valorTotal>3.95</ans:valorTotal>
+      <ans:descricaoProcedimento>DIPIRONA MONOIDRATADA - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>8</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>16:16:00</ans:horaInicial>
+      <ans:horaFinal>16:16:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90137299</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>1.34</ans:valorUnitario>
+      <ans:valorTotal>1.34</ans:valorTotal>
+      <ans:descricaoProcedimento>DIAZEPAM - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>9</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>16:16:00</ans:horaInicial>
+      <ans:horaFinal>16:16:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90072081</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>3.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>1.04</ans:valorUnitario>
+      <ans:valorTotal>3.13</ans:valorTotal>
+      <ans:descricaoProcedimento>AGUA PARA INJECAO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>10</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>16:16:00</ans:horaInicial>
+      <ans:horaFinal>16:16:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78352010</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>67.00</ans:valorUnitario>
+      <ans:valorTotal>67.00</ans:valorTotal>
+      <ans:descricaoProcedimento>EQUIPO INFUSAO GRAVITACIONAL MACROGOTAS 05100-014</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>11</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>16:16:00</ans:horaInicial>
+      <ans:horaFinal>16:16:00</ans:horaFinal>
+      <ans:codigoTabela>00</ans:codigoTabela>
+      <ans:codigoProcedimento>78211565</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>65.00</ans:valorUnitario>
+      <ans:valorTotal>65.00</ans:valorTotal>
+      <ans:descricaoProcedimento>CATETER INTRAVASCULAR PERIFERICO C/ AG 18 GA POLYMED</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>12</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>16:16:00</ans:horaInicial>
+      <ans:horaFinal>16:16:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>70762414</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>52.20</ans:valorUnitario>
+      <ans:valorTotal>52.20</ans:valorTotal>
+      <ans:descricaoProcedimento>TORNEIRINHA 3VIAS POLIAMIDA LL P/SOL.DISCOFIX-C</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>13</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-17</ans:dataExecucao>
+      <ans:horaInicial>16:16:00</ans:horaInicial>
+      <ans:horaFinal>16:16:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78986249</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>3.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>6.74</ans:valorUnitario>
+      <ans:valorTotal>20.22</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 10ML AG.25X0,70MM LUER LOCK PTA.LATERAL PLASTIPAK</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+</ans:outrasDespesas>
+          <ans:valorTotal>
+  <ans:valorProcedimentos>160.00</ans:valorProcedimentos>
+  <ans:valorDiarias>0.00</ans:valorDiarias>
+  <ans:valorTaxasAlugueis>263.52</ans:valorTaxasAlugueis>
+  <ans:valorMateriais>204.42</ans:valorMateriais>
+  <ans:valorMedicamentos>28.92</ans:valorMedicamentos>
+  <ans:valorOPME>0.00</ans:valorOPME>
+  <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+  <ans:valorTotalGeral>656.86</ans:valorTotalGeral>
+</ans:valorTotal>
+        </ans:guiaSP-SADT>
+        <ans:guiaSP-SADT>
+          <ans:cabecalhoGuia>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282121836</ans:numeroGuiaPrestador>
+          </ans:cabecalhoGuia>
+          <ans:dadosAutorizacao>
+  <ans:numeroGuiaOperadora>282121836</ans:numeroGuiaOperadora>
+  <ans:dataAutorizacao>2026-04-21</ans:dataAutorizacao>
+  <ans:senha>AC1024015</ans:senha>
+</ans:dadosAutorizacao>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000599018</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:dadosSolicitante>
+  <ans:contratadoSolicitante>
+  <ans:cnpjContratado>04232442000114</ans:cnpjContratado>
+</ans:contratadoSolicitante>
+  <ans:nomeContratadoSolicitante>HOSPITAL CONSULT IMAGEM E DIAGNOSTICO LTDA</ans:nomeContratadoSolicitante>
+  <ans:profissionalSolicitante>
+  <ans:nomeProfissional>LUCAS HONORATO LEITE FERREIRA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>38143</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225125</ans:CBOS>
+</ans:profissionalSolicitante>
+</ans:dadosSolicitante>
+          <ans:dadosSolicitacao>
+            <ans:dataSolicitacao>2026-04-21</ans:dataSolicitacao>
+            <ans:caraterAtendimento>2</ans:caraterAtendimento>
+          </ans:dadosSolicitacao>
+          <ans:dadosExecutante>
+            <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+</ans:contratadoExecutante>
+            <ans:CNES>6931561</ans:CNES>
+          </ans:dadosExecutante>
+          <ans:dadosAtendimento>
+            <ans:tipoAtendimento>04</ans:tipoAtendimento>
+            <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:regimeAtendimento>04</ans:regimeAtendimento>
+          </ans:dadosAtendimento>
+          <ans:procedimentosExecutados>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>1</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>10101039</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Consulta em pronto socorro</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>130.00</ans:valorUnitario>
+  <ans:valorTotal>130.00</ans:valorTotal>
+</ans:procedimentoExecutado>
+</ans:procedimentosExecutados>
+          <ans:outrasDespesas>
+  <ans:despesa>
+    <ans:sequencialItem>2</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>07:51:30</ans:horaInicial>
+      <ans:horaFinal>07:51:30</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60015322</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>6.48</ans:valorUnitario>
+      <ans:valorTotal>6.48</ans:valorTotal>
+      <ans:descricaoProcedimento>TAXA DE SALA PARA APLICACAO DE MEDICACAO</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>3</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>08:55:00</ans:horaInicial>
+      <ans:horaFinal>08:55:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90581610</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>5.04</ans:valorUnitario>
+      <ans:valorTotal>5.04</ans:valorTotal>
+      <ans:descricaoProcedimento>FENERGAN</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>4</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>08:55:00</ans:horaInicial>
+      <ans:horaFinal>08:55:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90535693</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>13.07</ans:valorUnitario>
+      <ans:valorTotal>13.07</ans:valorTotal>
+      <ans:descricaoProcedimento>FOSFATO DISSODICO DE DEXAMETASONA - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>5</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>08:55:00</ans:horaInicial>
+      <ans:horaFinal>08:55:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78986338</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>4.24</ans:valorUnitario>
+      <ans:valorTotal>8.48</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 03ML AG.25X0,70MM LUER LOCK PTA.LATERAL PLASTIPAK</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+</ans:outrasDespesas>
+          <ans:valorTotal>
+  <ans:valorProcedimentos>130.00</ans:valorProcedimentos>
+  <ans:valorDiarias>0.00</ans:valorDiarias>
+  <ans:valorTaxasAlugueis>6.48</ans:valorTaxasAlugueis>
+  <ans:valorMateriais>8.48</ans:valorMateriais>
+  <ans:valorMedicamentos>18.11</ans:valorMedicamentos>
+  <ans:valorOPME>0.00</ans:valorOPME>
+  <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+  <ans:valorTotalGeral>163.07</ans:valorTotalGeral>
+</ans:valorTotal>
+        </ans:guiaSP-SADT>
+        <ans:guiaSP-SADT>
+          <ans:cabecalhoGuia>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282123482</ans:numeroGuiaPrestador>
+          </ans:cabecalhoGuia>
+          <ans:dadosAutorizacao>
+  <ans:numeroGuiaOperadora>282123482</ans:numeroGuiaOperadora>
+  <ans:dataAutorizacao>2026-04-21</ans:dataAutorizacao>
+  <ans:senha>AC1036345</ans:senha>
+</ans:dadosAutorizacao>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>0DVNF000142000</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:dadosSolicitante>
+  <ans:contratadoSolicitante>
+  <ans:cnpjContratado>04232442000114</ans:cnpjContratado>
+</ans:contratadoSolicitante>
+  <ans:nomeContratadoSolicitante>HOSPITAL CONSULT IMAGEM E DIAGNOSTICO LTDA</ans:nomeContratadoSolicitante>
+  <ans:profissionalSolicitante>
+  <ans:nomeProfissional>LUCAS HONORATO LEITE FERREIRA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>38143</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225125</ans:CBOS>
+</ans:profissionalSolicitante>
+</ans:dadosSolicitante>
+          <ans:dadosSolicitacao>
+            <ans:dataSolicitacao>2026-04-21</ans:dataSolicitacao>
+            <ans:caraterAtendimento>2</ans:caraterAtendimento>
+          </ans:dadosSolicitacao>
+          <ans:dadosExecutante>
+            <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+</ans:contratadoExecutante>
+            <ans:CNES>6931561</ans:CNES>
+          </ans:dadosExecutante>
+          <ans:dadosAtendimento>
+            <ans:tipoAtendimento>04</ans:tipoAtendimento>
+            <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:regimeAtendimento>04</ans:regimeAtendimento>
+          </ans:dadosAtendimento>
+          <ans:procedimentosExecutados>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>1</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>10101039</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Consulta em pronto socorro</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>130.00</ans:valorUnitario>
+  <ans:valorTotal>130.00</ans:valorTotal>
+</ans:procedimentoExecutado>
+</ans:procedimentosExecutados>
+          <ans:outrasDespesas>
+  <ans:despesa>
+    <ans:sequencialItem>2</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>07:50:05</ans:horaInicial>
+      <ans:horaFinal>07:50:05</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60023430</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>47.52</ans:valorUnitario>
+      <ans:valorTotal>47.52</ans:valorTotal>
+      <ans:descricaoProcedimento>TAXA DE REPOUSO ATE 2 HORAS NA URGENCIA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>3</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>07:50:13</ans:horaInicial>
+      <ans:horaFinal>07:50:13</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60033738</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>22.68</ans:valorUnitario>
+      <ans:valorTotal>22.68</ans:valorTotal>
+      <ans:descricaoProcedimento>REPOUSO NA URGENCIA POR HORA SUBSEQUENTE</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>4</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>09:32:00</ans:horaInicial>
+      <ans:horaFinal>09:32:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90096924</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>3.95</ans:valorUnitario>
+      <ans:valorTotal>7.90</ans:valorTotal>
+      <ans:descricaoProcedimento>DIPIRONA MONOIDRATADA - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>5</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>09:32:00</ans:horaInicial>
+      <ans:horaFinal>09:32:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90045360</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>014</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>14.66</ans:valorUnitario>
+      <ans:valorTotal>14.66</ans:valorTotal>
+      <ans:descricaoProcedimento>CETOPROFENO - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>6</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>09:32:00</ans:horaInicial>
+      <ans:horaFinal>09:32:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90535693</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>13.07</ans:valorUnitario>
+      <ans:valorTotal>13.07</ans:valorTotal>
+      <ans:descricaoProcedimento>FOSFATO DISSODICO DE DEXAMETASONA - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>7</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>09:32:00</ans:horaInicial>
+      <ans:horaFinal>09:32:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90207564</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>7.53</ans:valorUnitario>
+      <ans:valorTotal>7.53</ans:valorTotal>
+      <ans:descricaoProcedimento>CLORIDRATO DE TRAMADOL - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>8</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>09:32:00</ans:horaInicial>
+      <ans:horaFinal>09:32:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90123115</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>3.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>004</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>10.63</ans:valorUnitario>
+      <ans:valorTotal>31.88</ans:valorTotal>
+      <ans:descricaoProcedimento>SOL. CLORETO DE SODIO 0,9% EP (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>9</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>09:32:00</ans:horaInicial>
+      <ans:horaFinal>09:32:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90072081</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>1.04</ans:valorUnitario>
+      <ans:valorTotal>2.09</ans:valorTotal>
+      <ans:descricaoProcedimento>AGUA PARA INJECAO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>10</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>09:32:00</ans:horaInicial>
+      <ans:horaFinal>09:32:00</ans:horaFinal>
+      <ans:codigoTabela>00</ans:codigoTabela>
+      <ans:codigoProcedimento>78211565</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>65.00</ans:valorUnitario>
+      <ans:valorTotal>65.00</ans:valorTotal>
+      <ans:descricaoProcedimento>CATETER INTRAVENOSO C/AG 22 GA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>11</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>09:32:00</ans:horaInicial>
+      <ans:horaFinal>09:32:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78352010</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>67.00</ans:valorUnitario>
+      <ans:valorTotal>67.00</ans:valorTotal>
+      <ans:descricaoProcedimento>EQUIPO INFUSAO GRAVITACIONAL MACROGOTAS 05100-014</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>12</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>09:32:00</ans:horaInicial>
+      <ans:horaFinal>09:32:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78244501</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>8.81</ans:valorUnitario>
+      <ans:valorTotal>8.81</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 20ML AG.25X0,70MM LUER SLIP</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>13</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>09:32:00</ans:horaInicial>
+      <ans:horaFinal>09:32:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78986273</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>4.68</ans:valorUnitario>
+      <ans:valorTotal>9.36</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 05ML AG.25X0,70MM LUER LOCK PTA.LATERAL PLASTIPAK</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+</ans:outrasDespesas>
+          <ans:valorTotal>
+  <ans:valorProcedimentos>130.00</ans:valorProcedimentos>
+  <ans:valorDiarias>0.00</ans:valorDiarias>
+  <ans:valorTaxasAlugueis>70.20</ans:valorTaxasAlugueis>
+  <ans:valorMateriais>150.17</ans:valorMateriais>
+  <ans:valorMedicamentos>77.13</ans:valorMedicamentos>
+  <ans:valorOPME>0.00</ans:valorOPME>
+  <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+  <ans:valorTotalGeral>427.50</ans:valorTotalGeral>
+</ans:valorTotal>
+        </ans:guiaSP-SADT>
+        <ans:guiaSP-SADT>
+          <ans:cabecalhoGuia>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>282131220</ans:numeroGuiaPrestador>
+          </ans:cabecalhoGuia>
+          <ans:dadosAutorizacao>
+  <ans:numeroGuiaOperadora>282131220</ans:numeroGuiaOperadora>
+  <ans:dataAutorizacao>2026-04-21</ans:dataAutorizacao>
+  <ans:senha>AC1084547</ans:senha>
+</ans:dadosAutorizacao>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>03K1A000665002</ans:numeroCarteira>
+  <ans:atendimentoRN>N</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:dadosSolicitante>
+  <ans:contratadoSolicitante>
+  <ans:cnpjContratado>04232442000114</ans:cnpjContratado>
+</ans:contratadoSolicitante>
+  <ans:nomeContratadoSolicitante>HOSPITAL CONSULT IMAGEM E DIAGNOSTICO LTDA</ans:nomeContratadoSolicitante>
+  <ans:profissionalSolicitante>
+  <ans:nomeProfissional>LUCAS HONORATO LEITE FERREIRA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>38143</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225125</ans:CBOS>
+</ans:profissionalSolicitante>
+</ans:dadosSolicitante>
+          <ans:dadosSolicitacao>
+            <ans:dataSolicitacao>2026-04-21</ans:dataSolicitacao>
+            <ans:caraterAtendimento>2</ans:caraterAtendimento>
+          </ans:dadosSolicitacao>
+          <ans:dadosExecutante>
+            <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+</ans:contratadoExecutante>
+            <ans:CNES>6931561</ans:CNES>
+          </ans:dadosExecutante>
+          <ans:dadosAtendimento>
+            <ans:tipoAtendimento>04</ans:tipoAtendimento>
+            <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+            <ans:tipoConsulta>1</ans:tipoConsulta>
+            <ans:regimeAtendimento>04</ans:regimeAtendimento>
+          </ans:dadosAtendimento>
+          <ans:procedimentosExecutados>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>1</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>10101039</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Consulta em pronto socorro</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>130.00</ans:valorUnitario>
+  <ans:valorTotal>130.00</ans:valorTotal>
+</ans:procedimentoExecutado>
+</ans:procedimentosExecutados>
+          <ans:outrasDespesas>
+  <ans:despesa>
+    <ans:sequencialItem>2</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>07:52:26</ans:horaInicial>
+      <ans:horaFinal>07:52:26</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60023430</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>47.52</ans:valorUnitario>
+      <ans:valorTotal>47.52</ans:valorTotal>
+      <ans:descricaoProcedimento>TAXA DE REPOUSO ATE 2 HORAS NA URGENCIA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>3</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>07:53:27</ans:horaInicial>
+      <ans:horaFinal>07:53:27</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60033738</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>22.68</ans:valorUnitario>
+      <ans:valorTotal>45.36</ans:valorTotal>
+      <ans:descricaoProcedimento>REPOUSO NA URGENCIA POR HORA SUBSEQUENTE</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>4</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90047273</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>8.19</ans:valorUnitario>
+      <ans:valorTotal>8.19</ans:valorTotal>
+      <ans:descricaoProcedimento>NEPRESOL (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>5</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90096924</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>3.95</ans:valorUnitario>
+      <ans:valorTotal>3.95</ans:valorTotal>
+      <ans:descricaoProcedimento>DIPIRONA MONOIDRATADA - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>6</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90045360</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>014</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>14.66</ans:valorUnitario>
+      <ans:valorTotal>14.66</ans:valorTotal>
+      <ans:descricaoProcedimento>CETOPROFENO - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>7</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90207564</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>7.53</ans:valorUnitario>
+      <ans:valorTotal>7.53</ans:valorTotal>
+      <ans:descricaoProcedimento>CLORIDRATO DE TRAMADOL - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>8</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78352010</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>67.00</ans:valorUnitario>
+      <ans:valorTotal>67.00</ans:valorTotal>
+      <ans:descricaoProcedimento>EQUIPO INFUSAO GRAVITACIONAL MACROGOTAS 05100-014</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>9</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>00</ans:codigoTabela>
+      <ans:codigoProcedimento>78211565</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>65.00</ans:valorUnitario>
+      <ans:valorTotal>65.00</ans:valorTotal>
+      <ans:descricaoProcedimento>CATETER INTRAVENOSO C/AG 22 GA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>10</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78986249</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>6.74</ans:valorUnitario>
+      <ans:valorTotal>13.48</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 10ML AG.25X0,70MM LUER LOCK PTA.LATERAL PLASTIPAK</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>11</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78986273</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>4.68</ans:valorUnitario>
+      <ans:valorTotal>9.36</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 05ML AG.25X0,70MM LUER LOCK PTA.LATERAL PLASTIPAK</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>12</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90123115</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>004</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>10.63</ans:valorUnitario>
+      <ans:valorTotal>21.25</ans:valorTotal>
+      <ans:descricaoProcedimento>SOL. CLORETO DE SODIO 0,9% EP (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>13</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90072294</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>1.33</ans:valorUnitario>
+      <ans:valorTotal>1.33</ans:valorTotal>
+      <ans:descricaoProcedimento>CLORETO DE SODIO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>14</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78986273</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>4.68</ans:valorUnitario>
+      <ans:valorTotal>9.36</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 05ML AG.25X0,70MM LUER LOCK PTA.LATERAL PLASTIPAK</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>15</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90178920</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>008</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>1.10</ans:valorUnitario>
+      <ans:valorTotal>1.10</ans:valorTotal>
+      <ans:descricaoProcedimento>CAPTOPRIL - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>16</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90178920</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>008</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>1.10</ans:valorUnitario>
+      <ans:valorTotal>1.10</ans:valorTotal>
+      <ans:descricaoProcedimento>CAPTOPRIL - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>17</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-21</ans:dataExecucao>
+      <ans:horaInicial>14:09:00</ans:horaInicial>
+      <ans:horaFinal>14:09:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90301005</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>2.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>008</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>0.80</ans:valorUnitario>
+      <ans:valorTotal>1.60</ans:valorTotal>
+      <ans:descricaoProcedimento>NEO FEDIPINA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+</ans:outrasDespesas>
+          <ans:valorTotal>
+  <ans:valorProcedimentos>130.00</ans:valorProcedimentos>
+  <ans:valorDiarias>0.00</ans:valorDiarias>
+  <ans:valorTaxasAlugueis>92.88</ans:valorTaxasAlugueis>
+  <ans:valorMateriais>164.20</ans:valorMateriais>
+  <ans:valorMedicamentos>60.71</ans:valorMedicamentos>
+  <ans:valorOPME>0.00</ans:valorOPME>
+  <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+  <ans:valorTotalGeral>447.79</ans:valorTotalGeral>
+</ans:valorTotal>
+        </ans:guiaSP-SADT>
+        <ans:guiaSP-SADT>
+          <ans:cabecalhoGuia>
+            <ans:registroANS>368253</ans:registroANS>
+            <ans:numeroGuiaPrestador>RETORNO</ans:numeroGuiaPrestador>
+          </ans:cabecalhoGuia>
+          <ans:dadosAutorizacao>
+  <ans:numeroGuiaOperadora>RETORNO</ans:numeroGuiaOperadora>
+  <ans:dataAutorizacao>2026-04-01</ans:dataAutorizacao>
+  <ans:senha>RETORNO</ans:senha>
+</ans:dadosAutorizacao>
+          <ans:dadosBeneficiario>
+  <ans:numeroCarteira>04DGP004471067</ans:numeroCarteira>
+  <ans:atendimentoRN>S</ans:atendimentoRN>
+</ans:dadosBeneficiario>
+          <ans:dadosSolicitante>
+  <ans:contratadoSolicitante>
+  <ans:cnpjContratado>04232442000114</ans:cnpjContratado>
+</ans:contratadoSolicitante>
+  <ans:nomeContratadoSolicitante>HOSPITAL CONSULT IMAGEM E DIAGNOSTICO LTDA</ans:nomeContratadoSolicitante>
+  <ans:profissionalSolicitante>
+  <ans:nomeProfissional>LUCAS HONORATO LEITE FERREIRA</ans:nomeProfissional>
+  <ans:conselhoProfissional>06</ans:conselhoProfissional>
+  <ans:numeroConselhoProfissional>38143</ans:numeroConselhoProfissional>
+  <ans:UF>26</ans:UF>
+  <ans:CBOS>225125</ans:CBOS>
+</ans:profissionalSolicitante>
+</ans:dadosSolicitante>
+          <ans:dadosSolicitacao>
+            <ans:dataSolicitacao>2026-04-01</ans:dataSolicitacao>
+            <ans:caraterAtendimento>2</ans:caraterAtendimento>
+          </ans:dadosSolicitacao>
+          <ans:dadosExecutante>
+            <ans:contratadoExecutante>
+  <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+</ans:contratadoExecutante>
+            <ans:CNES>6931561</ans:CNES>
+          </ans:dadosExecutante>
+          <ans:dadosAtendimento>
+            <ans:tipoAtendimento>04</ans:tipoAtendimento>
+            <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+            <ans:tipoConsulta>4</ans:tipoConsulta>
+            <ans:regimeAtendimento>04</ans:regimeAtendimento>
+          </ans:dadosAtendimento>
+          <ans:procedimentosExecutados>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>1</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40805026</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>RX - Torax - 2 incidencias</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>72.00</ans:valorUnitario>
+  <ans:valorTotal>72.00</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>2</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40304361</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Hemograma com contagem de plaquetas ou fracoes (eritrograma,
+leucograma, plaquetas)</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>10.11</ans:valorUnitario>
+  <ans:valorTotal>10.11</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>3</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40308383</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Proteina C reativa, qualitativa</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>13.55</ans:valorUnitario>
+  <ans:valorTotal>13.55</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>4</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40302580</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Ureia</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>4.55</ans:valorUnitario>
+  <ans:valorTotal>4.55</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>5</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40301630</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Creatinina</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>4.55</ans:valorUnitario>
+  <ans:valorTotal>4.55</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>6</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40302512</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Transaminase piruvica (amino transferase de alanina)</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>8.38</ans:valorUnitario>
+  <ans:valorTotal>8.38</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>7</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40302504</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Transaminase oxalacetica (amino transferase aspartato)</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>8.38</ans:valorUnitario>
+  <ans:valorTotal>8.38</ans:valorTotal>
+</ans:procedimentoExecutado>
+  <ans:procedimentoExecutado>
+  <ans:sequencialItem>8</ans:sequencialItem>
+  <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+  <ans:procedimento>
+    <ans:codigoTabela>22</ans:codigoTabela>
+    <ans:codigoProcedimento>40311210</ans:codigoProcedimento>
+    <ans:descricaoProcedimento>Rotina de urina (caracteres fisicos, elementos anormais e
+sedimentoscopia)</ans:descricaoProcedimento>
+  </ans:procedimento>
+  <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+  <ans:viaAcesso>1</ans:viaAcesso>
+  <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+  <ans:valorUnitario>9.72</ans:valorUnitario>
+  <ans:valorTotal>9.72</ans:valorTotal>
+</ans:procedimentoExecutado>
+</ans:procedimentosExecutados>
+          <ans:outrasDespesas>
+  <ans:despesa>
+    <ans:sequencialItem>9</ans:sequencialItem>
+    <ans:codigoDespesa>07</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+      <ans:horaInicial>11:29:14</ans:horaInicial>
+      <ans:horaFinal>11:29:14</ans:horaFinal>
+      <ans:codigoTabela>18</ans:codigoTabela>
+      <ans:codigoProcedimento>60023430</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>47.52</ans:valorUnitario>
+      <ans:valorTotal>47.52</ans:valorTotal>
+      <ans:descricaoProcedimento>TAXA DE REPOUSO ATE 2 HORAS NA URGENCIA</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>10</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+      <ans:horaInicial>11:30:00</ans:horaInicial>
+      <ans:horaFinal>11:30:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90096924</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>001</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>3.95</ans:valorUnitario>
+      <ans:valorTotal>3.95</ans:valorTotal>
+      <ans:descricaoProcedimento>DIPIRONA MONOIDRATADA - GENERICO (Restrito Hosp.)</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>11</ans:sequencialItem>
+    <ans:codigoDespesa>02</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+      <ans:horaInicial>11:30:00</ans:horaInicial>
+      <ans:horaFinal>11:30:00</ans:horaFinal>
+      <ans:codigoTabela>20</ans:codigoTabela>
+      <ans:codigoProcedimento>90259068</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>4.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>017</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>0.03</ans:valorUnitario>
+      <ans:valorTotal>0.13</ans:valorTotal>
+      <ans:descricaoProcedimento>IBUPROFENO - GENERICO</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+  <ans:despesa>
+    <ans:sequencialItem>12</ans:sequencialItem>
+    <ans:codigoDespesa>03</ans:codigoDespesa>
+    <ans:servicosExecutados>
+      <ans:dataExecucao>2026-04-01</ans:dataExecucao>
+      <ans:horaInicial>11:30:00</ans:horaInicial>
+      <ans:horaFinal>11:30:00</ans:horaFinal>
+      <ans:codigoTabela>19</ans:codigoTabela>
+      <ans:codigoProcedimento>78986338</ans:codigoProcedimento>
+      <ans:quantidadeExecutada>1.0</ans:quantidadeExecutada>
+      <ans:unidadeMedida>036</ans:unidadeMedida>
+      <ans:reducaoAcrescimo>1.0</ans:reducaoAcrescimo>
+      <ans:valorUnitario>4.24</ans:valorUnitario>
+      <ans:valorTotal>4.24</ans:valorTotal>
+      <ans:descricaoProcedimento>SERINGA 03ML AG.25X0,70MM LUER LOCK PTA.LATERAL PLASTIPAK</ans:descricaoProcedimento>
+    </ans:servicosExecutados>
+  </ans:despesa>
+</ans:outrasDespesas>
+          <ans:valorTotal>
+  <ans:valorProcedimentos>131.24</ans:valorProcedimentos>
+  <ans:valorDiarias>0.00</ans:valorDiarias>
+  <ans:valorTaxasAlugueis>47.52</ans:valorTaxasAlugueis>
+  <ans:valorMateriais>4.24</ans:valorMateriais>
+  <ans:valorMedicamentos>4.08</ans:valorMedicamentos>
+  <ans:valorOPME>0.00</ans:valorOPME>
+  <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+  <ans:valorTotalGeral>187.08</ans:valorTotalGeral>
+</ans:valorTotal>
+        </ans:guiaSP-SADT>
+      </ans:guiasTISS>
+    </ans:loteGuias>
+  </ans:prestadorParaOperadora>
+  <ans:epilogo>
+    <ans:hash>9bd4587aa01c3eeb10fa7e4d8c80df6b</ans:hash>
+  </ans:epilogo>
+</ans:mensagemTISS>

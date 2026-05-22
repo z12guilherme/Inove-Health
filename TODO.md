@@ -44,8 +44,9 @@
 
 ## 8. Faturamento Hospitalar (Novo)
 - [x] **Tabelas de Preços**: Configuração de tabelas TISS/TUSS para convênios e tabela SUS.
-- [x] **Guias de Atendimento**: Geração automática de guias de consulta e SP/SADT.
-- [x] **Fechamento de Lote**: Exportação de arquivos XML para envio às operadoras de saúde.
+- [x] **Mapeamento TISS XML (v4.01.00)**: Mapear tags de cabeçalho, guias e epílogo conforme padrão ANS.
+- [x] **Geração de Hash MD5**: Implementar lógica de integridade da mensagem XML.
+- [x] **Gerador de Lotes**: Exportação de arquivos XML (Mensagem TISS) para envio às operadoras.
 - [x] **Gestão de Glosas**: Painel para acompanhamento e recurso de faturamentos negados.
 
 ## 9. Módulo de Laboratório (Novo)
@@ -54,16 +55,16 @@
 - [x] **Interface de Laudos**: Backend e Mock implementados.
 - [x] **Integração LIS**: Endpoint de Webhook criado para integração externa.
 
-## 10. Cadastros Expandidos (Novo)
+## 10. Cadastros e Agendamento (Novo)
 - [x] **Fornecedores**: Interface e Mocks concluídos.
 - [x] **Operadoras e Convênios**: Interface e Mocks concluídos.
-- [ ] **Agenda Centralizada**: Gestão de horários e marcação de consultas/exames.
+- [x] **Agenda Centralizada**: Gestão de horários e marcação de consultas/exames.
 
 ## 11. Relatórios Gerenciais e BI
 - [x] **Dashboard Operacional**: Gráficos de volume de atendimentos e tempo de espera. (Interface e Mock concluídos)
-- [ ] **Relatório de Consumo**: Curva ABC de medicamentos.
-- [ ] **Relatórios de Produtividade**: Desempenho por profissional e por unidade de saúde.
-- [ ] **Exportação de Dados**: Possibilidade de baixar relatórios em Excel e CSV para auditorias.
+- [x] **Relatório de Consumo**: Curva ABC de medicamentos.
+- [x] **Relatórios de Produtividade**: Desempenho por profissional e por unidade de saúde.
+- [x] **Exportação de Dados**: Possibilidade de baixar relatórios em Excel e CSV para auditorias.
 
 ## 12. Infraestrutura e Banco de Dados (Expansão)
 - [x] **Refatoração de Estrutura**: Backend isolado na pasta `/backend`.
@@ -80,7 +81,7 @@
 ## 13. Melhorias de UX/UI
 - [x] **Menu Lateral**: Implementar categorias expansíveis (Accordions) para organizar o grande volume de módulos.
 - [x] **Feedback Visual**: Glassmorphism e animações aplicadas no Dashboard de BI e Unidades de Saúde.
-- [/] **Navegação**: Páginas de BI e Unidades prontas para integração na Sidebar.
-- [ ] **Exportação**: Adicionar botão "Exportar PDF/Excel" nas listagens de estoque e fornecedores.
+- [x] **Navegação**: Páginas de BI e Unidades prontas para integração na Sidebar.
+- [x] **Exportação**: Adicionar botão "Exportar PDF/Excel" nas listagens de estoque e fornecedores.
 
 # Trocar API por BaaS

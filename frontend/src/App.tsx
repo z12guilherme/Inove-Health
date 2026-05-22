@@ -9,6 +9,7 @@ import { RelatoriosIA } from './pages/admin/RelatoriosIA';
 import { Fornecedores } from './pages/admin/Fornecedores';
 import { Convenios } from './pages/admin/Convenios';
 import { Insumos } from './pages/admin/Insumos';
+import PharmacyMovementPage from './pages/inventario/farmacia/PharmacyMovementPage';
 import { Contas } from './pages/admin/Contas';
 import { GestaoCustos } from './pages/admin/GestaoCustos';
 import { IntegracaoBancaria } from './pages/admin/IntegracaoBancaria';
@@ -16,17 +17,20 @@ import { DRE } from './pages/admin/DRE';
 import { TabelasPrecos } from './pages/admin/faturamento/TabelasPrecos';
 import { GuiasAtendimento } from './pages/admin/faturamento/GuiasAtendimento';
 import { FechamentoLote } from './pages/admin/faturamento/FechamentoLote';
+import { RemessasTISS } from './pages/admin/faturamento/RemessasTISS';
 import { GestaoGlosas } from './pages/admin/faturamento/GestaoGlosas';
 import { LancamentosFaturamento } from './pages/admin/faturamento/Lancamentos';
 import { Pacientes } from './pages/clinical/Pacientes';
 import { PerfilPaciente } from './pages/clinical/PerfilPaciente';
 import { Triagem } from './pages/clinical/Triagem';
 import { Atendimento } from './pages/clinical/Atendimento';
+import { FilaMedica } from './pages/clinical/FilaMedica';
 import { Prescricoes } from './pages/clinical/Prescricoes';
 import { IAAssistiva } from './pages/clinical/IAAssistiva';
 import { AtendimentosLista } from './pages/clinical/AtendimentosLista';
 import { NovoInternamento } from './pages/clinical/NovoInternamento';
 import { NovaUrgencia } from './pages/clinical/NovaUrgencia';
+import { ExamesProcedimentos } from './pages/clinical/ExamesProcedimentos';
 import { NovaConsultaEletiva } from './pages/clinical/NovaConsultaEletiva';
 import { PainelTV } from './pages/clinical/PainelTV';
 
@@ -52,6 +56,7 @@ export function App() {
               <Route path="/admin/cadastros/convenios" element={<Convenios />} />
               {/* Estoque & Farmácia */}
               <Route path="/admin/estoque/insumos" element={<Insumos />} />
+              <Route path="/admin/estoque/movimentacao" element={<PharmacyMovementPage />} />
               {/* Financeiro */}
               <Route path="/admin/financeiro/contas" element={<Contas />} />
               <Route path="/admin/financeiro/custos" element={<GestaoCustos />} />
@@ -61,6 +66,7 @@ export function App() {
               <Route path="/admin/faturamento/tabelas" element={<TabelasPrecos />} />
               <Route path="/admin/faturamento/guias" element={<GuiasAtendimento />} />
               <Route path="/admin/faturamento/lotes" element={<FechamentoLote />} />
+              <Route path="/admin/faturamento/remessas" element={<RemessasTISS />} />
               <Route path="/admin/faturamento/glosas" element={<GestaoGlosas />} />
               <Route path="/admin/faturamento/lancamentos" element={<LancamentosFaturamento />} />
             </Route>
@@ -70,7 +76,9 @@ export function App() {
               <Route path="/clinical/pacientes" element={<Pacientes />} />
               <Route path="/clinical/pacientes/:id" element={<PerfilPaciente />} />
               <Route path="/clinical/triagem" element={<Triagem />} />
+              <Route path="/clinical/fila-medica" element={<FilaMedica />} />
               <Route path="/clinical/atendimento" element={<Atendimento />} />
+              <Route path="/clinical/atendimento-consulta" element={<Atendimento />} />
               <Route path="/clinical/prescricoes" element={<Prescricoes />} />
             </Route>
 
@@ -80,6 +88,8 @@ export function App() {
               <Route path="/clinical/atendimentos/internamento/novo" element={<NovoInternamento />} />
               <Route path="/clinical/atendimentos/urgencia/novo" element={<NovaUrgencia />} />
               <Route path="/clinical/atendimentos/consulta/novo" element={<NovaConsultaEletiva />} />
+              <Route path="/clinical/atendimentos/exames/novo" element={<ExamesProcedimentos />} />
+              <Route path="/clinical/atendimentos/exames/:id" element={<ExamesProcedimentos />} />
             </Route>
 
             {/* Doctor-only Routes */}

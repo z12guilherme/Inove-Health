@@ -74,15 +74,15 @@ const SEED_TABELAS = [
       { dia: 'Sábado e Domingo', inicio: '00:00', fim: '23:59', acrescimo: 42 }
     ],
     itens: [
-      { id: 'i1', codigo: '10101038', tuss: '10101039', descricao: 'CONSULTA DE URGÊNCIA COM VASCULAR', valor: 100.00 },
-      { id: 'i2', codigo: '10101039', tuss: '10101039', descricao: 'Consulta em pronto socorro', valor: 81.00 }
+      { id: 'i1', insumo_id: '1', codigo: '10101038', tuss: '10101039', descricao: 'CONSULTA DE URGÊNCIA COM VASCULAR', valor: 100.00 },
+      { id: 'i2', insumo_id: '2', codigo: '10101039', tuss: '10101039', descricao: 'Consulta em pronto socorro', valor: 81.00 }
     ]
   },
-  { id: 't-proc-unimed', nome: 'PROCEDIMENTOS UNIMED', tipo: '22 - TUSS', ativo: true, itens: [{ id: 'up1', codigo: '10101012', descricao: 'CONSULTA EM CONSULTÓRIO', valor: 95.00 }] },
+  { id: 't-proc-unimed', nome: 'PROCEDIMENTOS UNIMED', tipo: '22 - TUSS', ativo: true, itens: [{ id: 'up1', insumo_id: '1', codigo: '10101012', descricao: 'DIPIRONA (PREÇO UNIMED)', valor: 0.85 }] },
   { id: 't-dia-unimed', nome: 'DIÁRIAS UNIMED', tipo: 'PROPRIO', ativo: true, itens: [{ id: 'up2', codigo: '50000011', descricao: 'DIÁRIA APARTAMENTO', valor: 450.00 }] },
   { id: 't-tax-unimed', nome: 'TAXAS UNIMED', tipo: 'PROPRIO', ativo: true, itens: [] },
   { id: 't-gas-unimed', nome: 'GASES UNIMED', tipo: 'PROPRIO', ativo: true, itens: [] },
-  { id: 't-med-unimed', nome: 'MEDICAMENTOS UNIMED TNUMM', tipo: 'TNUMM', ativo: true, itens: [] },
+  { id: 't-med-unimed', nome: 'MEDICAMENTOS UNIMED TNUMM', tipo: 'TNUMM', ativo: true, itens: [{ id: 'up3', insumo_id: '1', codigo: '9000123', descricao: 'DIPIRONA TNUMM', valor: 0.95 }] },
   { id: 't-mat-unimed-00', nome: 'MATERIAIS UNIMED (TABELA 00)', tipo: 'PROPRIO', ativo: true, itens: [] },
   { id: 't-mat-unimed-19', nome: 'MATERIAIS UNIMED (TABELA 19)', tipo: 'PROPRIO', ativo: true, itens: [] },
   { id: 't-pacote-unimed', nome: 'PACOTE UNIMED', tipo: 'PROPRIO', ativo: true, itens: [] },
@@ -219,6 +219,7 @@ const SEED_ATENDIMENTOS = [
     categoria: 'Particular',
     convenio_id: 'c-unimed', // Adicionado para vincular ao convênio UNIMED
     status: 'ATIVO',
+    status_fila: 'EM_CONSULTA',
     dados_atendimento: {
       carater: 'Eletiva',
       tipo_internacao: 'Clínica',
@@ -254,6 +255,7 @@ const SEED_ATENDIMENTOS = [
     categoria: 'SUS',
     convenio_id: 'c-moura', // Adicionado para vincular ao convênio MOURA
     status: 'ATIVO',
+    status_fila: 'AGUARDANDO_TRIAGEM',
     senha_chamada: 'U-005 às 11:00',
     dados_autorizacao: {
       guia_principal: '1234567',
@@ -301,6 +303,7 @@ const SEED_ATENDIMENTOS = [
     categoria: 'Convênio',
     convenio_id: 'c-unimed', // Adicionado para vincular ao convênio UNIMED
     status: 'ATIVO',
+    status_fila: 'AGUARDANDO_MEDICO',
     dados_atendimento: {
       consultorio: 'Consultório B',
       cid10: 'E11 - Diabetes mellitus não-insulino-dependente',
@@ -493,7 +496,7 @@ if (USE_MOCK) {
       }
 
       const idMatch = url.match(/\/atendimentos\/([a-zA-Z0-9_-]+)$/);
-      if (idMatch && method === 'put') {
+      if (idMatch && (method === 'put' || method === 'patch')) {
         const idx = atendimentos.findIndex(a => a.id === idMatch[1]);
         if (idx !== -1) {
           atendimentos[idx] = { ...atendimentos[idx], ...parsedData };
@@ -519,6 +522,7 @@ if (USE_MOCK) {
         const novo = {
           id: `ATD-${Date.now().toString().slice(-6)}`,
           status: 'ATIVO',
+          status_fila: 'AGUARDANDO_TRIAGEM',
           data: parsedData.data || new Date().toISOString().split('T')[0],
           hora: parsedData.hora || new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
           ...parsedData
@@ -547,6 +551,10 @@ if (USE_MOCK) {
         const id = url.split('/').pop();
         return ok({ triagens: triagens.filter((t: any) => t.paciente_id === id) });
       }
+      if (method === 'get' && url.includes('/atendimentos/')) {
+        const id = url.split('/').pop();
+        return ok({ triagens: triagens.filter((t: any) => t.atendimento_id === id) });
+      }
       if (method === 'post') {
         const nova = { id: Date.now().toString(), criado_em: new Date().toISOString(), ...parsedData };
         triagens.push(nova);
@@ -554,6 +562,16 @@ if (USE_MOCK) {
         const pacs: any[] = lsGet('inove_pacientes_mock', []);
         const pIdx = pacs.findIndex((p: any) => p.id === parsedData.paciente_id);
         if (pIdx !== -1) { pacs[pIdx].risco = parsedData.classificacao_risco; pacs[pIdx].status = 'Aguardando Atendimento'; lsSet('inove_pacientes_mock', pacs); }
+        
+        if (parsedData.atendimento_id) {
+          const atds: any[] = lsGet('inove_atendimentos_mock', SEED_ATENDIMENTOS);
+          const aIdx = atds.findIndex((a: any) => a.id === parsedData.atendimento_id);
+          if (aIdx !== -1) {
+            atds[aIdx].status_fila = 'AGUARDANDO_MEDICO';
+            lsSet('inove_atendimentos_mock', atds);
+          }
+        }
+        
         return ok(nova);
       }
     }
@@ -1026,10 +1044,18 @@ if (USE_MOCK) {
         total_profissionais_ativos: totalAtivos,
         atendimentos_mes: [450, 520, 610, 480], // Pode ser dinamizado futuramente
         tempo_medio_espera: '18 min',
-        produtividade_equipe: [],
+        produtividade_equipe: [
+          { profissional: 'Dr. Carlos Eduardo', atendimentos: 145, tempo_medio: '15min', satisfacao: 4.8 },
+          { profissional: 'Dra. Ana Paula', atendimentos: 132, tempo_medio: '18min', satisfacao: 4.9 },
+          { profissional: 'Dr. Marcos Vinícius', atendimentos: 98, tempo_medio: '22min', satisfacao: 4.7 },
+          { profissional: 'Enf. Clarice Santos', atendimentos: 210, tempo_medio: '10min', satisfacao: 4.6 },
+        ],
         consumo_insumos_abc: [
-          { nome: 'Luva Nitrílica', consumo: 1500, custo: 480.00 },
-          { nome: 'Soro Fisiológico', consumo: 800, custo: 320.00 }
+          { id: '1', nome: 'Luva Nitrílica M', categoria: 'A', consumo: 1500, custo_total: 4800.00, percentual: 70 },
+          { id: '2', nome: 'Dipirona Sódica', categoria: 'A', consumo: 3000, custo_total: 1050.00, percentual: 15 },
+          { id: '3', nome: 'Soro Fisiológico', categoria: 'B', consumo: 800, custo_total: 3840.00, percentual: 10 },
+          { id: '4', nome: 'Seringa 10ml', categoria: 'C', consumo: 5000, custo_total: 2250.00, percentual: 4 },
+          { id: '5', nome: 'Gaze Estéril', categoria: 'C', consumo: 10000, custo_total: 500.00, percentual: 1 },
         ]
       });
     }

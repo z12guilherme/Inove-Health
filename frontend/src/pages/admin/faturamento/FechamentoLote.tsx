@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { PackageOpen, Loader2, Download, FileCode2 } from 'lucide-react';
+import { PackageOpen, Loader2, Download, FileCode2, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../../../lib/api';
 import toast from 'react-hot-toast';
 
 export function FechamentoLote() {
+  const navigate = useNavigate();
   const [convenio, setConvenio] = useState('Unimed');
   const [mesAno, setMesAno] = useState('05-2026');
   const [loading, setLoading] = useState(false);
@@ -43,8 +45,26 @@ export function FechamentoLote() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Fechamento de Lote (TISS)</h1>
-        <p className="text-muted-foreground mt-2">Agrupe as guias autorizadas do período e gere o arquivo XML padrão ANS.</p>
+        <h1 className="text-3xl font-bold tracking-tight">Fechamento de Lote (Legado)</h1>
+        <p className="text-muted-foreground mt-2">Esta funcionalidade foi descontinuada. Por favor, utilize o novo módulo de Remessas TISS.</p>
+      </div>
+
+      <div className="glass rounded-2xl p-8 text-center space-y-6 bg-primary/5 border-2 border-primary/20">
+        <div className="w-20 h-20 bg-primary/20 text-primary rounded-full flex items-center justify-center mx-auto shadow-inner">
+          <FileCode2 className="w-10 h-10" />
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold text-foreground mb-2">Novo Gerador de Remessas TISS</h2>
+          <p className="text-muted-foreground max-w-lg mx-auto">
+            O gerador de XML foi atualizado para suportar o padrão TISS 4.01.00 com regras rígidas de separação por tipo de guia, seleção manual de guias, e vínculo de insumos.
+          </p>
+        </div>
+        <button
+          onClick={() => navigate('/admin/faturamento/remessas')}
+          className="h-14 px-8 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-bold inline-flex items-center gap-3 transition-all shadow-lg shadow-primary/25 hover:-translate-y-0.5"
+        >
+          Acessar Módulo Remessas TISS <ArrowRight className="w-5 h-5" />
+        </button>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
