@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Download, Plus, CheckCircle, FileText, Search, Loader2 } from 'lucide-react';
 import localStorageService, { LoteTiss } from '../../../services/localStorageService';
 import { generateTissXml } from '../../../services/tissXmlGenerator';
+import { tissValidator } from '../../../services/tissValidator';
 import toast from 'react-hot-toast';
 
 export function RemessasTiss() {
@@ -10,6 +11,7 @@ export function RemessasTiss() {
     const [convenios, setConvenios] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'nova' | 'enviados'>('nova');
+    const [errosValidacao, setErrosValidacao] = useState<string[]>([]);
 
     // Filtros Nova Remessa
     const [filtroConvenio, setFiltroConvenio] = useState('');
@@ -80,12 +82,22 @@ export function RemessasTiss() {
         };
 
         const xmlString = generateTissXml(newLote, selectedAtendimentos);
+        
+        // --- Validação Estrutural e de Regras de Negócio TISS ---
+        const validation = tissValidator.validateXML(xmlString);
+        if (!validation.valido) {
+            setErrosValidacao(validation.erros);
+            toast.error('O Lote falhou na validação TISS. Verifique os erros no painel.', { duration: 5000 });
+            return;
+        }
+        
+        setErrosValidacao([]);
         newLote.xml_gerado = xmlString;
 
         localStorageService.updateLoteTiss(newLote);
         setLotes([...lotes, newLote]);
         setSelectedIds(new Set());
-        toast.success('Lote e XML gerados com sucesso!');
+        toast.success('Lote validado e XML gerado com sucesso!');
         setActiveTab('enviados');
     };
 
@@ -172,8 +184,22 @@ export function RemessasTiss() {
                             <p className="font-semibold">Selecione Convênio e Tipo de Guia para listar as guias pendentes.</p>
                         </div>
                     ) : (
-                        <div className="glass rounded-2xl p-6">
-                            <div className="flex justify-between items-center mb-6">
+                        <div className="space-y-6">
+                            {errosValidacao.length > 0 && (
+                                <div className="bg-red-500/10 border border-red-500/20 p-5 rounded-2xl">
+                                    <h4 className="text-red-500 font-bold flex items-center gap-2 mb-3">
+                                        <FileText className="w-5 h-5" />
+                                        Erros de Validação do Esquema TISS
+                                    </h4>
+                                    <ul className="list-disc pl-5 space-y-1 text-sm text-red-500/90 font-medium">
+                                        {errosValidacao.map((err, i) => (
+                                            <li key={i}>{err}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                            <div className="glass rounded-2xl p-6">
+                                <div className="flex justify-between items-center mb-6">
                                 <h3 className="font-bold text-lg">Guias Elegíveis ({atendimentosDisponiveis.length})</h3>
                                 <button
                                     onClick={handleGerarLote}
