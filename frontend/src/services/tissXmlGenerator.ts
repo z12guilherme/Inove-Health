@@ -113,13 +113,15 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
     return buildGuiaConsulta(atd);
   }).join('');
   
-  let prestadorParaOperadora = `<ans:loteGuias><ans:numeroLote>${lote.numero_lote}</ans:numeroLote><ans:guiasTISS>${guiasXml}</ans:guiasTISS></ans:loteGuias>`;
+  let prestadorParaOperadora = `
+    <ans:loteGuias>
+      <ans:numeroLote>${lote.numero_lote}</ans:numeroLote>
+      <ans:guiasTISS>
+${guiasXml}
+      </ans:guiasTISS>
+    </ans:loteGuias>`;
 
-  prestadorParaOperadora = prestadorParaOperadora.replace(/>\s+</g, '><').trim();
-
-  const hashVal = md5(prestadorParaOperadora);
-
-  let xmlString = `<?xml version="1.0" encoding="UTF-8"?>
+  let xmlString = `<?xml version="1.0" encoding="ISO-8859-1"?>
 <ans:mensagemTISS xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas">
   <ans:cabecalho>
     <ans:identificacaoTransacao>
@@ -138,11 +140,26 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
     </ans:destino>
     <ans:Padrao>4.01.00</ans:Padrao>
   </ans:cabecalho>
-  <ans:prestadorParaOperadora>${prestadorParaOperadora}</ans:prestadorParaOperadora>
+  <ans:prestadorParaOperadora>${prestadorParaOperadora}
+  </ans:prestadorParaOperadora>
   <ans:epilogo>
-    <ans:hash>${hashVal}</ans:hash>
+    <ans:hash>PLACEHOLDER_HASH</ans:hash>
   </ans:epilogo>
 </ans:mensagemTISS>`;
 
-  return xmlString.trim();
+  // 1. A ANS exige que as quebras de linha sejam CRLF antes do hash
+  xmlString = xmlString.replace(/\r?\n/g, '\r\n');
+
+  // 2. Extrair EXATAMENTE o conteúdo original entre as tags (método infalível)
+  const startTag = '<ans:prestadorParaOperadora>';
+  const endTag = '</ans:prestadorParaOperadora>';
+  const startIndex = xmlString.indexOf(startTag) + startTag.length;
+  const endIndex = xmlString.indexOf(endTag);
+  const hashContent = xmlString.substring(startIndex, endIndex);
+
+  // 3. Calcula o MD5 exato sobre a string CRLF isolada
+  const hashVal = md5(hashContent);
+
+  // 4. Substitui o placeholder e retorna
+  return xmlString.replace('PLACEHOLDER_HASH', hashVal).trim();
 }

@@ -41,10 +41,9 @@ describe('Gerador TISS XML e Validação de Hash', () => {
 
         const extractedContent = xml.substring(startIndex, endIndex);
 
-        // Normalize line endings to LF before hashing, as external TISS validators often do this
-        // and different environments might produce different line endings (CRLF vs LF).
-        const normalizedContent = extractedContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-        const expectedHash = md5(normalizedContent);
+        // A string gerada JÁ está em CRLF devido ao tissXmlGenerator.ts
+        // Não devemos normalizar para \n (LF), pois o validador calcula o Hash em cima do \r\n (CRLF) nativo!
+        const expectedHash = md5(extractedContent);
 
         // O hash injetado TEM que ser igual ao hash da string exata entre as tags
         expect(hashInjected).toBe(expectedHash);
