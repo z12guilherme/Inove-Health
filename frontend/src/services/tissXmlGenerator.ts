@@ -1,35 +1,35 @@
-import { LoteTiss } from './localStorageService';
+import type { LoteTiss } from './localStorageService';
 
 // Interfaces for generating TISS 4.01.00 XML
 interface AtendimentoData {
-    id: string;
-    numero_guia?: string;
-    data: string;
-    paciente_nome: string;
-    tipo?: string; // CONSULTA, SADT, INTERNAMENTO, URGENCIA
-    procedimentos?: Array<{
-        codigo: string;
-        nome: string;
-        valor: number;
-        qtd: number;
-    }>;
-    valor_total?: number;
-    senha_autorizacao?: string;
+  id: string;
+  numero_guia?: string;
+  data: string;
+  paciente_nome: string;
+  tipo?: string; // CONSULTA, SADT, INTERNAMENTO, URGENCIA
+  procedimentos?: Array<{
+    codigo: string;
+    nome: string;
+    valor: number;
+    qtd: number;
+  }>;
+  valor_total?: number;
+  senha_autorizacao?: string;
 }
 
 export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[]): string {
-    const dataRegistro = new Date().toISOString().split('T')[0];
-    const horaRegistro = new Date().toISOString().split('T')[1].substring(0, 8);
+  const dataRegistro = new Date().toISOString().split('T')[0];
+  const horaRegistro = new Date().toISOString().split('T')[1].substring(0, 8);
 
-    const isSadt = lote.tipo_guia === 'SADT' || lote.tipo_guia === 'EXAME';
-    const isInternamento = lote.tipo_guia === 'INTERNAMENTO';
-    const isUrgencia = lote.tipo_guia === 'URGENCIA';
+  const isSadt = lote.tipo_guia === 'SADT' || lote.tipo_guia === 'EXAME';
+  const isInternamento = lote.tipo_guia === 'INTERNAMENTO';
+  const isUrgencia = lote.tipo_guia === 'URGENCIA';
 
-    const buildGuiaConsulta = (atd: AtendimentoData) => {
-        const procValor = atd.valor_total || (atd.procedimentos?.[0]?.valor || 120.0);
-        const procCodigo = atd.procedimentos?.[0]?.codigo || '10101012';
+  const buildGuiaConsulta = (atd: AtendimentoData) => {
+    const procValor = atd.valor_total || (atd.procedimentos?.[0]?.valor || 120.0);
+    const procCodigo = atd.procedimentos?.[0]?.codigo || '10101012';
 
-        return `
+    return `
         <ans:guiaConsulta>
           <ans:cabecalhoConsulta>
             <ans:registroANS>368253</ans:registroANS>
@@ -57,24 +57,24 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
             <ans:dataAtendimento>${atd.data}</ans:dataAtendimento>
             <ans:tipoConsulta>1</ans:tipoConsulta>
             <ans:procedimento>
-              <ans:codigoTabela>22</ans:codigoTabela>
+              <ans:codigoTabela>${atd.procedimentos?.[0]?.codigo_tabela || '22'}</ans:codigoTabela>
               <ans:codigoProcedimento>${procCodigo}</ans:codigoProcedimento>
               <ans:valorProcedimento>${procValor.toFixed(2)}</ans:valorProcedimento>
             </ans:procedimento>
           </ans:dadosAtendimento>
           <ans:observacao>Nenhuma Observacao</ans:observacao>
         </ans:guiaConsulta>`;
-    };
+  };
 
-    const buildGuiaSadt = (atd: AtendimentoData, urgencia: boolean = false) => {
-        let procedimentosXml = '';
-        if (atd.procedimentos && atd.procedimentos.length > 0) {
-            procedimentosXml = atd.procedimentos.map((p, i) => `
+  const buildGuiaSadt = (atd: AtendimentoData, urgencia: boolean = false) => {
+    let procedimentosXml = '';
+    if (atd.procedimentos && atd.procedimentos.length > 0) {
+      procedimentosXml = atd.procedimentos.map((p, i) => `
               <ans:procedimentoExecutado>
                 <ans:sequencialItem>${i + 1}</ans:sequencialItem>
                 <ans:dataExecucao>${atd.data}</ans:dataExecucao>
                 <ans:procedimento>
-                  <ans:codigoTabela>22</ans:codigoTabela>
+                  <ans:codigoTabela>${p.codigo_tabela || '22'}</ans:codigoTabela>
                   <ans:codigoProcedimento>${p.codigo}</ans:codigoProcedimento>
                   <ans:descricaoProcedimento>${p.nome}</ans:descricaoProcedimento>
                 </ans:procedimento>
@@ -84,12 +84,12 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
                 <ans:valorUnitario>${p.valor.toFixed(2)}</ans:valorUnitario>
                 <ans:valorTotal>${(p.valor * (p.qtd || 1)).toFixed(2)}</ans:valorTotal>
               </ans:procedimentoExecutado>`).join('');
-        }
+    }
 
-        const tipoAtendimento = urgencia ? '04' : '23';
-        const caraterAtendimento = urgencia ? '2' : '1';
+    const tipoAtendimento = urgencia ? '04' : '23';
+    const caraterAtendimento = urgencia ? '2' : '1';
 
-        return `
+    return `
         <ans:guiaSP-SADT>
           <ans:cabecalhoGuia>
             <ans:registroANS>368253</ans:registroANS>
@@ -145,17 +145,17 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
             <ans:valorTotalGeral>${(atd.valor_total || 0).toFixed(2)}</ans:valorTotalGeral>
           </ans:valorTotal>
         </ans:guiaSP-SADT>`;
-    };
+  };
 
-    const buildGuiaInternacao = (atd: AtendimentoData) => {
-        let procedimentosXml = '';
-        if (atd.procedimentos && atd.procedimentos.length > 0) {
-            procedimentosXml = atd.procedimentos.map((p, i) => `
+  const buildGuiaInternacao = (atd: AtendimentoData) => {
+    let procedimentosXml = '';
+    if (atd.procedimentos && atd.procedimentos.length > 0) {
+      procedimentosXml = atd.procedimentos.map((p, i) => `
               <ans:procedimentoExecutado>
                 <ans:sequencialItem>${i + 1}</ans:sequencialItem>
                 <ans:dataExecucao>${atd.data}</ans:dataExecucao>
                 <ans:procedimento>
-                  <ans:codigoTabela>22</ans:codigoTabela>
+                  <ans:codigoTabela>${p.codigo_tabela || '22'}</ans:codigoTabela>
                   <ans:codigoProcedimento>${p.codigo}</ans:codigoProcedimento>
                   <ans:descricaoProcedimento>${p.nome}</ans:descricaoProcedimento>
                 </ans:procedimento>
@@ -179,9 +179,9 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
                   </ans:identificacaoEquipe>
                 </ans:identEquipe>
               </ans:procedimentoExecutado>`).join('');
-        }
+    }
 
-        return `
+    return `
         <ans:guiaResumoInternacao>
           <ans:cabecalhoGuia>
             <ans:registroANS>368253</ans:registroANS>
@@ -231,16 +231,16 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
             <ans:valorTotalGeral>${(atd.valor_total || 0).toFixed(2)}</ans:valorTotalGeral>
           </ans:valorTotal>
         </ans:guiaResumoInternacao>`;
-    };
+  };
 
-    const guiasXml = atendimentos.map(atd => {
-        if (isInternamento || atd.tipo === 'INTERNAMENTO') return buildGuiaInternacao(atd);
-        if (isUrgencia || atd.tipo === 'URGENCIA') return buildGuiaSadt(atd, true);
-        if (isSadt || atd.tipo === 'SADT' || atd.tipo === 'EXAME') return buildGuiaSadt(atd, false);
-        return buildGuiaConsulta(atd);
-    }).join('\n');
+  const guiasXml = atendimentos.map(atd => {
+    if (isInternamento || atd.tipo === 'INTERNAMENTO') return buildGuiaInternacao(atd);
+    if (isUrgencia || atd.tipo === 'URGENCIA') return buildGuiaSadt(atd, true);
+    if (isSadt || atd.tipo === 'SADT' || atd.tipo === 'EXAME') return buildGuiaSadt(atd, false);
+    return buildGuiaConsulta(atd);
+  }).join('\n');
 
-    const xmlString = `<?xml version="1.0" encoding="ISO-8859-1"?>
+  const xmlString = `<?xml version="1.0" encoding="ISO-8859-1"?>
 <ans:mensagemTISS xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas">
   <ans:cabecalho>
     <ans:identificacaoTransacao>
@@ -271,5 +271,5 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
   </ans:epilogo>
 </ans:mensagemTISS>`;
 
-    return xmlString.trim();
+  return xmlString.trim();
 }

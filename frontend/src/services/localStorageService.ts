@@ -1,5 +1,18 @@
 // frontend/src/services/localStorageService.ts
 
+export interface LoteTiss {
+    id: string;
+    numero_lote: string;
+    convenio_id: string;
+    convenio_nome: string;
+    tipo_guia: string; // 'CONSULTA' | 'SADT' | 'INTERNAMENTO'
+    data_criacao: string;
+    atendimentos_ids: string[];
+    status: 'GERADO' | 'LOTE_FECHADO';
+    protocolo_operadora?: string;
+    xml_gerado?: string;
+}
+
 interface Atendimento {
     id: string;
     data: string;
@@ -62,19 +75,6 @@ interface MovimentacaoEstoque {
     atendimentoId?: string;
     pacienteNome?: string;
     observacao?: string;
-}
-
-export interface LoteTiss {
-    id: string;
-    numero_lote: string;
-    convenio_id: string;
-    convenio_nome: string;
-    tipo_guia: string; // 'CONSULTA' | 'SADT' | 'INTERNAMENTO'
-    data_criacao: string;
-    atendimentos_ids: string[];
-    status: 'GERADO' | 'LOTE_FECHADO';
-    protocolo_operadora?: string;
-    xml_gerado?: string;
 }
 
 const LS_KEYS = {

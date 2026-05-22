@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Download, Plus, CheckCircle, FileText, Search, Loader2 } from 'lucide-react';
-import localStorageService, { LoteTiss } from '../../../services/localStorageService';
+import localStorageService from '../../../services/localStorageService';
+import type { LoteTiss } from '../../../services/localStorageService';
 import { generateTissXml } from '../../../services/tissXmlGenerator';
 import { tissValidator } from '../../../services/tissValidator';
 import toast from 'react-hot-toast';
@@ -41,7 +42,7 @@ export function RemessasTiss() {
         if (a.status !== 'FINALIZADO' && (a as any).status_guia !== 'Autorizada') return false;
 
         if (filtroConvenio && a.convenio_id !== filtroConvenio) return false;
-        
+
         const tipoMapeado = a.tipo === 'CONSULTA' ? 'CONSULTA' : 'SADT';
         if (filtroTipo && tipoMapeado !== filtroTipo) return false;
 
@@ -82,7 +83,7 @@ export function RemessasTiss() {
         };
 
         const xmlString = generateTissXml(newLote, selectedAtendimentos);
-        
+
         // --- Validação Estrutural e de Regras de Negócio TISS ---
         const validation = tissValidator.validateXML(xmlString);
         if (!validation.valido) {
@@ -90,7 +91,7 @@ export function RemessasTiss() {
             toast.error('O Lote falhou na validação TISS. Verifique os erros no painel.', { duration: 5000 });
             return;
         }
-        
+
         setErrosValidacao([]);
         newLote.xml_gerado = xmlString;
 
@@ -132,11 +133,61 @@ export function RemessasTiss() {
         toast.success('Lote fechado com sucesso!');
     };
 
+    const handleGerarGuiasMock = () => {
+        const atds = localStorageService.getAtendimentos();
+        const convs = localStorageService.getConvenios();
+        if (convs.length === 0) return toast.error('Crie um convênio primeiro.');
+        
+        const unimed = convs.find(c => c.nome.toUpperCase().includes('UNIMED')) || convs[0];
+        
+        const mock1 = {
+            id: `ATD-MOCK-${Date.now()}-1`,
+            data: new Date().toISOString(),
+            paciente_nome: 'PACIENTE MOCK CONSULTA',
+            convenio_id: unimed.id,
+            convenio_nome: unimed.nome,
+            tipo: 'CONSULTA',
+            status: 'FINALIZADO',
+            status_guia: 'Autorizada',
+            senha_autorizacao: '123456',
+            numero_guia: `G-${Math.floor(Math.random() * 999999)}`,
+            valor_total: 100.00,
+            procedimentos: [{ codigo: '10101012', nome: 'CONSULTA EM CONSULTORIO', valor: 100.00, qtd: 1 }]
+        };
+
+        const mock2 = {
+            id: `ATD-MOCK-${Date.now()}-2`,
+            data: new Date().toISOString(),
+            paciente_nome: 'PACIENTE MOCK EXAME',
+            convenio_id: unimed.id,
+            convenio_nome: unimed.nome,
+            tipo: 'SADT',
+            status: 'FINALIZADO',
+            status_guia: 'Autorizada',
+            senha_autorizacao: '654321',
+            numero_guia: `G-${Math.floor(Math.random() * 999999)}`,
+            valor_total: 250.00,
+            procedimentos: [{ codigo: '40805018', nome: 'RAIO X DE TORAX', valor: 250.00, qtd: 1 }]
+        };
+
+        localStorageService.setAtendimentos([...atds, mock1 as any, mock2 as any]);
+        setAtendimentos(localStorageService.getAtendimentos());
+        toast.success('Foram criadas 2 Guias Autorizadas (Consulta e SADT)! Agora você pode gerar o lote.');
+    };
+
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight">Remessas e XML TISS</h1>
-                <p className="text-muted-foreground mt-2">Agrupamento de guias e geração de lotes padrão TISS 4.01.00.</p>
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Remessas e XML TISS</h1>
+                    <p className="text-muted-foreground mt-2">Agrupamento de guias e geração de lotes padrão TISS 4.01.00.</p>
+                </div>
+                <button 
+                    onClick={handleGerarGuiasMock}
+                    className="bg-secondary text-secondary-foreground px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-secondary/80"
+                >
+                    <Plus size={16} /> Forçar Guias Autorizadas (Teste)
+                </button>
             </div>
 
             <div className="flex border-b border-border">
@@ -200,67 +251,68 @@ export function RemessasTiss() {
                             )}
                             <div className="glass rounded-2xl p-6">
                                 <div className="flex justify-between items-center mb-6">
-                                <h3 className="font-bold text-lg">Guias Elegíveis ({atendimentosDisponiveis.length})</h3>
-                                <button
-                                    onClick={handleGerarLote}
-                                    disabled={selectedIds.size === 0}
-                                    className="bg-primary text-primary-foreground px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-primary/90 disabled:opacity-50 transition-all shadow-lg shadow-primary/20"
-                                >
-                                    <Plus size={18} /> Gerar Lote e XML
-                                </button>
-                            </div>
+                                    <h3 className="font-bold text-lg">Guias Elegíveis ({atendimentosDisponiveis.length})</h3>
+                                    <button
+                                        onClick={handleGerarLote}
+                                        disabled={selectedIds.size === 0}
+                                        className="bg-primary text-primary-foreground px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-primary/90 disabled:opacity-50 transition-all shadow-lg shadow-primary/20"
+                                    >
+                                        <Plus size={18} /> Gerar Lote e XML
+                                    </button>
+                                </div>
 
-                            <div className="overflow-x-auto rounded-xl border border-border/50">
-                                <table className="w-full text-left text-sm">
-                                    <thead className="bg-secondary/50">
-                                        <tr>
-                                            <th className="p-4 w-12">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-4 h-4 rounded text-primary focus:ring-primary"
-                                                    checked={selectedIds.size > 0 && selectedIds.size === atendimentosDisponiveis.length}
-                                                    onChange={handleSelectAll}
-                                                />
-                                            </th>
-                                            <th className="p-4 font-semibold text-muted-foreground">Nº Guia</th>
-                                            <th className="p-4 font-semibold text-muted-foreground">Data</th>
-                                            <th className="p-4 font-semibold text-muted-foreground">Paciente</th>
-                                            <th className="p-4 font-semibold text-muted-foreground">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-border/50 bg-background/50">
-                                        {atendimentosDisponiveis.map(atd => (
-                                            <tr key={atd.id} className="hover:bg-secondary/20 transition-colors">
-                                                <td className="p-4">
+                                <div className="overflow-x-auto rounded-xl border border-border/50">
+                                    <table className="w-full text-left text-sm">
+                                        <thead className="bg-secondary/50">
+                                            <tr>
+                                                <th className="p-4 w-12">
                                                     <input
                                                         type="checkbox"
                                                         className="w-4 h-4 rounded text-primary focus:ring-primary"
-                                                        checked={selectedIds.has(atd.id)}
-                                                        onChange={() => handleSelect(atd.id)}
+                                                        checked={selectedIds.size > 0 && selectedIds.size === atendimentosDisponiveis.length}
+                                                        onChange={handleSelectAll}
                                                     />
-                                                </td>
-                                                <td className="p-4 font-mono font-medium text-primary">{atd.numero_guia || atd.id}</td>
-                                                <td className="p-4">{new Date(atd.data).toLocaleDateString()}</td>
-                                                <td className="p-4 font-semibold">{atd.paciente_nome}</td>
-                                                <td className="p-4">
-                                                    <span className="bg-emerald-500/10 text-emerald-500 px-2 py-1 rounded-full text-[10px] font-bold uppercase">
-                                                        {(atd as any).status_guia || 'FINALIZADO'}
-                                                    </span>
-                                                </td>
+                                                </th>
+                                                <th className="p-4 font-semibold text-muted-foreground">Nº Guia</th>
+                                                <th className="p-4 font-semibold text-muted-foreground">Data</th>
+                                                <th className="p-4 font-semibold text-muted-foreground">Paciente</th>
+                                                <th className="p-4 font-semibold text-muted-foreground">Status</th>
                                             </tr>
-                                        ))}
-                                        {atendimentosDisponiveis.length === 0 && (
-                                            <tr>
-                                                <td colSpan={5} className="p-8 text-center text-muted-foreground">Nenhuma guia pronta para faturamento neste filtro.</td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody className="divide-y divide-border/50 bg-background/50">
+                                            {atendimentosDisponiveis.map(atd => (
+                                                <tr key={atd.id} className="hover:bg-secondary/20 transition-colors">
+                                                    <td className="p-4">
+                                                        <input
+                                                            type="checkbox"
+                                                            className="w-4 h-4 rounded text-primary focus:ring-primary"
+                                                            checked={selectedIds.has(atd.id)}
+                                                            onChange={() => handleSelect(atd.id)}
+                                                        />
+                                                    </td>
+                                                    <td className="p-4 font-mono font-medium text-primary">{atd.numero_guia || atd.id}</td>
+                                                    <td className="p-4">{new Date(atd.data).toLocaleDateString()}</td>
+                                                    <td className="p-4 font-semibold">{atd.paciente_nome}</td>
+                                                    <td className="p-4">
+                                                        <span className="bg-emerald-500/10 text-emerald-500 px-2 py-1 rounded-full text-[10px] font-bold uppercase">
+                                                            {(atd as any).status_guia || 'FINALIZADO'}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {atendimentosDisponiveis.length === 0 && (
+                                                <tr>
+                                                    <td colSpan={5} className="p-8 text-center text-muted-foreground">Nenhuma guia pronta para faturamento neste filtro.</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+                        </div> // Fim da lista de guias elegíveis
                     )}
                 </div>
-            ) : (
+            ) : ( // Aba de Lotes Enviados
                 <div className="glass rounded-2xl p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {lotes.slice().reverse().map(lote => (
@@ -279,7 +331,7 @@ export function RemessasTiss() {
                                     <p><span className="text-muted-foreground">Guias:</span> <strong>{lote.atendimentos_ids.length} atendimentos</strong></p>
                                     <p><span className="text-muted-foreground">Gerado em:</span> <strong>{new Date(lote.data_criacao).toLocaleDateString()}</strong></p>
                                 </div>
-                                
+
                                 {lote.protocolo_operadora && (
                                     <div className="bg-primary/5 p-3 rounded-xl border border-primary/10">
                                         <p className="text-[10px] font-bold uppercase text-primary mb-1 tracking-widest">Protocolo Recebimento</p>

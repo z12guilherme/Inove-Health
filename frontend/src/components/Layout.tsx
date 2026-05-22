@@ -106,6 +106,7 @@ export function Layout() {
       links: [
         { name: 'Tabelas de Preços', path: '/admin/faturamento/tabelas', icon: FileSpreadsheet },
         { name: 'Guias de Atendimento', path: '/admin/faturamento/guias', icon: Stethoscope },
+        { name: 'Lançamentos da Conta', path: '/admin/faturamento/lancamentos', icon: FileText },
         { name: 'Remessas TISS', path: '/admin/faturamento/remessas', icon: FileCode2 },
         { name: 'Fechamento de Lote', path: '/admin/faturamento/lotes', icon: PackageOpen },
         { name: 'Gestão de Glosas', path: '/admin/faturamento/glosas', icon: AlertTriangle },
