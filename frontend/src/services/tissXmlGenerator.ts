@@ -1,33 +1,137 @@
-import type { LoteTiss } from './localStorageService';
+import { LoteTiss } from "./localStorageService";
 
-// Interfaces for generating TISS 4.01.00 XML
 interface AtendimentoData {
   id: string;
-  numero_guia?: string;
   data: string;
-  paciente_nome: string;
-  tipo?: string; // CONSULTA, SADT, INTERNAMENTO, URGENCIA
-  procedimentos?: Array<{
-    codigo: string;
-    nome: string;
-    valor: number;
-    qtd: number;
-  }>;
-  valor_total?: number;
+  numero_guia?: string;
   senha_autorizacao?: string;
+  valor_total?: number;
+  tipo?: string;
+  procedimentos?: any[];
 }
 
 export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[]): string {
   const dataRegistro = new Date().toISOString().split('T')[0];
-  const horaRegistro = new Date().toISOString().split('T')[1].substring(0, 8);
+  const horaRegistro = new Date().toTimeString().split(' ')[0];
 
-  const isSadt = lote.tipo_guia === 'SADT' || lote.tipo_guia === 'EXAME';
-  const isInternamento = lote.tipo_guia === 'INTERNAMENTO';
   const isUrgencia = lote.tipo_guia === 'URGENCIA';
+  const isInternamento = lote.tipo_guia === 'INTERNAMENTO';
+  const isSadt = lote.tipo_guia === 'SADT';
+
+  const getCodigoDespesa = (tabela: string) => {
+    const t = tabela.split(' - ')[0];
+    switch (t) {
+      case '19': case '95': return '03'; // Materiais
+      case '20': case '96': return '02'; // Medicamentos
+      case '18': case '97': return '07'; // Taxas
+      case '45': return '05'; // Diárias
+      case '99': return '01'; // Gases
+      default: return '08';
+    }
+  };
+
+  const isDespesa = (tabela: string) => {
+    const t = tabela.split(' - ')[0];
+    return ['18', '19', '20', '45', '95', '96', '97', '98', '99'].includes(t);
+  };
+
+  const processItems = (atd: AtendimentoData) => {
+    const procs: any[] = [];
+    const desps: any[] = [];
+    
+    let sumProcedimentos = 0;
+    let sumDiarias = 0;
+    let sumTaxas = 0;
+    let sumMateriais = 0;
+    let sumMedicamentos = 0;
+    let sumGases = 0;
+    
+    let seq = 1;
+
+    (atd.procedimentos || []).forEach(p => {
+      const tab = p.codigo_tabela || '22';
+      const valorTotal = p.valor * (p.qtd || 1);
+      
+      if (isDespesa(tab)) {
+        desps.push({ ...p, seq: seq++ });
+        const codDesp = getCodigoDespesa(tab);
+        if (codDesp === '05') sumDiarias += valorTotal;
+        else if (codDesp === '07' || codDesp === '04') sumTaxas += valorTotal;
+        else if (codDesp === '03') sumMateriais += valorTotal;
+        else if (codDesp === '02') sumMedicamentos += valorTotal;
+        else if (codDesp === '01') sumGases += valorTotal;
+      } else {
+        procs.push({ ...p, seq: seq++ });
+        sumProcedimentos += valorTotal;
+      }
+    });
+
+    const sumTotalGeral = sumProcedimentos + sumDiarias + sumTaxas + sumMateriais + sumMedicamentos + sumGases;
+
+    return { procs, desps, sumProcedimentos, sumDiarias, sumTaxas, sumMateriais, sumMedicamentos, sumGases, sumTotalGeral };
+  };
+
+  const buildProcedimentosXml = (procs: any[], atd: AtendimentoData, isInternacao: boolean) => {
+    if (procs.length === 0) return '';
+    const xml = procs.map(p => `
+              <ans:procedimentoExecutado>
+                <ans:sequencialItem>${p.seq}</ans:sequencialItem>
+                <ans:dataExecucao>${atd.data}</ans:dataExecucao>
+                <ans:procedimento>
+                  <ans:codigoTabela>${(p.codigo_tabela || '22').split(' - ')[0]}</ans:codigoTabela>
+                  <ans:codigoProcedimento>${p.codigo}</ans:codigoProcedimento>
+                  <ans:descricaoProcedimento>${p.nome}</ans:descricaoProcedimento>
+                </ans:procedimento>
+                <ans:quantidadeExecutada>${p.qtd || 1}</ans:quantidadeExecutada>
+                <ans:viaAcesso>1</ans:viaAcesso>
+                ${isInternacao ? '<ans:tecnicaUtilizada>1</ans:tecnicaUtilizada>\n                ' : ''}<ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                <ans:valorUnitario>${p.valor.toFixed(2)}</ans:valorUnitario>
+                <ans:valorTotal>${(p.valor * (p.qtd || 1)).toFixed(2)}</ans:valorTotal>
+                ${isInternacao ? `<ans:identEquipe>
+                  <ans:identificacaoEquipe>
+                    <ans:grauPart>00</ans:grauPart>
+                    <ans:codProfissional>
+                      <ans:cpfContratado>83365982272</ans:cpfContratado>
+                    </ans:codProfissional>
+                    <ans:nomeProf>VALDEMILSON ALVES</ans:nomeProf>
+                    <ans:conselho>06</ans:conselho>
+                    <ans:numeroConselhoProfissional>8696</ans:numeroConselhoProfissional>
+                    <ans:UF>26</ans:UF>
+                    <ans:CBOS>225250</ans:CBOS>
+                  </ans:identificacaoEquipe>
+                </ans:identEquipe>
+                ` : ''}
+              </ans:procedimentoExecutado>`).join('');
+    return `\n          <ans:procedimentosExecutados>${xml}\n          </ans:procedimentosExecutados>`;
+  };
+
+  const buildDespesasXml = (desps: any[], atd: AtendimentoData) => {
+    if (desps.length === 0) return '';
+    const xml = desps.map(p => `
+            <ans:despesa>
+              <ans:sequencialItem>${p.seq}</ans:sequencialItem>
+              <ans:codigoDespesa>${getCodigoDespesa(p.codigo_tabela || '19')}</ans:codigoDespesa>
+              <ans:servicosExecutados>
+                <ans:dataExecucao>${atd.data}</ans:dataExecucao>
+                <ans:horaInicial>08:00:00</ans:horaInicial>
+                <ans:horaFinal>08:00:00</ans:horaFinal>
+                <ans:codigoTabela>${(p.codigo_tabela || '19').split(' - ')[0]}</ans:codigoTabela>
+                <ans:codigoProcedimento>${p.codigo}</ans:codigoProcedimento>
+                <ans:quantidadeExecutada>${(p.qtd || 1).toFixed(1)}</ans:quantidadeExecutada>
+                <ans:unidadeMedida>001</ans:unidadeMedida>
+                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                <ans:valorUnitario>${p.valor.toFixed(2)}</ans:valorUnitario>
+                <ans:valorTotal>${(p.valor * (p.qtd || 1)).toFixed(2)}</ans:valorTotal>
+                <ans:descricaoProcedimento>${p.nome}</ans:descricaoProcedimento>
+              </ans:servicosExecutados>
+            </ans:despesa>`).join('');
+    return `\n          <ans:outrasDespesas>${xml}\n          </ans:outrasDespesas>`;
+  };
 
   const buildGuiaConsulta = (atd: AtendimentoData) => {
-    const procValor = atd.valor_total || (atd.procedimentos?.[0]?.valor || 120.0);
     const procCodigo = atd.procedimentos?.[0]?.codigo || '10101012';
+    const procValor = atd.procedimentos?.[0]?.valor || 150.00;
+    const procTabela = atd.procedimentos?.[0]?.codigo_tabela || '22';
 
     return `
         <ans:guiaConsulta>
@@ -37,27 +141,28 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
           </ans:cabecalhoConsulta>
           <ans:numeroGuiaOperadora>${atd.numero_guia || atd.id}</ans:numeroGuiaOperadora>
           <ans:dadosBeneficiario>
-            <ans:numeroCarteira>04HFC000666009</ans:numeroCarteira>
+            <ans:numeroCarteira>0DVNF000203009</ans:numeroCarteira>
             <ans:atendimentoRN>N</ans:atendimentoRN>
           </ans:dadosBeneficiario>
-          <ans:contratadoExecutante>
+          <ans:dadosContratadoExecutante>
             <ans:codigoPrestadorNaOperadora>04232442000114</ans:codigoPrestadorNaOperadora>
+            <ans:nomeContratado>HOSPITAL DE EXEMPLO</ans:nomeContratado>
             <ans:CNES>6931561</ans:CNES>
-          </ans:contratadoExecutante>
+          </ans:dadosContratadoExecutante>
           <ans:profissionalExecutante>
-            <ans:nomeProfissional>VALDEMILSON ALVES</ans:nomeProfissional>
+            <ans:nomeProfissional>DR JOAO SILVA</ans:nomeProfissional>
             <ans:conselhoProfissional>06</ans:conselhoProfissional>
-            <ans:numeroConselhoProfissional>8696</ans:numeroConselhoProfissional>
-            <ans:UF>26</ans:UF>
-            <ans:CBOS>225250</ans:CBOS>
+            <ans:numeroConselhoProfissional>12345</ans:numeroConselhoProfissional>
+            <ans:UF>SP</ans:UF>
+            <ans:CBOS>225125</ans:CBOS>
           </ans:profissionalExecutante>
-          <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
           <ans:dadosAtendimento>
-            <ans:regimeAtendimento>01</ans:regimeAtendimento>
+            <ans:tipoAtendimento>01</ans:tipoAtendimento>
+            <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
             <ans:dataAtendimento>${atd.data}</ans:dataAtendimento>
             <ans:tipoConsulta>1</ans:tipoConsulta>
             <ans:procedimento>
-              <ans:codigoTabela>${atd.procedimentos?.[0]?.codigo_tabela || '22'}</ans:codigoTabela>
+              <ans:codigoTabela>${procTabela.split(' - ')[0]}</ans:codigoTabela>
               <ans:codigoProcedimento>${procCodigo}</ans:codigoProcedimento>
               <ans:valorProcedimento>${procValor.toFixed(2)}</ans:valorProcedimento>
             </ans:procedimento>
@@ -67,25 +172,8 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
   };
 
   const buildGuiaSadt = (atd: AtendimentoData, urgencia: boolean = false) => {
-    let procedimentosXml = '';
-    if (atd.procedimentos && atd.procedimentos.length > 0) {
-      procedimentosXml = atd.procedimentos.map((p, i) => `
-              <ans:procedimentoExecutado>
-                <ans:sequencialItem>${i + 1}</ans:sequencialItem>
-                <ans:dataExecucao>${atd.data}</ans:dataExecucao>
-                <ans:procedimento>
-                  <ans:codigoTabela>${p.codigo_tabela || '22'}</ans:codigoTabela>
-                  <ans:codigoProcedimento>${p.codigo}</ans:codigoProcedimento>
-                  <ans:descricaoProcedimento>${p.nome}</ans:descricaoProcedimento>
-                </ans:procedimento>
-                <ans:quantidadeExecutada>${p.qtd || 1}</ans:quantidadeExecutada>
-                <ans:viaAcesso>1</ans:viaAcesso>
-                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
-                <ans:valorUnitario>${p.valor.toFixed(2)}</ans:valorUnitario>
-                <ans:valorTotal>${(p.valor * (p.qtd || 1)).toFixed(2)}</ans:valorTotal>
-              </ans:procedimentoExecutado>`).join('');
-    }
-
+    const { procs, desps, sumProcedimentos, sumDiarias, sumTaxas, sumMateriais, sumMedicamentos, sumGases, sumTotalGeral } = processItems(atd);
+    
     const tipoAtendimento = urgencia ? '04' : '23';
     const caraterAtendimento = urgencia ? '2' : '1';
 
@@ -131,55 +219,22 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
             <ans:tipoAtendimento>${tipoAtendimento}</ans:tipoAtendimento>
             <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
             ${urgencia ? '<ans:tipoConsulta>1</ans:tipoConsulta>\n            <ans:regimeAtendimento>04</ans:regimeAtendimento>' : '<ans:regimeAtendimento>01</ans:regimeAtendimento>'}
-          </ans:dadosAtendimento>
-          <ans:procedimentosExecutados>${procedimentosXml}
-          </ans:procedimentosExecutados>
+          </ans:dadosAtendimento>${buildProcedimentosXml(procs, atd, false)}${buildDespesasXml(desps, atd)}
           <ans:valorTotal>
-            <ans:valorProcedimentos>${(atd.valor_total || 0).toFixed(2)}</ans:valorProcedimentos>
-            <ans:valorDiarias>0.00</ans:valorDiarias>
-            <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
-            <ans:valorMateriais>0.00</ans:valorMateriais>
-            <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+            <ans:valorProcedimentos>${sumProcedimentos.toFixed(2)}</ans:valorProcedimentos>
+            <ans:valorDiarias>${sumDiarias.toFixed(2)}</ans:valorDiarias>
+            <ans:valorTaxasAlugueis>${sumTaxas.toFixed(2)}</ans:valorTaxasAlugueis>
+            <ans:valorMateriais>${sumMateriais.toFixed(2)}</ans:valorMateriais>
+            <ans:valorMedicamentos>${sumMedicamentos.toFixed(2)}</ans:valorMedicamentos>
             <ans:valorOPME>0.00</ans:valorOPME>
-            <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
-            <ans:valorTotalGeral>${(atd.valor_total || 0).toFixed(2)}</ans:valorTotalGeral>
+            <ans:valorGasesMedicinais>${sumGases.toFixed(2)}</ans:valorGasesMedicinais>
+            <ans:valorTotalGeral>${sumTotalGeral.toFixed(2)}</ans:valorTotalGeral>
           </ans:valorTotal>
         </ans:guiaSP-SADT>`;
   };
 
   const buildGuiaInternacao = (atd: AtendimentoData) => {
-    let procedimentosXml = '';
-    if (atd.procedimentos && atd.procedimentos.length > 0) {
-      procedimentosXml = atd.procedimentos.map((p, i) => `
-              <ans:procedimentoExecutado>
-                <ans:sequencialItem>${i + 1}</ans:sequencialItem>
-                <ans:dataExecucao>${atd.data}</ans:dataExecucao>
-                <ans:procedimento>
-                  <ans:codigoTabela>${p.codigo_tabela || '22'}</ans:codigoTabela>
-                  <ans:codigoProcedimento>${p.codigo}</ans:codigoProcedimento>
-                  <ans:descricaoProcedimento>${p.nome}</ans:descricaoProcedimento>
-                </ans:procedimento>
-                <ans:quantidadeExecutada>${p.qtd || 1}</ans:quantidadeExecutada>
-                <ans:viaAcesso>1</ans:viaAcesso>
-                <ans:tecnicaUtilizada>1</ans:tecnicaUtilizada>
-                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
-                <ans:valorUnitario>${p.valor.toFixed(2)}</ans:valorUnitario>
-                <ans:valorTotal>${(p.valor * (p.qtd || 1)).toFixed(2)}</ans:valorTotal>
-                <ans:identEquipe>
-                  <ans:identificacaoEquipe>
-                    <ans:grauPart>00</ans:grauPart>
-                    <ans:codProfissional>
-                      <ans:cpfContratado>83365982272</ans:cpfContratado>
-                    </ans:codProfissional>
-                    <ans:nomeProf>VALDEMILSON ALVES</ans:nomeProf>
-                    <ans:conselho>06</ans:conselho>
-                    <ans:numeroConselhoProfissional>8696</ans:numeroConselhoProfissional>
-                    <ans:UF>26</ans:UF>
-                    <ans:CBOS>225250</ans:CBOS>
-                  </ans:identificacaoEquipe>
-                </ans:identEquipe>
-              </ans:procedimentoExecutado>`).join('');
-    }
+    const { procs, desps, sumProcedimentos, sumDiarias, sumTaxas, sumMateriais, sumMedicamentos, sumGases, sumTotalGeral } = processItems(atd);
 
     return `
         <ans:guiaResumoInternacao>
@@ -217,18 +272,16 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
             <ans:diagnostico>W999</ans:diagnostico>
             <ans:indicadorAcidente>2</ans:indicadorAcidente>
             <ans:motivoEncerramento>11</ans:motivoEncerramento>
-          </ans:dadosSaidaInternacao>
-          <ans:procedimentosExecutados>${procedimentosXml}
-          </ans:procedimentosExecutados>
+          </ans:dadosSaidaInternacao>${buildProcedimentosXml(procs, atd, true)}${buildDespesasXml(desps, atd)}
           <ans:valorTotal>
-            <ans:valorProcedimentos>${(atd.valor_total || 0).toFixed(2)}</ans:valorProcedimentos>
-            <ans:valorDiarias>0.00</ans:valorDiarias>
-            <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
-            <ans:valorMateriais>0.00</ans:valorMateriais>
-            <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+            <ans:valorProcedimentos>${sumProcedimentos.toFixed(2)}</ans:valorProcedimentos>
+            <ans:valorDiarias>${sumDiarias.toFixed(2)}</ans:valorDiarias>
+            <ans:valorTaxasAlugueis>${sumTaxas.toFixed(2)}</ans:valorTaxasAlugueis>
+            <ans:valorMateriais>${sumMateriais.toFixed(2)}</ans:valorMateriais>
+            <ans:valorMedicamentos>${sumMedicamentos.toFixed(2)}</ans:valorMedicamentos>
             <ans:valorOPME>0.00</ans:valorOPME>
-            <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
-            <ans:valorTotalGeral>${(atd.valor_total || 0).toFixed(2)}</ans:valorTotalGeral>
+            <ans:valorGasesMedicinais>${sumGases.toFixed(2)}</ans:valorGasesMedicinais>
+            <ans:valorTotalGeral>${sumTotalGeral.toFixed(2)}</ans:valorTotalGeral>
           </ans:valorTotal>
         </ans:guiaResumoInternacao>`;
   };

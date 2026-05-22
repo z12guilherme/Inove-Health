@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { FileSpreadsheet, Loader2, Search, Plus, X, Building2, Tag, Table as TableIcon, ChevronDown, ChevronRight, Info, TrendingUp, Hash, Edit } from 'lucide-react';
+import { FileSpreadsheet, Loader2, Search, Plus, X, Building2, Tag, Table as TableIcon, ChevronDown, ChevronRight, Info, TrendingUp, Hash, Edit, Trash2 } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import toast from 'react-hot-toast';
 import localStorageService from '../../../services/localStorageService';
@@ -202,6 +202,51 @@ export function TabelasPrecos() {
       setModalTabelaOpen(true);
   };
 
+  const handleDeleteTabela = async (id: string) => {
+    if (!window.confirm("ATENÇÃO: Tem certeza que deseja excluir esta tabela e todos os seus itens? Esta ação é irreversível.")) return;
+    
+    try {
+      const allTabelas = localStorageService.getTabelas().filter(t => t.id !== id);
+      localStorageService.setTabelas(allTabelas as any);
+      setTabelas(allTabelas as any);
+      if (selectedTabela?.id === id) {
+        setSelectedTabela(null);
+      }
+      toast.success("Tabela excluída permanentemente.");
+    } catch {
+      toast.error("Erro ao excluir a tabela.");
+    }
+  };
+
+  const handleDeleteConvenio = async (id: string) => {
+    if (!window.confirm("ATENÇÃO: Tem certeza que deseja excluir este convênio? As tabelas ligadas a ele não serão excluídas, mas ficarão na seção 'Sem Convênio Vinculado'.")) return;
+    
+    try {
+      // Excluir convênio
+      const allConv = localStorageService.getConvenios().filter(c => c.id !== id);
+      localStorageService.setConvenios(allConv);
+      setConvenios(allConv);
+      
+      // Desvincular as tabelas associadas a ele
+      const allTabelas = localStorageService.getTabelas();
+      let updated = false;
+      allTabelas.forEach(t => {
+          if ((t as any).convenio_id === id) {
+              delete (t as any).convenio_id;
+              updated = true;
+          }
+      });
+      if (updated) {
+          localStorageService.setTabelas(allTabelas);
+          setTabelas(allTabelas as any);
+      }
+
+      toast.success("Convênio excluído com sucesso.");
+    } catch {
+      toast.error("Erro ao excluir o convênio.");
+    }
+  };
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -240,11 +285,20 @@ export function TabelasPrecos() {
                       <span className="text-xs font-black uppercase tracking-tight text-gray-700">{conv.nome}</span>
                       <span className="ml-2 text-[10px] font-bold text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">{tabelasDoConvenio.length}</span>
                     </div>
-                    {isExpanded ? (
-                      <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
-                    ) : (
-                      <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
-                    )}
+                    <div className="flex items-center gap-1">
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); handleDeleteConvenio(conv.id); }}
+                        className="p-1.5 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors mr-1"
+                        title="Excluir Convênio"
+                      >
+                         <Trash2 size={14} />
+                      </button>
+                      {isExpanded ? (
+                        <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
+                      )}
+                    </div>
                   </button>
 
                   {isExpanded && tabelasDoConvenio.length > 0 && (
@@ -343,6 +397,9 @@ export function TabelasPrecos() {
                       <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-0.5 rounded border border-gray-100">{selectedTabela.nome}</p>
                       <button onClick={openEditTabelaModal} className="text-[10px] font-black text-emerald-600 uppercase hover:text-emerald-700 transition-colors flex items-center gap-1 ml-2 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
                         <Edit className="w-3 h-3" /> Editar Tabela
+                      </button>
+                      <button onClick={() => handleDeleteTabela(selectedTabela.id)} className="text-[10px] font-black text-red-600 uppercase hover:text-red-700 transition-colors flex items-center gap-1 ml-2 bg-red-50 px-2 py-0.5 rounded border border-red-100">
+                        <Trash2 className="w-3 h-3" /> Excluir Tabela
                       </button>
                     </div>
                   </div>
