@@ -112,10 +112,14 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
     if (isSadt || atd.tipo === 'SADT' || atd.tipo === 'EXAME') return buildGuiaSadt(atd, false);
     return buildGuiaConsulta(atd);
   }).join('');
-
+  
   let prestadorParaOperadora = `<ans:loteGuias><ans:numeroLote>${lote.numero_lote}</ans:numeroLote><ans:guiasTISS>${guiasXml}</ans:guiasTISS></ans:loteGuias>`;
 
-  let xmlString = `<?xml version="1.0" encoding="ISO-8859-1"?>
+  prestadorParaOperadora = prestadorParaOperadora.replace(/>\s+</g, '><').trim();
+
+  const hashVal = md5(prestadorParaOperadora);
+
+  let xmlString = `<?xml version="1.0" encoding="UTF-8"?>
 <ans:mensagemTISS xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas">
   <ans:cabecalho>
     <ans:identificacaoTransacao>
@@ -136,24 +140,9 @@ export function generateTissXml(lote: LoteTiss, atendimentos: AtendimentoData[])
   </ans:cabecalho>
   <ans:prestadorParaOperadora>${prestadorParaOperadora}</ans:prestadorParaOperadora>
   <ans:epilogo>
-    <ans:hash>PLACEHOLDER_HASH</ans:hash>
+    <ans:hash>${hashVal}</ans:hash>
   </ans:epilogo>
 </ans:mensagemTISS>`;
 
-  // 1. Forçar CRLF (padrão Windows/ANS) no arquivo INTEIRO
-  xmlString = xmlString.replace(/\r?\n/g, '\r\n');
-
-  // 2. Extrair EXATAMENTE o conteúdo que ficou entre as tags após a formatação global
-  const startTag = '<ans:prestadorParaOperadora>';
-  const endTag = '</ans:prestadorParaOperadora>';
-  const startIndex = xmlString.indexOf(startTag) + startTag.length;
-  const endIndex = xmlString.indexOf(endTag);
-  const hashContent = xmlString.substring(startIndex, endIndex);
-
-  // 3. Gerar o MD5. A biblioteca md5 nativamente calcula o hash UTF-8, o que satisfaz 
-  // o segundo padrão tolerado pelo validador TISS (a hash UTF-8).
-  const hashVal = md5(hashContent);
-
-  // 4. Injetar na string final e retornar
-  return xmlString.replace('PLACEHOLDER_HASH', hashVal).trim();
+  return xmlString.trim();
 }
