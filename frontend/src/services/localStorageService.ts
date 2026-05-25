@@ -170,6 +170,10 @@ const localStorageService = {
         const stored = localStorage.getItem(LS_KEYS.TABELAS);
         return stored ? JSON.parse(stored) : [];
     },
+    // Alias para compatibilidade com o componente Lancamentos.tsx
+    getTabelasPrecos: (): TabelaPreco[] => {
+        return localStorageService.getTabelas();
+    },
     setTabelas: (tabelas: TabelaPreco[]) => {
         localStorage.setItem(LS_KEYS.TABELAS, JSON.stringify(tabelas));
     },

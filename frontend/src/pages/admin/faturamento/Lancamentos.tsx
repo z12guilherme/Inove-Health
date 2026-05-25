@@ -10,7 +10,7 @@ export function LancamentosFaturamento() {
 
     const [atendimentoAtivo, setAtendimentoAtivo] = useState<any>(null);
     const [convenioAtivo, setConvenioAtivo] = useState<any>(null);
-    
+
     const [abaAtiva, setAbaAtiva] = useState<'servicos' | 'materiais' | 'faturas'>('servicos');
 
     const [formItem, setFormItem] = useState({
@@ -44,14 +44,14 @@ export function LancamentosFaturamento() {
     // Calcular os totais a partir do array de procedimentos do atendimento
     const procedimentosAgregados = (atendimentoAtivo?.procedimentos || []).map((p: any) => ({
         ...p,
-        total_item: (p.valor * (p.qtd || 1))
+        total_item: (Number(p.valor) || 0) * (Number(p.qtd) || 1)
     }));
 
     const totaisFatura = procedimentosAgregados.reduce((acc: any, curr: any) => {
         // Lógica simples: se o código do procedimento começa com 03 ou tem nome de insumo, é material.
         // Opcionalmente podemos usar uma flag no objeto.
         const isMaterial = curr.is_material || curr.codigo.startsWith('03') || curr.codigo.startsWith('04') || curr.codigo === 'MEDICAMENTO';
-        
+
         if (isMaterial) {
             acc.materiais += curr.total_item;
         } else {
@@ -71,7 +71,7 @@ export function LancamentosFaturamento() {
         let isMaterial = formItem.is_material;
 
         if (isMaterial) {
-            itemBase = insumos.find(i => i.id === formItem.item_id);
+            itemBase = insumos.find((i: any) => i.id === formItem.item_id);
             codigoBase = 'MAT/MED';
         } else {
             // Procura nos itens de todas as tabelas
@@ -94,7 +94,7 @@ export function LancamentosFaturamento() {
             const vinculo = itemBase.tabelas_faturamento_vinculadas?.find((v: any) => v.convenio_id === atendimentoAtivo.convenio_id);
             valorUnitario = vinculo ? vinculo.valor : (itemBase.valor_padrao || 10.0);
         } else {
-            valorUnitario = itemBase.valor_padrao;
+            valorUnitario = Number(itemBase?.valor_padrao || itemBase?.valor) || 0;
         }
 
         const ajusteMultiplier = 1 + (formItem.ajuste / 100);
@@ -102,7 +102,7 @@ export function LancamentosFaturamento() {
 
         let codigoTabelaFinal = '22';
         if (isMaterial) {
-            codigoTabelaFinal = itemBase.nome.toLowerCase().includes('medicamento') || itemBase.nome.toLowerCase().includes('dipirona') ? '20' : '19';
+            codigoTabelaFinal = (itemBase?.nome || '').toLowerCase().includes('medicamento') || (itemBase?.nome || '').toLowerCase().includes('dipirona') ? '20' : '19';
         } else {
             // Find the table that owns this item to get its tipo
             const tabelaPai = tabelas.find(t => t.itens?.some((i: any) => i.id === formItem.item_id));
@@ -114,7 +114,7 @@ export function LancamentosFaturamento() {
         const novoProcedimento = {
             data: formItem.data_cobranca,
             codigo: codigoBase,
-            nome: itemBase.nome,
+            nome: itemBase?.nome || 'Item sem nome',
             valor: valorFinal,
             qtd: formItem.quantidade,
             is_material: isMaterial,
@@ -172,7 +172,7 @@ export function LancamentosFaturamento() {
             <div className="glass p-6 rounded-2xl flex flex-col md:flex-row gap-4 items-end">
                 <div className="flex-1 w-full">
                     <label className="block text-xs font-bold uppercase text-muted-foreground mb-2">Selecione o Paciente/Atendimento</label>
-                    <select 
+                    <select
                         className="input-field py-3 w-full"
                         value={atendimentoAtivo?.id || ''}
                         onChange={(e) => handleSelectAtendimento(e.target.value)}
@@ -198,33 +198,33 @@ export function LancamentosFaturamento() {
                     <div className="xl:col-span-1 space-y-6">
                         <div className="glass rounded-2xl p-6 relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -mr-4 -mt-4 z-0"></div>
-                            
+
                             <h3 className="font-bold text-lg border-b border-border pb-4 mb-4 relative z-10 flex items-center gap-2">
                                 <FileText className="w-5 h-5 text-primary" /> Resumo da Fatura
                             </h3>
-                            
+
                             <div className="space-y-4 relative z-10">
                                 <div className="flex justify-between items-center text-sm">
                                     <span className="text-muted-foreground">Procedimentos</span>
-                                    <span className="font-semibold text-primary">R$ {totaisFatura.procedimentos.toFixed(2)}</span>
+                                    <span className="font-semibold text-primary">R$ {(Number(totaisFatura.procedimentos) || 0).toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
                                     <span className="text-muted-foreground">Diárias</span>
-                                    <span className="font-semibold text-primary">R$ {totaisFatura.diarias.toFixed(2)}</span>
+                                    <span className="font-semibold text-primary">R$ {(Number(totaisFatura.diarias) || 0).toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
                                     <span className="text-muted-foreground">Taxas e Gases</span>
-                                    <span className="font-semibold text-primary">R$ {(totaisFatura.taxas + totaisFatura.gases).toFixed(2)}</span>
+                                    <span className="font-semibold text-primary">R$ {(Number(totaisFatura.taxas + totaisFatura.gases) || 0).toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
                                     <span className="text-muted-foreground">Materiais / Meds</span>
-                                    <span className="font-semibold text-primary">R$ {(totaisFatura.materiais + totaisFatura.medicamentos).toFixed(2)}</span>
+                                    <span className="font-semibold text-primary">R$ {(Number(totaisFatura.materiais + totaisFatura.medicamentos) || 0).toFixed(2)}</span>
                                 </div>
-                                
+
                                 <div className="pt-4 border-t border-border/50">
                                     <div className="flex justify-between items-center">
                                         <span className="font-bold text-foreground">Valor Total</span>
-                                        <span className="text-2xl font-black text-primary">R$ {totaisFatura.total.toFixed(2)}</span>
+                                        <span className="text-2xl font-black text-primary">R$ {(Number(totaisFatura.total) || 0).toFixed(2)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -268,28 +268,28 @@ export function LancamentosFaturamento() {
                         {/* Formulário de Inserção */}
                         <div className="glass p-6 rounded-b-2xl rounded-tr-2xl shadow-sm border border-border/50">
                             <h3 className="font-bold text-sm uppercase text-muted-foreground mb-4">Dados do Item a Lançar</h3>
-                            
+
                             <form onSubmit={handleInserirItem} className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 items-end">
                                 <div className="md:col-span-2 lg:col-span-2">
                                     <label className="block text-xs font-bold uppercase text-muted-foreground mb-1">
                                         Item Tabela (SIMPRO/AMB/TUSS)
                                     </label>
-                                    <select 
-                                        className="input-field" 
+                                    <select
+                                        className="input-field"
                                         value={formItem.item_id}
                                         onChange={(e) => {
                                             const val = e.target.value;
                                             const isMat = val.startsWith('insumo_');
-                                            setFormItem({...formItem, item_id: val.replace('insumo_', ''), is_material: isMat});
+                                            setFormItem({ ...formItem, item_id: val.replace('insumo_', ''), is_material: isMat });
                                         }}
                                         required
                                     >
                                         <option value="">Pesquise pelo item...</option>
-                                        
+
                                         {/* Agrupamento Procedimentos */}
                                         <optgroup label="Serviços / Procedimentos (TUSS/AMB)">
                                             {optionsProcedimentos.map((p: any) => (
-                                                <option key={p.id} value={p.id}>{p.codigo} - {p.nome} (R$ {p.valor_padrao.toFixed(2)})</option>
+                                                <option key={p.id} value={p.id}>{p.codigo} - {p.nome} (R$ {(Number(p.valor_padrao || p.valor) || 0).toFixed(2)})</option>
                                             ))}
                                         </optgroup>
 
@@ -307,24 +307,24 @@ export function LancamentosFaturamento() {
 
                                 <div className="md:col-span-1 lg:col-span-1">
                                     <label className="block text-xs font-bold uppercase text-muted-foreground mb-1">Qtd.</label>
-                                    <input 
-                                        type="number" 
+                                    <input
+                                        type="number"
                                         step="0.01"
                                         min="0.01"
-                                        className="input-field" 
+                                        className="input-field"
                                         value={formItem.quantidade}
-                                        onChange={(e) => setFormItem({...formItem, quantidade: parseFloat(e.target.value) || 1})}
+                                        onChange={(e) => setFormItem({ ...formItem, quantidade: parseFloat(e.target.value) || 1 })}
                                         required
                                     />
                                 </div>
 
                                 <div className="md:col-span-1 lg:col-span-1">
                                     <label className="block text-xs font-bold uppercase text-muted-foreground mb-1">Ajuste (%)</label>
-                                    <input 
-                                        type="number" 
-                                        className="input-field" 
+                                    <input
+                                        type="number"
+                                        className="input-field"
                                         value={formItem.ajuste}
-                                        onChange={(e) => setFormItem({...formItem, ajuste: parseFloat(e.target.value) || 0})}
+                                        onChange={(e) => setFormItem({ ...formItem, ajuste: parseFloat(e.target.value) || 0 })}
                                     />
                                 </div>
 
@@ -339,10 +339,10 @@ export function LancamentosFaturamento() {
                         {/* Listagem da Fatura (Conta do Paciente) */}
                         <div className="glass rounded-2xl overflow-hidden border border-border/50">
                             <div className="bg-secondary/30 p-4 border-b border-border flex justify-between items-center">
-                                <h3 className="font-bold flex items-center gap-2"><Tag className="w-5 h-5 text-primary"/> Itens Lançados na Conta</h3>
+                                <h3 className="font-bold flex items-center gap-2"><Tag className="w-5 h-5 text-primary" /> Itens Lançados na Conta</h3>
                                 <div className="text-xs font-medium text-muted-foreground">Exibindo {procedimentosAgregados.length} itens</div>
                             </div>
-                            
+
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left text-sm">
                                     <thead className="bg-secondary/10">
@@ -375,9 +375,9 @@ export function LancamentosFaturamento() {
                                                         )}
                                                     </td>
                                                     <td className="p-4 font-mono">{p.qtd || 1}</td>
-                                                    <td className="p-4 font-bold">R$ {p.total_item.toFixed(2)}</td>
+                                                    <td className="p-4 font-bold">R$ {(Number(p.total_item) || 0).toFixed(2)}</td>
                                                     <td className="p-4">
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleRemoverLancamento(p.id_lancamento)}
                                                             className="text-red-500 hover:text-red-600 hover:bg-red-500/10 p-2 rounded-lg transition-colors"
                                                             title="Remover Item"

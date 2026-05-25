@@ -78,6 +78,7 @@ export function Convenios() {
     valor_ch: 0,
     valor_uco: 0,
     deflator_uco: 0,
+    ajuste_simpro: -30,
     // Checkboxes Config
     utiliza_abramge: false,
     utiliza_planserv: false,
@@ -129,9 +130,12 @@ export function Convenios() {
     setFormData({
       ...c,
       // Se os dados vierem aninhados do mock/banco, espalhamos aqui
-      ...(c.financeiro || {}),
-      ...(c.obrigatorios_atendimento || {})
+      ...(c.financeiro || { ajuste_simpro: -30 }),
+      ...(c.obrigatorios_atendimento || {}),
+      ajuste_simpro: c.financeiro?.ajuste_simpro ?? -30
     });
+    setTabelasVinculadas(c.tabelas_vinculadas || []);
+    setViasAcesso(c.vias_acesso || []);
     setView('FORM');
   };
 
@@ -145,7 +149,14 @@ export function Convenios() {
       tiss_versao: '4.01.00', dias_retorno: 30, digitos_matricula: 16, acrescimo_apartamento: 100,
       valor_ch: 0, valor_uco: 0, deflator_porte: 0,
       req_guia_principal: true, req_guia_autorizacao: true, req_guia_operadora: true, req_senha: true, req_setor: true, req_hipotese: true,
+      ajuste_simpro: 0,
     });
+    setTabelasVinculadas([]);
+    setViasAcesso([
+      { descricao: 'Única', percentual: 100 },
+      { descricao: 'Mesma via', percentual: 50 },
+      { descricao: 'Diferentes vias', percentual: 30 },
+    ]);
     setView('FORM');
   };
 
@@ -172,6 +183,19 @@ export function Convenios() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAddTabelaVinculo = (tabelaId: string) => {
+    const tabelaObj = tabelasDisponiveis.find(t => t.id === tabelaId);
+    if (!tabelaObj) return;
+    if (tabelasVinculadas.find(t => t.id === tabelaId)) {
+      return toast.error('Esta tabela já está vinculada.');
+    }
+    setTabelasVinculadas(prev => [...prev, { id: tabelaObj.id, nome: tabelaObj.nome, faixas: '' }]);
+  };
+
+  const handleRemoveTabelaVinculo = (id: string) => {
+    setTabelasVinculadas(prev => prev.filter(t => t.id !== id));
   };
 
   if (view === 'LIST') {
@@ -416,7 +440,10 @@ export function Convenios() {
               <h3 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
                 <Percent size={16} className="text-rose-500" /> Percentuais de Vias de Acesso
               </h3>
-              <button className="text-[10px] font-black text-blue-600 uppercase flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => setViasAcesso(prev => [...prev, { descricao: 'Nova Via', percentual: 0 }])}
+                className="text-[10px] font-black text-blue-600 uppercase flex items-center gap-1">
                 <Plus size={12} /> Adicionar
               </button>
             </div>
@@ -426,16 +453,35 @@ export function Convenios() {
                 <div key={idx} className="flex items-center gap-4 p-3 bg-gray-50 rounded-2xl">
                   <div className="flex-1">
                     <p className="text-[10px] font-black text-gray-400 uppercase mb-1">Via de Acesso</p>
-                    <p className="text-xs font-bold text-gray-700">{via.descricao}</p>
+                    <input type="text" value={via.descricao} onChange={e => {
+                      const newVias = [...viasAcesso];
+                      newVias[idx].descricao = e.target.value;
+                      setViasAcesso(newVias);
+                    }} className="w-full p-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold" />
                   </div>
                   <div className="w-24">
                     <p className="text-[10px] font-black text-gray-400 uppercase mb-1">Percentual</p>
                     <div className="flex items-center gap-2">
-                      <input type="number" value={via.percentual} className="w-full p-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-center" />
+                      <input
+                        type="number"
+                        value={via.percentual}
+                        onChange={e => {
+                          const newVias = [...viasAcesso];
+                          newVias[idx].percentual = Number(e.target.value);
+                          setViasAcesso(newVias);
+                        }}
+                        className="w-full p-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-center"
+                      />
                       <span className="text-xs font-bold text-gray-400">%</span>
                     </div>
                   </div>
-                  <button className="p-2 text-gray-300 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
+                  <button
+                    type="button"
+                    onClick={() => setViasAcesso(prev => prev.filter((_, i) => i !== idx))}
+                    className="p-2 text-gray-300 hover:text-red-500 transition-colors"
+                  >
+                    <Trash2 size={16} />
+                  </button>
                 </div>
               ))}
             </div>
@@ -453,22 +499,39 @@ export function Convenios() {
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Defina as faixas de procedimentos e tabelas base</p>
             </div>
           </div>
-          <button className="bg-gray-900 text-white px-6 py-2 rounded-2xl text-[10px] font-black uppercase flex items-center gap-2 hover:bg-black transition-all">
-            <Plus size={14} /> Adicionar Tabela
-          </button>
+          <div className="flex gap-2">
+            <select
+              className="bg-gray-50 border border-gray-100 rounded-xl px-4 py-2 text-[10px] font-black uppercase outline-none focus:border-blue-200 transition-all"
+              onChange={(e) => {
+                if (e.target.value) handleAddTabelaVinculo(e.target.value);
+                e.target.value = "";
+              }}
+            >
+              <option value="">Selecionar Tabela para Vínculo...</option>
+              {tabelasDisponiveis.map(t => (
+                <option key={t.id} value={t.id}>{t.nome}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {tabelasVinculadas.map((tab, idx) => (
-            <div key={idx} className="p-6 bg-gray-50/50 rounded-3xl border border-gray-100 space-y-4 group hover:border-blue-200 transition-all">
+            <div key={tab.id} className="p-6 bg-gray-50/50 rounded-3xl border border-gray-100 space-y-4 group hover:border-blue-200 transition-all">
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
                   <span className="text-[8px] font-black text-blue-500 uppercase tracking-widest px-2 py-0.5 bg-blue-50 rounded">Tabela Ativa</span>
                   <p className="text-sm font-black text-gray-700 uppercase leading-tight">{tab.nome}</p>
                 </div>
                 <div className="flex gap-2">
-                  <button className="text-[10px] font-black text-gray-400 uppercase hover:text-blue-600">Exportar</button>
-                  <button className="text-[10px] font-black text-gray-400 uppercase hover:text-red-500">Remover</button>
+                  <button type="button" className="text-[10px] font-black text-gray-400 uppercase hover:text-blue-600">Exportar</button>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveTabelaVinculo(tab.id)}
+                    className="text-[10px] font-black text-gray-400 uppercase hover:text-red-500 transition-colors"
+                  >
+                    Remover
+                  </button>
                 </div>
               </div>
 
@@ -477,6 +540,12 @@ export function Convenios() {
                 <input
                   type="text"
                   placeholder="Separar por vírgula (ex: 10101012, 10101039...)"
+                  value={tab.faixas}
+                  onChange={(e) => {
+                    const newTabs = [...tabelasVinculadas];
+                    newTabs[idx].faixas = e.target.value;
+                    setTabelasVinculadas(newTabs);
+                  }}
                   className="w-full p-3 bg-white border border-gray-100 rounded-2xl text-xs font-bold text-gray-600 mt-1"
                 />
               </div>
@@ -495,10 +564,21 @@ export function Convenios() {
           <div className="space-y-4">
             <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
               <p className="text-[10px] font-black text-gray-400 uppercase mb-2">Ajuste de Tabela SIMPRO</p>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-gray-600">Deflator aplicado:</span>
-                <span className="text-sm font-black text-red-500">-30,00 %</span>
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-xs font-bold text-gray-600">Ajuste (%):</span>
+                <input
+                  type="number"
+                  value={formData.ajuste_simpro}
+                  onChange={e => setFormData({ ...formData, ajuste_simpro: Number(e.target.value) })}
+                  className={cn(
+                    "w-24 p-2 rounded-lg border text-right font-black text-sm outline-none transition-all",
+                    formData.ajuste_simpro < 0 ? "text-red-500 border-red-100 focus:border-red-300" : "text-emerald-500 border-emerald-100 focus:border-emerald-300"
+                  )}
+                />
               </div>
+              <p className="text-[9px] text-gray-400 mt-2 font-bold uppercase italic">
+                {formData.ajuste_simpro < 0 ? 'Deflator aplicado' : 'Inflator aplicado'}
+              </p>
             </div>
             <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
               <p className="text-[10px] font-black text-gray-400 uppercase mb-2">Brasíndice</p>
@@ -515,7 +595,7 @@ export function Convenios() {
             <h3 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
               <FileText size={16} className="text-blue-500" /> Itens de Referência (De-Para)
             </h3>
-            <button className="text-[10px] font-black text-blue-600 uppercase">Adicionar Regra</button>
+            <button type="button" className="text-[10px] font-black text-blue-600 uppercase">Adicionar Regra</button>
           </div>
 
           <div className="overflow-x-auto">
@@ -541,7 +621,7 @@ export function Convenios() {
                       <span className="px-2 py-0.5 bg-gray-100 rounded font-mono text-xs font-bold text-gray-500">{item.cod}</span>
                     </td>
                     <td className="py-3 text-right">
-                      <button className="p-1.5 text-gray-300 hover:text-blue-500 transition-colors"><Settings size={14} /></button>
+                      <button type="button" className="p-1.5 text-gray-300 hover:text-blue-500 transition-colors"><Settings size={14} /></button>
                     </td>
                   </tr>
                 ))}

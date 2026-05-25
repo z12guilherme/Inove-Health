@@ -212,11 +212,11 @@ export function LancamentosFaturamento() {
                                                 </div>
                                             </td>
                                             <td className="p-4 text-sm font-mono text-right">
-                                                {item.valor_unitario.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                {(Number(item.valor_unitario) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                             </td>
                                             <td className="p-4 text-sm font-bold text-center">{item.quantidade}</td>
                                             <td className="p-4 text-sm font-mono font-bold text-right text-primary">
-                                                {item.valor_total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                {(Number(item.valor_total) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                             </td>
                                             <td className="p-4 text-sm text-muted-foreground">{item.faturado_por}</td>
                                             <td className="p-4 text-center">
